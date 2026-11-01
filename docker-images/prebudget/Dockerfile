@@ -156,5 +156,5 @@ ENV HOMELAB_CONTAINER_NAME="prebudget" \
     HOMELAB_CRON_SKIP_INITIAL="1" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=300s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
+HEALTHCHECK --interval=10s --start-period=300s --timeout=4s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/main.sh" ]
