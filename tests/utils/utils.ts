@@ -71,9 +71,9 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
         return stdout.split('\n').filter(Boolean).sort();
     } catch (error) {
         if (error instanceof ExecaError) {
-            throw new Error(error.all);
+            throw new Error(`DNS Query error: ${error.all}`);
         }
-        throw error;
+        throw new Error(`DNS Query error: ${error}`);
     }
 }
 
