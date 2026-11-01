@@ -208,7 +208,7 @@ COPY --from=nodejs_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_build /homelab/dist /homelab/dist
 COPY ./docker-images/favicons/icons /homelab/icons
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=imagemagick_final /homelab/imagemagick/bin/convert /homelab/imagemagick/bin/identify /homelab/imagemagick/bin/magick /homelab/bin/
+COPY --from=imagemagick_final /homelab/imagemagick/ /homelab/imagemagick/
 COPY --from=urls_config_3 /homelab/urls.json /homelab/
 
 FROM scratch AS prefinal
@@ -230,7 +230,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="favicons" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
-    PATH="/homelab/bin:${PATH}" \
+    PATH="/homelab/imagemagick/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=300s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
