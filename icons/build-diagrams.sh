@@ -207,13 +207,25 @@ convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPU
 convert_image_full "${tmpdir}/wifi-ap.svg" "${output_dir}/wifi-ap.png"
 rm -f "${tmpdir}/wifi-ap.svg"
 
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Server Rack - Open.svg" "${tmpdir}/rack.svg"
+convert_image_full "${tmpdir}/rack.svg" "${output_dir}/rack.png"
+rm -f "${tmpdir}/rack.svg"
+
 convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Tower Server 1.svg" "${tmpdir}/server-big.svg"
 convert_image_full "${tmpdir}/server-big.svg" "${output_dir}/server-big.png"
 rm -f "${tmpdir}/server-big.svg"
 
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Network Attached Storage 1.svg" "${tmpdir}/server-medium.svg"
+convert_image_full "${tmpdir}/server-medium.svg" "${output_dir}/server-medium.png"
+rm -f "${tmpdir}/server-medium.svg"
+
 convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Servers/Appliance 1.svg" "${tmpdir}/server-small.svg"
 convert_image_full "${tmpdir}/server-small.svg" "${output_dir}/server-small.png"
 rm -f "${tmpdir}/server-small.svg"
+
+convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Networking & Communications/Dial-up Modem 1.svg" "${tmpdir}/server-mini.svg"
+convert_image_full "${tmpdir}/server-mini.svg" "${output_dir}/server-mini.png"
+rm -f "${tmpdir}/server-mini.svg"
 
 convert_image_draft 'perl -0pe "s~<g id=\"id3\">.+?</g>~~gms" <INPUT_FILE >OUTPUT_FILE' "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Energy Management/Single-phase Energy Meter (DIN).svg" "${tmpdir}/elecricity-meter.svg"
 convert_image_full "${tmpdir}/elecricity-meter.svg" "${output_dir}/elecricity-meter.png"
