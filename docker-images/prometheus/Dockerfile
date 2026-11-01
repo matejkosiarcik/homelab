@@ -134,6 +134,6 @@ ENV HOMELAB_CONTAINER_NAME="prometheus" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9090", "--basic-auth-username", "homelab-viewer", "--basic-auth-password-env", "PROMETHEUS__HOMELAB_VIEWER_PASSWORD" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9090", "--basic-auth-username", "homelab-viewer", "--basic-auth-password-env", "PROMETHEUS__HOMELAB_VIEWER_PASSWORD" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []

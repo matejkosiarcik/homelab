@@ -53,4 +53,4 @@ ENV HOMELAB_CONTAINER_NAME="rabbitmq" \
 # Port 15672 - RabbitMQ dashboard
 EXPOSE 5672 15672
 
-HEALTHCHECK --interval=15s --start-period=60s --timeout=2s --retries=1 CMD [ "rabbitmqctl", "status" ]
+HEALTHCHECK --interval=15s --start-period=1m --timeout=2s --retries=1 CMD [ "rabbitmqctl", "status" ]

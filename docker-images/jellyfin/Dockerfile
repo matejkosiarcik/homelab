@@ -72,4 +72,4 @@ ENV HOMELAB_CONTAINER_NAME="jellyfin" \
     JELLYFIN_LOG_DIR="/logs" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8096" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8096" ]
