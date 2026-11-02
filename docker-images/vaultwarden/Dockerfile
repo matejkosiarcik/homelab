@@ -40,7 +40,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM vaultwarden/server:1.37.4 AS final
+FROM vaultwarden/server:1.37.5 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
