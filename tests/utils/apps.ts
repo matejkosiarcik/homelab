@@ -1,3 +1,18 @@
+type AppInstance = {
+    enabled?: boolean;
+    title: string;
+    url: string | {
+        api: string;
+        ui: string;
+    };
+};
+
+type App = {
+    forceHttps?: boolean;
+    instances: AppInstance[];
+    title: string;
+};
+
 export const apps = {
     actualbudget: {
         title: 'ActualBudget',
@@ -316,4 +331,4 @@ export const apps = {
             { url: 'https://vnc-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
-};
+} satisfies Record<string, App>;
