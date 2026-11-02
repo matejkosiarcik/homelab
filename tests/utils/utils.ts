@@ -34,8 +34,6 @@ export async function delay(timeout: number): Promise<void> {
     });
 }
 
-type MaybePromise<T> = T | Promise<T>;
-
 export async function retry<T>(fn: () => MaybePromise<T>, _options?: { retries?: number | undefined; onRetry?: (error: Error, attempt: number) => MaybePromise<void> } | undefined): Promise<T> {
     const options = {
         retries: _options?.retries ?? 1,
