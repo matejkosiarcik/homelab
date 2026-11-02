@@ -520,6 +520,12 @@
         ping: wiktionary.matejhome.com
         icon: /icons/wiktionary.png
 
+    - VNC - Raspberry Pi 4B 4G:
+        description: Remote Access
+        href: https://vnc-raspberry-pi-4b-4g.matejhome.com
+        ping: vnc-raspberry-pi-4b-4g.matejhome.com
+        icon: /icons/vnc.png
+
 - AI:
     - Ollama:
         description: LLM Backend

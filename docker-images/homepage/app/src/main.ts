@@ -13,11 +13,15 @@ async function copyText(text: string) {
 }
 
 const copyTargets = new Map([
-    ['Odroid H3', 'ssh homelab@server-odroid-h3.matejhome.com'],
-    ['Odroid H4 Ultra', 'ssh homelab@server-odroid-h4-ultra.matejhome.com'],
-    ['Raspberry Pi 4B 2G', 'ssh homelab@server-raspberry-pi-4b-2g.matejhome.com'],
-    ['Raspberry Pi 4B 4G', 'ssh homelab@server-raspberry-pi-4b-4g.matejhome.com'],
+    ['Dozzle Agent - Odroid H3', 'tcp://dozzle-agent-odroid-h3.matejhome.com'],
+    ['Dozzle Agent - Odroid H4 Ultra', 'tcp://dozzle-agent-odroid-h4-ultra.matejhome.com'],
+    ['Dozzle Agent - Raspberry Pi 4B 2G', 'tcp://dozzle-agent-raspberry-pi-4b-2g.matejhome.com'],
+    ['Dozzle Agent - Raspberry Pi 4B 4G', 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com'],
     ['SMB (data)', 'smb://data.matejhome.com'],
+    ['SSH - Odroid H3', 'ssh homelab@server-odroid-h3.matejhome.com'],
+    ['SSH - Odroid H4 Ultra', 'ssh homelab@server-odroid-h4-ultra.matejhome.com'],
+    ['SSH - Raspberry Pi 4B 2G', 'ssh homelab@server-raspberry-pi-4b-2g.matejhome.com'],
+    ['SSH - Raspberry Pi 4B 4G', 'ssh homelab@server-raspberry-pi-4b-4g.matejhome.com'],
 ]);
 
 document.addEventListener('click', (event) => {
