@@ -26,7 +26,7 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.5.22",
     "tslib": "^2.9.1",
-    "user-agents": "^2.1.230",
+    "user-agents": "^2.1.231",
     "winston": "^3.19.0"
   },
   "devDependencies": {
