@@ -34,9 +34,10 @@ export async function delay(timeout: number): Promise<void> {
     });
 }
 
-export async function retry<T>(fn: () => T | Promise<T>, _options?: { retries?: number | undefined; } | undefined): Promise<T> {
+export async function retry<T>(fn: () => MaybePromise<T>, _options?: { retries?: number | undefined; onRetry?: (error: Error, attempt: number) => MaybePromise<void> } | undefined): Promise<T> {
     const options = {
         retries: _options?.retries ?? 1,
+        onRetry: _options?.onRetry,
     };
 
     let lastError = new Error('Retry placeholder');
@@ -46,6 +47,7 @@ export async function retry<T>(fn: () => T | Promise<T>, _options?: { retries?: 
             return await fn();
         } catch (error) {
             lastError = error instanceof Error ? error : new Error(`${error}`);
+            await options.onRetry?.(lastError, i + 1);
         }
     }
 
@@ -63,6 +65,10 @@ export function getEnv(instanceUrl: string, name: string): string {
         throw new Error(`Environment variable "${envName}" not set`);
     }
     return process.env[envName];
+}
+
+export async function dnsLookupWithRetry(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
+    return await retry(() => dnsLookup(domain, transport, type, dnsServer), { retries: 2 });
 }
 
 export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
