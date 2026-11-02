@@ -2,7 +2,7 @@ import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
-import { axios, dnsLookup, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
+import { axios, dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 
@@ -37,7 +37,7 @@ test.describe(app.title, () => {
                 for (const transportVariant of ['tcp', 'udp'] as const) {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step.soft(`Check example.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
-                            const ips = await dnsLookup('example.com', transportVariant, ipVariant, instanceIp);
+                            const ips = await dnsLookupWithRetry('example.com', transportVariant, ipVariant, instanceIp);
                             expect(ips, `Domain example.com should be resolved`).not.toHaveLength(0);
                             for (const ip of ips) {
                                 switch (ipVariant) {
@@ -71,7 +71,7 @@ test.describe(app.title, () => {
                 for (const transportVariant of ['tcp', 'udp'] as const) {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step.soft(`Check self via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
-                            const ips = await dnsLookup(instanceDomain, transportVariant, ipVariant, instanceIp);
+                            const ips = await dnsLookupWithRetry(instanceDomain, transportVariant, ipVariant, instanceIp);
                             switch (ipVariant) {
                                 case 'A': {
                                     expect(ips, `Domain ${instanceDomain} should be resolved`).not.toHaveLength(0);
@@ -99,7 +99,7 @@ test.describe(app.title, () => {
                     for (const ipVariant of ['A', 'AAAA'] as const) {
                         await test.step.soft(`Check <random>.matejhome.com via ${transportVariant.toUpperCase()} ${ipVariant}`, async () => {
                             const domain = `${faker.string.alpha(10)}.matejhome.com`;
-                            const ips = await dnsLookup(domain, transportVariant, ipVariant, instanceIp);
+                            const ips = await dnsLookupWithRetry(domain, transportVariant, ipVariant, instanceIp);
                             expect(ips, 'Domain <random>.matejhome.com should not be resolved').toHaveLength(0);
                         });
                     }
@@ -118,7 +118,7 @@ test.describe(app.title, () => {
                 for (const domain of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
                         await test.step.soft(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
-                            const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
+                            const ips = await dnsLookupWithRetry(domain, transportVariant, 'A', instanceIp);
                             expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
                             for (const ip of ips) {
                                 expect(ip, `Resolved entry should be valid IPv4`).toMatch(validators.network.homelabIp);
