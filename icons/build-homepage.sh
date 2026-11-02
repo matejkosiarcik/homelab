@@ -166,6 +166,36 @@ convert_image_full "${input_dir}/prebuild/libretranslate.png" "${output_dir}/lib
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
 convert_image_full "${input_dir}/prebuild/openwebui.png" "${output_dir}/openwebui.png"
 
+### Crossroad ###
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dockerstats"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzle"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/nodeexporter"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "${output_dir}/nodeexporter.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/pihole"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "${output_dir}/pihole.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/placeholder"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "${output_dir}/placeholder.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/vnc"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/novnc.svg" "${output_dir}/vnc.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/unbound"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
+
 ### Cleanup ###
 
 rm -rf "${tmpdir}"
