@@ -66,14 +66,34 @@ export function getEnv(instanceUrl: string, name: string): string {
 }
 
 export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
+    const timeout = 1000;
+    const queryDescription = `DNS query for ${type} record "${domain}" via ${transport.toUpperCase()} to ${dnsServer}`;
+    const timeoutError = new Error(`${queryDescription} timed out after ${timeout}ms`);
+    const controller = new AbortController();
+    let timeoutId: NodeJS.Timeout | undefined;
+    const queryPromise = execa('dig', [`@${dnsServer}`, type, '+short', `+${transport === 'udp' ? 'no' : ''}tcp`, domain], { all: true, cancelSignal: controller.signal });
+    const timeoutPromise = new Promise<never>((_, reject) => {
+        timeoutId = setTimeout(() => {
+            reject(timeoutError);
+            controller.abort();
+        }, timeout);
+    });
+
     try {
-        const { stdout } = await execa('dig', [`@${dnsServer}`, type, '+short', `+${transport === 'udp' ? 'no' : ''}tcp`, domain], { all: true, timeout: 1000 });
+        const { stdout } = await Promise.race([queryPromise, timeoutPromise]);
         return stdout.split('\n').filter(Boolean).sort();
     } catch (error) {
-        if (error instanceof ExecaError) {
-            throw new Error(`DNS Query error: ${error.all}`);
+        if (error === timeoutError || controller.signal.aborted) {
+            throw timeoutError;
         }
-        throw new Error(`DNS Query error: ${error}`);
+        if (error instanceof ExecaError) {
+            throw new Error(`${queryDescription} failed: ${`${error.all}`.trim() || error.shortMessage}`);
+        }
+        throw new Error(`${queryDescription} failed: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
     }
 }
 

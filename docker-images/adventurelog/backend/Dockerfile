@@ -154,4 +154,4 @@ ENV DEBUG="False" \
     TZ="Europe/Bratislava"
 USER homelab
 # Startup period a bit longer for initial migration - downloads stuff from github and sets up locations database
-HEALTHCHECK --interval=10s --start-period=180s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000" ]
+HEALTHCHECK --interval=10s --start-period=3m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000" ]

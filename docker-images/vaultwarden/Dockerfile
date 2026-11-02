@@ -65,6 +65,6 @@ ENV EXTENDED_LOGGING="true" \
     TZ="Europe/Bratislava" \
     WEBSOCKET_ENABLED="true"
 USER homelab
-HEALTHCHECK --interval=5s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/alive", "--status", "200", "--body-regex", "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/alive", "--status", "200", "--body-regex", "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z" ]
 
 # TODO: Set SMTP authentication: SMTP_SECURITY, SMTP_USERNAME, SMTP_PASSWORD

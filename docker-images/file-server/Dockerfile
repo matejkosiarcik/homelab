@@ -125,5 +125,5 @@ ENV HOMELAB_CONTAINER_NAME="file-server" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=4s CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

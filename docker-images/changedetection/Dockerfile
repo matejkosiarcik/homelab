@@ -53,4 +53,4 @@ ENV FETCH_WORKERS="4" \
     TZ="Europe/Bratislava" \
     PLAYWRIGHT_DRIVER_URL="ws://sockpuppetbrowser:3000"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]

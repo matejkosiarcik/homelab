@@ -62,5 +62,5 @@ ENV DOCKER_HOST="tcp://docker-proxy-filter:2375" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9487" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9487" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/app/docker_stats_exporter.js" ]

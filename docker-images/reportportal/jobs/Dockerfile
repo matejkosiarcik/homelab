@@ -92,4 +92,4 @@ ENV DATASTORE_TYPE="filesystem" \
     RP_PROCESSING_LOG_MAXBATCHTIMEOUT="6000" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8686/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8686/health" ]

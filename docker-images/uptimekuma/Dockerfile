@@ -51,4 +51,4 @@ ENV HOMELAB_CONTAINER_NAME="uptimekuma" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=5s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3001", "--status", "200" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3001", "--status", "200" ]

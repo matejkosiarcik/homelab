@@ -45,5 +45,5 @@ ENV HOMELAB_CONTAINER_NAME="mongodb" \
     PORT="27017" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/bin/sh", "/homelab/healthcheck.sh" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "/homelab/healthcheck.sh" ]
 CMD [ "--auth", "--logpath", "/homelab/logs/default/mongodb.log" ]

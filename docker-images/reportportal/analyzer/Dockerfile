@@ -60,4 +60,4 @@ ENV AMQP_EXCHANGE_NAME="app-analyzer-default" \
     LOGGING_LEVEL="info" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=60s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5001" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5001" ]
