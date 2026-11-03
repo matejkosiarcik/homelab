@@ -13,8 +13,8 @@
 | `10.1.10.7`  | `unbound-blackhole-2.matejhome.com`             |
 | `10.1.10.11` | `pihole-3.matejhome.com`                        |
 | `10.1.10.12` | `pihole-4.matejhome.com`                        |
-| `10.1.10.21` | `dockerstats-odroid-h3.matejhome.com`          |
-| `10.1.10.22` | `dozzleagent-odroid-h3.matejhome.com`          |
+| `10.1.10.21` | `dockerstats-odroid-h3.matejhome.com`           |
+| `10.1.10.22` | `dozzleagent-odroid-h3.matejhome.com`           |
 | `10.1.10.23` | `nodeexporter-odroid-h3.matejhome.com`          |
 | `10.1.10.31` | `data.matejhome.com`                            |
 | `10.1.10.32` | `gatus-2.matejhome.com`                         |
@@ -28,14 +28,14 @@
 | `10.1.12.7`  | `unbound-blackhole-1.matejhome.com`             |
 | `10.1.12.11` | `pihole-1.matejhome.com`                        |
 | `10.1.12.12` | `pihole-2.matejhome.com`                        |
-| `10.1.12.21` | `dockerstats-odroid-h4-ultra.matejhome.com`    |
-| `10.1.12.22` | `dozzleagent-odroid-h4-ultra.matejhome.com`    |
+| `10.1.12.21` | `dockerstats-odroid-h4-ultra.matejhome.com`     |
+| `10.1.12.22` | `dozzleagent-odroid-h4-ultra.matejhome.com`     |
 | `10.1.12.23` | `nodeexporter-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.31` | `unificontroller.matejhome.com`                 |
 | `10.1.12.32` | `omadacontroller.matejhome.com`                 |
 | `10.1.12.33` | `certbot.matejhome.com`                         |
 | `10.1.12.34` | `homeassistant.matejhome.com`                   |
-| `10.1.12.35` | `dockercache-dockerhub.matejhome.com`          |
+| `10.1.12.35` | `dockercache-dockerhub.matejhome.com`           |
 | `10.1.12.36` | `jellyfin.matejhome.com`                        |
 | `10.1.12.37` | `smtp4dev.matejhome.com`                        |
 | `10.1.12.38` | `healthchecks.matejhome.com`                    |
@@ -66,8 +66,8 @@
 | `10.1.12.63` | `ollama-private.matejhome.com`                  |
 | `10.1.12.64` | `openwebui-private.matejhome.com`               |
 | `10.1.12.65` | `vaultwarden.matejhome.com`                     |
-| `10.1.12.66` | `gitcache-github.matejhome.com`                |
-| `10.1.12.67` | `npmcache.matejhome.com`                       |
+| `10.1.12.66` | `gitcache-github.matejhome.com`                 |
+| `10.1.12.67` | `npmcache.matejhome.com`                        |
 | `10.1.12.68` | `koffan.matejhome.com`                          |
 | `10.1.12.69` | `vikunja.matejhome.com`                         |
 | `10.1.12.70` | `prebudget.matejhome.com`                       |
@@ -80,11 +80,11 @@
 | `10.1.12.77` | `unbound.matejhome.com`                         |
 | `10.1.12.78` | `uptimekuma.matejhome.com`                      |
 | `10.1.12.79` | `vnc.matejhome.com`                             |
-| `10.1.14.21` | `dockerstats-raspberry-pi-4b-2g.matejhome.com` |
-| `10.1.14.22` | `dozzleagent-raspberry-pi-4b-2g.matejhome.com` |
+| `10.1.14.21` | `dockerstats-raspberry-pi-4b-2g.matejhome.com`  |
+| `10.1.14.22` | `dozzleagent-raspberry-pi-4b-2g.matejhome.com`  |
 | `10.1.14.23` | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |
-| `10.1.16.21` | `dockerstats-raspberry-pi-4b-4g.matejhome.com` |
-| `10.1.16.22` | `dozzleagent-raspberry-pi-4b-4g.matejhome.com` |
+| `10.1.16.21` | `dockerstats-raspberry-pi-4b-4g.matejhome.com`  |
+| `10.1.16.22` | `dozzleagent-raspberry-pi-4b-4g.matejhome.com`  |
 | `10.1.16.23` | `nodeexporter-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.31` | `vnc-raspberry-pi-4b-4g.matejhome.com`          |
 
