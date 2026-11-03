@@ -1,0 +1,6 @@
+app:
+  type: crossroad
+
+network:
+  ip: 10.1.12.72
+  domain: dockerstats.matejhome.com

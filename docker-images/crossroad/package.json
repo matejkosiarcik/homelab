@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./*"
+  },
+  "scripts": {
+    "build": "run-s build:js build:css",
+    "build:js": "run-s build:js:vite build:js:terser",
+    "build:js:vite": "vite build .",
+    "build:js:terser": "terser --config-file ./terser.json ./dist/main.js --output ./dist/main.js",
+    "build:css": "cat ./src/main.css ./node_modules/notyf/notyf.min.css >./dist/main.css"
+  },
+  "dependencies": {
+    "notyf": "^3.10.0",
+    "npm-run-all2": "^9.0.4"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.3.1",
+    "@tsconfig/recommended": "^1.0.13",
+    "@types/chai": "^5.2.3",
+    "@types/node": "^26.6.6",
+    "modclean": "^3.0.0-beta.1",
+    "node-prune": "^1.0.2",
+    "rollup": "^4.67.4",
+    "terser": "^5.51.2",
+    "tslib": "^2.9.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

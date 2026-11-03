@@ -1,0 +1,72 @@
+- Apps:
+    - Unbound - Blackhole 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-blackhole-1.matejhome.com
+        ping: unbound-blackhole-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Blackhole 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-blackhole-2.matejhome.com
+        ping: unbound-blackhole-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Default 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-default-1.matejhome.com
+        ping: unbound-default-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Default 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-default-2.matejhome.com
+        ping: unbound-default-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Internal 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-internal-1.matejhome.com
+        ping: unbound-internal-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Internal 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-internal-2.matejhome.com
+        ping: unbound-internal-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - IoT 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-iot-1.matejhome.com
+        ping: unbound-iot-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - IoT 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-iot-2.matejhome.com
+        ping: unbound-iot-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Matej 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-matej-1.matejhome.com
+        ping: unbound-matej-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Matej 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-matej-2.matejhome.com
+        ping: unbound-matej-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Monika 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-monika-1.matejhome.com
+        ping: unbound-monika-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound - Monika 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-monika-2.matejhome.com
+        ping: unbound-monika-2.matejhome.com
+        icon: /icons/unbound.png

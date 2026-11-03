@@ -71,6 +71,13 @@
 | `10.1.12.68` | `koffan.matejhome.com`                          |
 | `10.1.12.69` | `vikunja.matejhome.com`                         |
 | `10.1.12.70` | `prebudget.matejhome.com`                       |
+| `10.1.12.71` | `vnc.matejhome.com`                             |
+| `10.1.12.72` | `dockerstats.matejhome.com`                     |
+| `10.1.12.73` | `nodeexporter.matejhome.com`                    |
+| `10.1.12.74` | `pihole.matejhome.com`                          |
+| `10.1.12.75` | `dozzleagent.matejhome.com`                     |
+| `10.1.12.76` | `gatus.matejhome.com`                           |
+| `10.1.12.77` | `uptimekuma.matejhome.com`                      |
 | `10.1.14.21` | `docker-stats-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.22` | `dozzle-agent-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.23` | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |
