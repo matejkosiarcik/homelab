@@ -1,5 +1,5 @@
 app:
-  name: Docker Stats - <<server>>
+  name: DockerStats - <<server>>
 
 apache:
   upstream-url:
@@ -9,7 +9,7 @@ apache:
       target: http://file-server:8080
 
 favicons:
-  default: "@docker-stats.png"
+  default: "@dockerstats.png"
 
 gatus:
   enabled: true

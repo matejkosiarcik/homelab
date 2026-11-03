@@ -1,5 +1,5 @@
 app:
-  name: Docker Cache
+  name: DockerCache
 
 apache:
   upstream-url:
@@ -7,7 +7,7 @@ apache:
       target: http://app:80
 
 favicons:
-  default: "@docker-cache.png"
+  default: "@dockercache.png"
 
 gatus:
   enabled: true

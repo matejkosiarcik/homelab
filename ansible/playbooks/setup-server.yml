@@ -511,7 +511,7 @@
               }
             ],
             "registry-mirrors": [
-              "https://docker-cache-dockerhub.matejhome.com"
+              "https://dockercache-dockerhub.matejhome.com"
             ]
           }
 

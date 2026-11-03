@@ -255,9 +255,9 @@ rm -f "${tmpdir}/debian.png" "${tmpdir}/ubuntu.png" "${tmpdir}/apt-cache.png"
 
 # Docker cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 700x700 OUTPUT_FILE' "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${tmpdir}/docker.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +175+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/docker.png" "${tmpdir}/docker-cache.png"
-convert_image_full "${tmpdir}/docker-cache.png" "${output_dir}/docker-cache.png"
-rm -f "${tmpdir}/docker.png" "${tmpdir}/docker-cache.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +175+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/docker.png" "${tmpdir}/dockercache.png"
+convert_image_full "${tmpdir}/dockercache.png" "${output_dir}/dockercache.png"
+rm -f "${tmpdir}/docker.png" "${tmpdir}/dockercache.png"
 
 # Git cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 500x500 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${tmpdir}/git.png"

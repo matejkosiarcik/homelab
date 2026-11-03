@@ -1,6 +1,6 @@
 # Docker stats
 
-![diagram](../../docs/diagrams/out/apps/docker-stats.png)
+![diagram](../../docs/diagrams/out/apps/dockerstats.png)
 
 ## Docs
 

@@ -451,8 +451,8 @@
 
     - Dockerhub proxy:
         description: Dockerhub Transparent Caching Proxy
-        href: https://docker-cache-dockerhub.matejhome.com
-        ping: docker-cache-dockerhub.matejhome.com
+        href: https://dockercache-dockerhub.matejhome.com
+        ping: dockercache-dockerhub.matejhome.com
         icon: /icons/docker.png
 
     - Homepage:
@@ -610,26 +610,26 @@
 - Resources:
     - Docker Stats - Odroid H3:
         description: Docker Usage Monitoring
-        href: https://docker-stats-odroid-h3.matejhome.com
-        ping: docker-stats-odroid-h3.matejhome.com
+        href: https://dockerstats-odroid-h3.matejhome.com
+        ping: dockerstats-odroid-h3.matejhome.com
         icon: /icons/docker.png
 
     - Docker Stats - Odroid H4 Ultra:
         description: Docker Usage Monitoring
-        href: https://docker-stats-odroid-h4-ultra.matejhome.com
-        ping: docker-stats-odroid-h4-ultra.matejhome.com
+        href: https://dockerstats-odroid-h4-ultra.matejhome.com
+        ping: dockerstats-odroid-h4-ultra.matejhome.com
         icon: /icons/docker.png
 
     - Docker Stats - Raspberry Pi 4B 2GB:
         description: Docker Usage Monitoring
-        href: https://docker-stats-raspberry-pi-4b-2g.matejhome.com
-        ping: docker-stats-raspberry-pi-4b-2g.matejhome.com
+        href: https://dockerstats-raspberry-pi-4b-2g.matejhome.com
+        ping: dockerstats-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/docker.png
 
     - Docker Stats - Raspberry Pi 4B 4GB:
         description: Docker Usage Monitoring
-        href: https://docker-stats-raspberry-pi-4b-4g.matejhome.com
-        ping: docker-stats-raspberry-pi-4b-4g.matejhome.com
+        href: https://dockerstats-raspberry-pi-4b-4g.matejhome.com
+        ping: dockerstats-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/docker.png
 
     - NodeExporter - Odroid H3:

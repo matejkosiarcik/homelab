@@ -4,7 +4,7 @@ import { createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTes
 import { axios, getEnv } from '#/utils/utils.ts';
 import { faker } from '@faker-js/faker';
 
-const app = apps['docker-stats'];
+const app = apps.dockerstats;
 
 test.describe(app.title, () => {
     for (const instance of app.instances) {
