@@ -176,6 +176,10 @@ output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzl
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle.png"
 
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus"
+prepare_output_dir "${output_dir}"
+convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
+
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/nodeexporter"
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "${output_dir}/nodeexporter.png"
@@ -195,6 +199,10 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/novnc.s
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/unbound"
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/uptimekuma"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/svg/uptime-kuma.svg" "${output_dir}/uptimekuma.png"
 
 ### Cleanup ###
 
