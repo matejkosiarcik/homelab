@@ -4,7 +4,7 @@ disableIndexing: true
 disableUpdateCheck: true
 hideVersion: true
 language: en
-logpath: /app/config/logs # Default
+logpath: /homelab/logs/default
 statusStyle: dot
 theme: dark
 title: Homelab Homepage
