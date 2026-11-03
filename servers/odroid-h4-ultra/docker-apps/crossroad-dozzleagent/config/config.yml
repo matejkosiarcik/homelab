@@ -2,5 +2,5 @@ app:
   type: crossroad
 
 network:
-  ip: 10.1.12.75
+  ip: 10.1.12.72
   domain: dozzleagent.matejhome.com
