@@ -148,6 +148,7 @@ convert_image_full "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Netw
 convert_image_full "${tmpdir}/other/actualbudget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${tmpdir}/other/antennas.png" "${output_dir}/antennas.png"
 convert_image_full "${tmpdir}/other/automatic1111.png" "${output_dir}/automatic1111.png"
+convert_image_full "${tmpdir}/other/crossroads.svg" "${output_dir}/crossroads.png"
 convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
 convert_image_full "${tmpdir}/other/odroid.png" "${output_dir}/odroid.png"
 convert_image_full "${tmpdir}/other/raspberry-pi.svg" "${output_dir}/raspberry-pi.png"
