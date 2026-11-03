@@ -26,6 +26,9 @@ layout:
   Data:
     style: row
     columns: 4
+  Finance:
+    style: row
+    columns: 4
   Media:
     style: row
     columns: 4
@@ -33,6 +36,15 @@ layout:
     style: row
     columns: 4
   Other Apps:
+    style: row
+    columns: 4
+  Notifications:
+    style: row
+    columns: 4
+  Planning:
+    style: row
+    columns: 4
+  Remote Access:
     style: row
     columns: 4
   Resources:

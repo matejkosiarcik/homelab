@@ -248,6 +248,19 @@
         icon: /icons/samba.png
         target: _self
 
+- Finance:
+    - ActualBudget:
+        description: Finance Manager
+        href: https://actualbudget.matejhome.com
+        ping: actualbudget.matejhome.com
+        icon: /icons/actualbudget.png
+
+    - PreBudget:
+        description: Finance Data Importer
+        href: https://prebudget.matejhome.com
+        ping: prebudget.matejhome.com
+        icon: /icons/prebudget.png
+
 - Media:
     - Jellyfin:
         description: Media Server
@@ -418,35 +431,11 @@
         ping: homepage.matejhome.com
         icon: /icons/homepage.png
 
-    - Gotify:
-        description: Dashboard
-        href: https://gotify.matejhome.com
-        ping: gotify.matejhome.com
-        icon: /icons/gotify.png
-
-    - ActualBudget:
-        description: Finance Manager
-        href: https://actualbudget.matejhome.com
-        ping: actualbudget.matejhome.com
-        icon: /icons/actualbudget.png
-
     - AdventureLog:
         description: Trip Planner
         href: https://adventurelog.matejhome.com
         ping: adventurelog.matejhome.com
         icon: /icons/adventurelog.png
-
-    - Planka:
-        description: Homelab Project Management
-        href: https://planka.matejhome.com
-        ping: planka.matejhome.com
-        icon: /icons/planka.png
-
-    - DoneTick:
-        description: ToDo App for periodic home tasks
-        href: https://donetick.matejhome.com
-        ping: donetick.matejhome.com
-        icon: /icons/donetick.png
 
     - Certbot:
         description: Let's Encrypt Certificates
@@ -495,12 +484,6 @@
         ping: minio-console.matejhome.com
         icon: /icons/minio.png
 
-    - Ntfy:
-        description: Notifications
-        href: https://ntfy.matejhome.com
-        ping: ntfy.matejhome.com
-        icon: /icons/ntfy.png
-
     - OpenSpeedTest:
         description: LAN Speedtest
         href: https://openspeedtest.matejhome.com
@@ -512,17 +495,6 @@
         href: https://vaultwarden.matejhome.com
         ping: vaultwarden.matejhome.com
         icon: /icons/vaultwarden.png
-
-    - Vikunja:
-        description: ToDo App
-        href: https://vikunja.matejhome.com
-        ping: vikunja.matejhome.com
-        icon: /icons/vikunja.png
-        widget:
-          type: vikunja
-          url: https://vikunja.matejhome.com
-          key: "{{HOMEPAGE_VAR__VIKUNJA__APIKEY}}"
-          version: 2
 
     - Dawarich:
         description: Location Tracking
@@ -548,6 +520,50 @@
         ping: wiktionary.matejhome.com
         icon: /icons/wiktionary.png
 
+- Notifications:
+    - Gotify:
+        description: Notifications
+        href: https://gotify.matejhome.com
+        ping: gotify.matejhome.com
+        icon: /icons/gotify.png
+
+    - Ntfy:
+        description: Notifications
+        href: https://ntfy.matejhome.com
+        ping: ntfy.matejhome.com
+        icon: /icons/ntfy.png
+
+    - Pushover:
+        description: Notifications
+        href: https://pushover.net
+        ping: pushover.net
+        icon: /icons/pushover.png
+
+- Planning:
+    - Planka:
+        description: Homelab Project Management
+        href: https://planka.matejhome.com
+        ping: planka.matejhome.com
+        icon: /icons/planka.png
+
+    - DoneTick:
+        description: ToDo App for periodic home tasks
+        href: https://donetick.matejhome.com
+        ping: donetick.matejhome.com
+        icon: /icons/donetick.png
+
+    - Vikunja:
+        description: ToDo App
+        href: https://vikunja.matejhome.com
+        ping: vikunja.matejhome.com
+        icon: /icons/vikunja.png
+        widget:
+          type: vikunja
+          url: https://vikunja.matejhome.com
+          key: "{{HOMEPAGE_VAR__VIKUNJA__APIKEY}}"
+          version: 2
+
+- Remote Access:
     - VNC - Raspberry Pi 4B 4G:
         description: Remote Access
         href: https://vnc-raspberry-pi-4b-4g.matejhome.com
