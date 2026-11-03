@@ -62,28 +62,28 @@
 - Servers:
     - Odroid H3:
         description: Storage Server
-        href: "#copy-ssh-address"
+        href: "#copy://ssh homelab@server-odroid-h3.matejhome.com"
         ping: server-odroid-h3.matejhome.com
         icon: /icons/odroid.png
         target: _self
 
     - Odroid H4 Ultra:
         description: App Server
-        href: "#copy-ssh-address"
+        href: "#copy://ssh homelab@server-odroid-h4-ultra.matejhome.com"
         ping: server-odroid-h4-ultra.matejhome.com
         icon: /icons/odroid.png
         target: _self
 
     - Raspberry Pi 4B 2G:
         description: App Server
-        href: "#copy-ssh-address"
+        href: "#copy://ssh homelab@server-raspberry-pi-4b-2g.matejhome.com"
         ping: server-raspberry-pi-4b-2g.matejhome.com
         icon: /icons/raspberry-pi.png
         target: _self
 
     - Raspberry Pi 4B 4G:
         description: App Server
-        href: "#copy-ssh-address"
+        href: "#copy://ssh homelab@server-raspberry-pi-4b-4g.matejhome.com"
         ping: server-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/raspberry-pi.png
         target: _self
@@ -243,7 +243,7 @@
 - Data:
     - SMB (data):
         description: Main Data Store
-        href: "#copy-smb-address"
+        href: "#copy://smb://data.matejhome.com"
         ping: data.matejhome.com
         icon: /icons/samba.png
         target: _self
@@ -339,6 +339,34 @@
         href: https://dozzle.matejhome.com
         ping: dozzle.matejhome.com
         icon: /icons/dozzle.png
+
+    - Dozzle Agent - Odroid H3:
+        description: Docker Monitoring Agent
+        href: "#copy://dozzle-agent-odroid-h3.matejhome.com:7007"
+        ping: dozzle-agent-odroid-h3.matejhome.com
+        icon: /icons/dozzleagent.png
+        target: _self
+
+    - Dozzle Agent - Odroid H4 Ultra:
+        description: Docker Monitoring Agent
+        href: "#copy://dozzle-agent-odroid-h4-ultra.matejhome.com:7007"
+        ping: dozzle-agent-odroid-h4-ultra.matejhome.com
+        icon: /icons/dozzleagent.png
+        target: _self
+
+    - Dozzle Agent - Raspberry Pi 4B 2GB:
+        description: Docker Monitoring Agent
+        href: "#copy://dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007"
+        ping: dozzle-agent-raspberry-pi-4b-2g.matejhome.com
+        icon: /icons/dozzleagent.png
+        target: _self
+
+    - Dozzle Agent - Raspberry Pi 4B 4GB:
+        description: Docker Monitoring Agent
+        href: "#copy://dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007"
+        ping: dozzle-agent-raspberry-pi-4b-4g.matejhome.com
+        icon: /icons/dozzleagent.png
+        target: _self
 
     - SpeedTest Tracker:
         description: Internet Speed Monitoring System
