@@ -75,6 +75,33 @@ rm -f './.secrets.env'
     printf 'CERTBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.certbot.apache.status_user')"
     printf 'CERTBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.certbot.apache.prometheus_user')"
 
+    printf 'DOCKERSTATS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dockerstats.apache.status_user')"
+    printf 'DOCKERSTATS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dockerstats.apache.prometheus_user')"
+
+    printf 'DOZZLEAGENT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dozzleagent.apache.status_user')"
+    printf 'DOZZLEAGENT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dozzleagent.apache.prometheus_user')"
+
+    printf 'GATUS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_gatus.apache.status_user')"
+    printf 'GATUS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_gatus.apache.prometheus_user')"
+
+    printf 'KIWIX__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_kiwix.apache.status_user')"
+    printf 'KIWIX__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_kiwix.apache.prometheus_user')"
+
+    printf 'NODEEXPORTER__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_nodeexporter.apache.status_user')"
+    printf 'NODEEXPORTER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_nodeexporter.apache.prometheus_user')"
+
+    printf 'PIHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_pihole.apache.status_user')"
+    printf 'PIHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_pihole.apache.prometheus_user')"
+
+    printf 'UNBOUND__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_unbound.apache.status_user')"
+    printf 'UNBOUND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_unbound.apache.prometheus_user')"
+
+    printf 'UPTIMEKUMA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_uptimekuma.apache.status_user')"
+    printf 'UPTIMEKUMA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_uptimekuma.apache.prometheus_user')"
+
+    printf 'VNC__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_vnc.apache.status_user')"
+    printf 'VNC__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_vnc.apache.prometheus_user')"
+
     printf 'CHANGEDETECTION__ADMIN_PASSWORD=%s\n' "$(load_secret '.changedetection.app.admin_user')"
     printf 'CHANGEDETECTION__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.status_user')"
     printf 'CHANGEDETECTION__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.prometheus_user')"
