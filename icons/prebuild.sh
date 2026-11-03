@@ -182,7 +182,17 @@ if should_generate_icon "${input_dir}/prebuild/cloud.png" "${input_dir}/gitman-r
     rm -f "${tmpdir}/docker-registry.png"
 fi
 
-# Dozzle agents
+# Dozzle agent (single
+if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agent.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 1000x1000 \) -gravity Center -composite \
+        \( -size 300x300 xc:none -fill '#2563eb' -stroke '#ffffff' -strokewidth 25 -draw 'circle 150,150 150,20' -fill none -stroke '#ffffff' -strokewidth 45 -draw 'line 65,240 150,60 line 150,60 235,240 line 95,185 205,185' \) -gravity NorthEast -geometry +0+0 -composite \
+        "${tmpdir}/dozzle-agent.png"
+    convert_image_full "${tmpdir}/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
+    rm -f "${tmpdir}/dozzle-agent.png"
+fi
+
+# Dozzle agents (multiple)
 if should_generate_icon "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agents.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \

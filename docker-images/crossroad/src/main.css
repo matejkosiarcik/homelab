@@ -1,0 +1,5 @@
+/** Placeholder **/
+
+.service[data-name*="Hidden"] {
+    display: none;
+}

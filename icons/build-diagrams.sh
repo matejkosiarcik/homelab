@@ -70,6 +70,7 @@ convert_image_full "${input_dir}/gitman-repositories/bash-logo/assets/Logos/Icon
 
 ### Dashboard Icons ###
 
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/actual-budget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/adventure-log.svg" "${output_dir}/adventurelog.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/aws.svg" "${output_dir}/aws.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/azure.svg" "${output_dir}/azure.png"
@@ -237,13 +238,13 @@ rm -f "${tmpdir}/elecricity-meter.svg"
 
 ## Other Icons ###
 
-convert_image_full "${tmpdir}/other/actualbudget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${tmpdir}/other/antenna.png" "${output_dir}/antenna.png"
 convert_image_full "${tmpdir}/other/antennas.png" "${output_dir}/antennas.png"
 convert_image_full "${tmpdir}/other/apache.svg" "${output_dir}/apache.png"
 convert_image_full "${tmpdir}/other/api.png" "${output_dir}/api.png"
 convert_image_full "${tmpdir}/other/automatic1111.png" "${output_dir}/automatic1111.png"
 convert_image_full "${tmpdir}/other/button.png" "${output_dir}/button.png"
+convert_image_full "${tmpdir}/other/crossroads.svg" "${output_dir}/crossroads.png"
 convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
 convert_image_full "${tmpdir}/other/graphics-card.png" "${output_dir}/graphics-card.png"
 convert_image_full "${tmpdir}/other/iot.png" "${output_dir}/iot.png"
@@ -275,6 +276,7 @@ convert_image_full "${tmpdir}/tv.png" "${output_dir}/tv.png"
 convert_image_full "${input_dir}/prebuild/certificator.png" "${output_dir}/certificator.png"
 convert_image_full "${input_dir}/prebuild/backup-script.png" "${output_dir}/backup-script.png"
 convert_image_full "${input_dir}/prebuild/docker-registry.png" "${output_dir}/docker-registry.png"
+convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
 convert_image_full "${input_dir}/prebuild/dozzle-agents.png" "${output_dir}/dozzle-agents.png"
 convert_image_full "${input_dir}/prebuild/public-dns.png" "${output_dir}/public-dns.png"
 convert_image_full "${input_dir}/prebuild/reportportal-migrations.png" "${output_dir}/reportportal-migrations.png"

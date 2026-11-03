@@ -1,0 +1,24 @@
+- Apps:
+    - Docker Stats - Odroid H3:
+        description: Docker Usage Monitoring
+        href: https://docker-stats-odroid-h3.matejhome.com
+        ping: docker-stats-odroid-h3.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Odroid H4 Ultra:
+        description: Docker Usage Monitoring
+        href: https://docker-stats-odroid-h4-ultra.matejhome.com
+        ping: docker-stats-odroid-h4-ultra.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Raspberry Pi 4B 2GB:
+        description: Docker Usage Monitoring
+        href: https://docker-stats-raspberry-pi-4b-2g.matejhome.com
+        ping: docker-stats-raspberry-pi-4b-2g.matejhome.com
+        icon: /icons/docker.png
+
+    - Docker Stats - Raspberry Pi 4B 4GB:
+        description: Docker Usage Monitoring
+        href: https://docker-stats-raspberry-pi-4b-4g.matejhome.com
+        ping: docker-stats-raspberry-pi-4b-4g.matejhome.com
+        icon: /icons/docker.png

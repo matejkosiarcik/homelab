@@ -1,0 +1,6 @@
+app:
+  type: crossroad
+
+network:
+  ip: 10.1.12.76
+  domain: pihole.matejhome.com

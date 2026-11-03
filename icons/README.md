@@ -18,6 +18,7 @@ The Icons are obtained from following locations:
     - API: <https://www.flaticon.com/free-icon/api_1493169>
     - Automatic1111 <https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/2901>
     - Button: <https://commons.wikimedia.org/wiki/File:Perspective-Button-Stop-icon.png>
+    - Crossroad: <https://commons.wikimedia.org/wiki/File:Circle-icons-crossroads.svg>
     - DW Service: <https://www.dwservice.net/en/home.html>
     - Gatus: <https://github.com/TwiN/gatus>
     - Graphics card: <https://www.flaticon.com/free-icon/graphic-card_4617578>

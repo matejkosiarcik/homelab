@@ -1,0 +1,16 @@
+color: gray
+disableCollapse: true
+disableIndexing: true
+disableUpdateCheck: true
+hideVersion: true
+language: en
+logpath: /homelab/logs/default
+statusStyle: dot
+target: _self
+theme: dark
+title: Crossroad PLACEHOLDER
+
+layout:
+  Apps:
+    style: row
+    columns: 4

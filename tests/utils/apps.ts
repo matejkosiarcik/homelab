@@ -1,3 +1,18 @@
+type AppInstance = {
+    enabled?: boolean;
+    title: string;
+    url: string | {
+        api: string;
+        ui: string;
+    };
+};
+
+type App = {
+    forceHttps?: boolean;
+    instances: AppInstance[];
+    title: string;
+};
+
 export const apps = {
     actualbudget: {
         title: 'ActualBudget',
@@ -21,22 +36,36 @@ export const apps = {
         title: 'Changedetection',
         instances: [
             { url: 'https://changedetection.matejhome.com', title: 'Main' },
-        ]
+        ],
+    },
+    crossroad: {
+        title: 'Crossroad',
+        instances: [
+            { url: 'https://dockerstats.matejhome.com', title: 'DockerStats' },
+            { url: 'https://dozzleagent.matejhome.com', title: 'DozzleAgent' },
+            { url: 'https://gatus.matejhome.com', title: 'Gatus' },
+            { url: 'https://kiwix.matejhome.com', title: 'Kiwix' },
+            { url: 'https://nodeexporter.matejhome.com', title: 'NodeExporter' },
+            { url: 'https://pihole.matejhome.com', title: 'PiHole' },
+            { url: 'https://unbound.matejhome.com', title: 'Unbound' },
+            { url: 'https://uptimekuma.matejhome.com', title: 'Uptime Kuma' },
+            { url: 'https://vnc.matejhome.com', title: 'VNC' },
+        ],
     },
     dawarich: {
         title: 'Dawarich',
         instances: [
             { url: 'https://dawarich.matejhome.com', title: 'Main' },
-        ]
+        ],
     },
     dockercache: {
-        title: 'Docker Cache',
+        title: 'DockerCache',
         instances: [
             { url: 'https://docker-cache-dockerhub.matejhome.com', title: 'DockerHub' },
         ],
     },
     'docker-stats': {
-        title: 'Docker Stats',
+        title: 'DockerStats',
         instances: [
             { url: 'https://docker-stats-odroid-h3.matejhome.com', title: 'Odroid H3' },
             { url: 'https://docker-stats-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
@@ -89,7 +118,7 @@ export const apps = {
         title: 'Grafana',
         instances: [
             { url: 'https://grafana.matejhome.com', title: 'Main' },
-        ]
+        ],
     },
     healthchecks: {
         title: 'Healthchecks',
@@ -270,20 +299,20 @@ export const apps = {
         title: 'Unbound',
         instances: [
             { url: 'https://unbound-blackhole-1.matejhome.com', title: 'Blackhole 1' },
-            { url: 'https://unbound-default-1.matejhome.com', title: 'Default 1' },
-            { url: 'https://unbound-guests-1.matejhome.com', title: 'Guests 1' },
-            { url: 'https://unbound-internal-1.matejhome.com', title: 'Internal 1' },
-            { url: 'https://unbound-iot-1.matejhome.com', title: 'IoT 1' },
-            { url: 'https://unbound-matej-1.matejhome.com', title: 'Matej 1' },
-            { url: 'https://unbound-monika-1.matejhome.com', title: 'Monika 1' },
             { url: 'https://unbound-blackhole-2.matejhome.com', title: 'Blackhole 2' },
+            { url: 'https://unbound-default-1.matejhome.com', title: 'Default 1' },
             { url: 'https://unbound-default-2.matejhome.com', title: 'Default 2' },
+            { url: 'https://unbound-guests-1.matejhome.com', title: 'Guests 1' },
             { url: 'https://unbound-guests-2.matejhome.com', title: 'Guests 2' },
+            { url: 'https://unbound-internal-1.matejhome.com', title: 'Internal 1' },
             { url: 'https://unbound-internal-2.matejhome.com', title: 'Internal 2' },
+            { url: 'https://unbound-iot-1.matejhome.com', title: 'IoT 1' },
             { url: 'https://unbound-iot-2.matejhome.com', title: 'IoT 2' },
+            { url: 'https://unbound-matej-1.matejhome.com', title: 'Matej 1' },
             { url: 'https://unbound-matej-2.matejhome.com', title: 'Matej 2' },
+            { url: 'https://unbound-monika-1.matejhome.com', title: 'Monika 1' },
             { url: 'https://unbound-monika-2.matejhome.com', title: 'Monika 2' },
-        ]
+        ],
     },
     unificontroller: {
         title: 'UniFiController',
@@ -316,4 +345,4 @@ export const apps = {
             { url: 'https://vnc-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
-};
+} satisfies Record<string, App>;

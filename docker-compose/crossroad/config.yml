@@ -1,0 +1,24 @@
+app:
+  name: Crossroad
+
+apache:
+  upstream-url:
+    - path: /
+      target: http://app:3000
+
+favicons:
+  default: /apple-touch-icon.png
+  # ico: /favicon-32x32.png
+
+gatus:
+  enabled: true
+
+healthchecks:
+  - slug: certificator
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

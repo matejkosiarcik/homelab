@@ -1,0 +1,56 @@
+x-definitions: {}
+
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    # Override:
+    build:
+      dockerfile: ./docker-images/crossroad/Dockerfile
+      args:
+        CROSSROAD_TYPE: ${DOCKER_COMPOSE_CROSSROAD_TYPE}
+    dns: # Use internal DNS
+      - 10.1.12.6
+      - 10.1.10.6
+    networks:
+      - external-network
+      - internal-network
+    tmpfs:
+      - /app/.next/server/pages:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /app/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default/logs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
+    driver: bridge
+    internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
+    driver: bridge
+    internal: true

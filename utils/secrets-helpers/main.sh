@@ -327,6 +327,18 @@ certbot)
     touch "${initial_output}/favicons.env"
     ;;
 
+crossroad)
+    # Apache #
+    write_default_proxy_users "${app_full_name_key}"
+
+    # Certificator #
+    write_certificator_users
+    write_healthcheck_url "${app_full_name_machine}" certificator
+
+    # Favicons #
+    touch "${initial_output}/favicons.env"
+    ;;
+
 dawarich)
     # Preload #
     app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"

@@ -66,6 +66,7 @@ prepare_output_dir "${output_dir}"
 
 ### Dashboard Icons ###
 
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/actual-budget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/adventure-log.svg" "${output_dir}/adventurelog.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/beszel.svg" "${output_dir}/beszel.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/dawarich.svg" "${output_dir}/dawarich.png"
@@ -95,11 +96,13 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/owntrac
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/pi-alert.png" "${output_dir}/pialert.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/portainer.svg" "${output_dir}/portainer.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/planka.svg" "${output_dir}/planka.png"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/pushover.png" "${output_dir}/pushover.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/samba-server.svg" "${output_dir}/samba.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/specifically-clementines.svg" "${output_dir}/specifically-clementines.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/vaultwarden-light.png" "${output_dir}/vaultwarden.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/vikunja.svg" "${output_dir}/vikunja.png"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/novnc.svg" "${output_dir}/vnc.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "${output_dir}/wikipedia.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/zabbix.svg" "${output_dir}/zabbix.png"
 
@@ -144,9 +147,9 @@ convert_image_full "${input_dir}/gitman-repositories/dia-vrt-sheets/SVG/VRT Netw
 
 ### Other Icons ###
 
-convert_image_full "${tmpdir}/other/actualbudget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${tmpdir}/other/antennas.png" "${output_dir}/antennas.png"
 convert_image_full "${tmpdir}/other/automatic1111.png" "${output_dir}/automatic1111.png"
+convert_image_full "${tmpdir}/other/crossroads.svg" "${output_dir}/crossroads.png"
 convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
 convert_image_full "${tmpdir}/other/odroid.png" "${output_dir}/odroid.png"
 convert_image_full "${tmpdir}/other/raspberry-pi.svg" "${output_dir}/raspberry-pi.png"
@@ -160,10 +163,55 @@ convert_image_full "${tmpdir}/other/windshift.svg" "${output_dir}/windshift.png"
 
 ### Prebuild Icons ###
 
+convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/lets-encrypt.png"
 convert_image_full "${input_dir}/prebuild/libretranslate.png" "${output_dir}/libretranslate.png"
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
 convert_image_full "${input_dir}/prebuild/openwebui.png" "${output_dir}/openwebui.png"
+convert_image_full "${input_dir}/prebuild/prebudget.png" "${output_dir}/prebudget.png"
+
+### Crossroad ###
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dockerstats"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzleagent"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus"
+prepare_output_dir "${output_dir}"
+convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/kiwix"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "${output_dir}/wikipedia.png"
+convert_image_full "${tmpdir}/other/wiktionary.svg" "${output_dir}/wiktionary.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/nodeexporter"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "${output_dir}/nodeexporter.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/pihole"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/organizr/plugins/images/tabs/pihole.png" "${output_dir}/pihole.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/placeholder"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/ns.svg" "${output_dir}/placeholder.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/vnc"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/novnc.svg" "${output_dir}/vnc.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/unbound"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/uptimekuma"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/svg/uptime-kuma.svg" "${output_dir}/uptimekuma.png"
 
 ### Cleanup ###
 

@@ -4,10 +4,11 @@ disableIndexing: true
 disableUpdateCheck: true
 hideVersion: true
 language: en
-logpath: /app/config/logs # Default
+logpath: /homelab/logs/default
 statusStyle: dot
+target: _blank
 theme: dark
-title: Homelab Homepage
+title: Homepage
 
 layout:
   Network:
@@ -25,6 +26,9 @@ layout:
   Data:
     style: row
     columns: 4
+  Finance:
+    style: row
+    columns: 4
   Media:
     style: row
     columns: 4
@@ -34,6 +38,21 @@ layout:
   Other Apps:
     style: row
     columns: 4
+  Notifications:
+    style: row
+    columns: 4
+  Planning:
+    style: row
+    columns: 4
+  Remote Access:
+    style: row
+    columns: 4
   Resources:
+    style: row
+    columns: 4
+  AI:
+    style: row
+    columns: 4
+  Crossroads:
     style: row
     columns: 4

@@ -83,9 +83,9 @@ FROM scratch AS homelab_dir
 USER root
 WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY ./docker-images/homepage/app/config/ ./config/
-COPY --from=nodejs_build /homelab/dist/main.js ./config/custom.js
-COPY --from=nodejs_build /homelab/dist/main.css ./config/custom.css
+COPY ./docker-images/homepage/app/config/ /homelab/config/
+COPY --from=nodejs_build /homelab/dist/main.js /homelab/config/custom.js
+COPY --from=nodejs_build /homelab/dist/main.css /homelab/config/custom.css
 COPY --from=runtime_dirs /homelab/original /homelab/original
 
 FROM scratch AS prefinal
@@ -113,7 +113,7 @@ ENV HOMELAB_CONTAINER_NAME="homepage" \
     HOMEPAGE_AUTH_ENABLED="true" \
     HOMEPAGE_AUTH_PASSWORD="" \
     HOMEPAGE_AUTH_SECRET="" \
-    HOMEPAGE_MCP_ENABLED="true" \
+    HOMEPAGE_MCP_ENABLED="false" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec /homelab/bin/healthcheck --url \"http://localhost:${PORT}/api/healthcheck\" --status '200' --body-regex '^up'" ]
