@@ -50,7 +50,7 @@ ENV FETCH_WORKERS="4" \
     HOMELAB_CONTAINER_NAME="changedetection" \
     HOMELAB_CONTAINER_VARIANT="default" \
     LOGGER_LEVEL="WARNING" \
-    TZ="Europe/Bratislava" \
-    PLAYWRIGHT_DRIVER_URL="ws://sockpuppetbrowser:3000"
+    PLAYWRIGHT_DRIVER_URL="ws://sockpuppetbrowser:3000" \
+    TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]

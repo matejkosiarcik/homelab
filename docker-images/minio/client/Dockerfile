@@ -187,6 +187,10 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="certificator" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    MINIO_HOMELAB_TEST_PASSWORD="" \
+    MINIO_HOMELAB_VIEWER_PASSWORD="" \
+    MINIO_HOMELAB_WRITER_PASSWORD="" \
+    MINIO_MATEJ_PASSWORD="" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab

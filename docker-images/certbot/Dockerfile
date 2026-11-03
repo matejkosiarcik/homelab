@@ -257,10 +257,15 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME="certbot" \
+ENV CERTBOT_PUBLIC_EMAIL="" \
+    HOMELAB_CONTAINER_NAME="certbot" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    HOMELAB_HEALTHCHECK_URL="" \
     PATH="/homelab/bin:${PATH}" \
-    TZ="Europe/Bratislava"
+    TZ="Europe/Bratislava" \
+    WEBSUPPORT_API_KEY="" \
+    WEBSUPPORT_API_SECRET="" \
+    WEBSUPPORT_SERVICE_ID=""
 USER homelab
 HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

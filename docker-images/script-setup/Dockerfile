@@ -155,6 +155,7 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="script-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    SPEEDTEST_RUN_TOKEN="" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]

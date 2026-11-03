@@ -70,8 +70,8 @@ ENV HOMELAB_CONTAINER_NAME="wayvnc" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava" \
-    WAYVNC_PASSWORD="PLACEHOLDER" \
     WAYLAND_DISPLAY="wayland-0" \
+    WAYVNC_PASSWORD="" \
     XDG_RUNTIME_DIR="/run/user/${UID}"
 WORKDIR /homelab
 USER homelab

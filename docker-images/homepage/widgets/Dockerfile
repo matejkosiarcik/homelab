@@ -90,6 +90,8 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="homepage-widgets" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
+    PROMETHEUS_PASSWORD="" \
+    SMTP4DEV_PASSWORD="" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]

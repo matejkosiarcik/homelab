@@ -52,6 +52,10 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /etc/ntfy/server.yml /etc/ntfy/server.yml
 ENV HOMELAB_CONTAINER_NAME="ntfy" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    NTFY_PASSWORD_HOMELAB_PUBLISHER="" \
+    NTFY_PASSWORD_HOMELAB_TEST="" \
+    NTFY_PASSWORD_HOMELAB_VIEWER="" \
+    NTFY_PASSWORD_MATEJ="" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/v1/health", "--body-json", ".healthy == true" ]

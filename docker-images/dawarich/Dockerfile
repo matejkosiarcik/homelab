@@ -78,6 +78,7 @@ ENV APPLICATION_PROTOCOL="http" \
     BUNDLE_PATH="/var/app/vendor/bundle/ruby/4.0.0/gems" \
     DATABASE_HOST="postgis" \
     DATABASE_NAME="database" \
+    DATABASE_PASSWORD="" \
     DATABASE_USERNAME="postgres" \
     DISABLE_TELEMETRY="true" \
     HOMELAB_CONTAINER_NAME="dawarich" \
@@ -88,11 +89,13 @@ ENV APPLICATION_PROTOCOL="http" \
     PROMETHEUS_EXPORTER_HOST="0.0.0.0" \
     PROMETHEUS_EXPORTER_PORT="9394" \
     RAILS_ENV="development" \
+    REDIS_PASSWORD="" \
     REDIS_URL="redis://redis:6379" \
     SELF_HOSTED="true" \
     STORE_GEODATA="true" \
     TIME_ZONE="Europe/Bratislava" \
-    TZ="Europe/Bratislava"
+    TZ="Europe/Bratislava" \
+    WEBUI_SECRET_KEY=""
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body-json", ".status == \"ok\"" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

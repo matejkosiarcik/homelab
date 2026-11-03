@@ -47,7 +47,8 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-ENV EXTENDED_LOGGING="true" \
+ENV ADMIN_TOKEN="" \
+    EXTENDED_LOGGING="true" \
     HOMELAB_CONTAINER_NAME="vaultwarden" \
     HOMELAB_CONTAINER_VARIANT="default" \
     LOG_FILE="/homelab/logs/default/vaultwarden.log" \

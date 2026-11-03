@@ -56,6 +56,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="pihole-prometheus-exporter" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PIHOLE_HOSTNAME="app" \
+    PIHOLE_PASSWORD="" \
     PIHOLE_PORT="80" \
     PIHOLE_PROTOCOL="http" \
     TZ="Europe/Bratislava"

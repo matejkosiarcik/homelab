@@ -69,6 +69,7 @@ ENV DB="sqlite" \
     INTEGRATIONS_ALLOW_PRIVATE_IPS="True" \
     PROMETHEUS_ENABLED="True" \
     REGISTRATION_OPEN="False" \
+    SECRET_KEY="" \
     SHELL_ENABLED="False" \
     SITE_LOGO_URL="/static/img/custom-healthchecks.png" \
     SITE_NAME="Healthchecks" \

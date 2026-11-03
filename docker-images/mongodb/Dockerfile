@@ -40,7 +40,9 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="mongodb" \
     HOMELAB_CONTAINER_VARIANT="default" \
     MONGO_DBNAME="database" \
+    MONGO_INITDB_ROOT_PASSWORD="" \
     MONGO_INITDB_ROOT_USERNAME="root" \
+    MONGO_PASSWORD="" \
     MONGO_USER="mongo" \
     PORT="27017" \
     TZ="Europe/Bratislava"

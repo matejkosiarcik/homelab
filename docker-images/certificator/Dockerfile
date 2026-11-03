@@ -247,8 +247,11 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME="certificator" \
+ENV CERTBOT_CERTIFICATOR_PASSWORD="" \
+    CERTBOT_HOMELAB_VIEWER_PASSWORD="" \
+    HOMELAB_CONTAINER_NAME="certificator" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    HOMELAB_HEALTHCHECK_URL="" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab

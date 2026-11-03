@@ -139,6 +139,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/etc/supervisor/conf.d /etc/supervisor/conf.d
 ENV DEBUG="False" \
     DISABLE_REGISTRATION="True" \
+    DJANGO_ADMIN_PASSWORD="" \
     DJANGO_ADMIN_USERNAME="admin" \
     EMAIL_BACKEND="email" \
     EMAIL_HOST="smtp4dev.matejhome.com" \
@@ -150,7 +151,9 @@ ENV DEBUG="False" \
     PATH="/homelab/bin:${PATH}" \
     PGDATABASE="database" \
     PGHOST="postgis" \
+    PGPASSWORD="" \
     PGUSER="postgres" \
+    SECRET_KEY="" \
     TZ="Europe/Bratislava"
 USER homelab
 # Startup period a bit longer for initial migration - downloads stuff from github and sets up locations database

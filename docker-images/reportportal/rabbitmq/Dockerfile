@@ -43,6 +43,7 @@ USER homelab
 # RABBITMQ_DISK_FREE_ABSOLUTE_LIMIT - Blocks all procedures when free disk space is less than 50MB, see: https://www.rabbitmq.com/docs/disk-alarms
 ENV HOMELAB_CONTAINER_NAME="rabbitmq" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    RABBITMQ_DEFAULT_PASS="" \
     RABBITMQ_DEFAULT_USER="rabbitmq" \
     RABBITMQ_DISK_FREE_ABSOLUTE_LIMIT="100MB" \
     RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS="true" \
