@@ -8,7 +8,7 @@ logpath: /homelab/logs/default
 statusStyle: dot
 target: _blank
 theme: dark
-title: Homelab Homepage
+title: Homepage
 
 layout:
   Network:

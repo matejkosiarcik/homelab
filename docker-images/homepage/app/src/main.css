@@ -3,3 +3,7 @@
 .service[data-name*="Hidden"] {
     display: none;
 }
+
+.services-group {
+    margin-bottom: 50px;
+}
