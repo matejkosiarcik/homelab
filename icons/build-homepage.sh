@@ -163,6 +163,7 @@ convert_image_full "${tmpdir}/other/windshift.svg" "${output_dir}/windshift.png"
 
 ### Prebuild Icons ###
 
+convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/lets-encrypt.png"
 convert_image_full "${input_dir}/prebuild/libretranslate.png" "${output_dir}/libretranslate.png"
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
@@ -177,7 +178,7 @@ convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzleagent"
 prepare_output_dir "${output_dir}"
-convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagent.png"
+convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus"
 prepare_output_dir "${output_dir}"
