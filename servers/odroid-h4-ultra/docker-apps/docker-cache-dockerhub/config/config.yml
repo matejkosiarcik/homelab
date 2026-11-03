@@ -1,5 +1,0 @@
-app:
-  type: docker-cache
-
-network:
-  ip: 10.1.12.35

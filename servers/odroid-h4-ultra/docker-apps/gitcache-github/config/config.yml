@@ -1,0 +1,5 @@
+app:
+  type: gitcache
+
+network:
+  ip: 10.1.12.66

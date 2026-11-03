@@ -1,0 +1,54 @@
+x-definitions: {}
+
+services:
+  app:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: app
+    # Override:
+    build:
+      dockerfile: ./docker-images/npmcache/Dockerfile
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
+    networks: # Internet access required for downloading packages
+      - external-network
+      - internal-network
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+
+  redis:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: redis
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+networks:
+  default:
+    driver: none
+  external-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-external-network
+    driver: bridge
+    internal: false
+  internal-network:
+    name: ${DOCKER_COMPOSE_APP_SHORTNAME}-internal-network
+    driver: bridge
+    internal: true

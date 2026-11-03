@@ -61,16 +61,16 @@ export const apps = {
     dockercache: {
         title: 'DockerCache',
         instances: [
-            { url: 'https://docker-cache-dockerhub.matejhome.com', title: 'DockerHub' },
+            { url: 'https://dockercache-dockerhub.matejhome.com', title: 'DockerHub' },
         ],
     },
-    'docker-stats': {
+    dockerstats: {
         title: 'DockerStats',
         instances: [
-            { url: 'https://docker-stats-odroid-h3.matejhome.com', title: 'Odroid H3' },
-            { url: 'https://docker-stats-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
-            { url: 'https://docker-stats-raspberry-pi-4b-2g.matejhome.com', title: 'Raspberry Pi 4B 2GB' },
-            { url: 'https://docker-stats-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
+            { url: 'https://dockerstats-odroid-h3.matejhome.com', title: 'Odroid H3' },
+            { url: 'https://dockerstats-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
+            { url: 'https://dockerstats-raspberry-pi-4b-2g.matejhome.com', title: 'Raspberry Pi 4B 2GB' },
+            { url: 'https://dockerstats-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
     donetick: {
@@ -85,13 +85,13 @@ export const apps = {
             { url: 'https://dozzle.matejhome.com', title: 'Server' },
         ],
     },
-    'dozzle-agent': {
+    dozzleagent: {
         title: 'Dozzle Agent',
         instances: [
-            { url: 'tcp://dozzle-agent-odroid-h3.matejhome.com', title: 'Odroid H3' },
-            { url: 'tcp://dozzle-agent-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.matejhome.com', title: 'Raspberry Pi 4B 2GB' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
+            { url: 'tcp://dozzleagent-odroid-h3.matejhome.com', title: 'Odroid H3' },
+            { url: 'tcp://dozzleagent-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
+            { url: 'tcp://dozzleagent-raspberry-pi-4b-2g.matejhome.com', title: 'Raspberry Pi 4B 2GB' },
+            { url: 'tcp://dozzleagent-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
     gatus: {
@@ -105,7 +105,7 @@ export const apps = {
         title: 'Git Cache',
         instances: [
             // TODO: Re-enable or use nexus
-            { url: 'https://git-cache-github.matejhome.com', title: 'GitHub', enabled: false },
+            { url: 'https://gitcache-github.matejhome.com', title: 'GitHub', enabled: false },
         ],
     },
     gotify: {
@@ -186,7 +186,7 @@ export const apps = {
         title: 'NPM Cache',
         instances: [
             // TODO: Re-enable or use nexus
-            { url: 'https://npm-cache.matejhome.com', title: 'npmjs', enabled: false },
+            { url: 'https://npmcache.matejhome.com', title: 'npmjs', enabled: false },
         ],
     },
     ntfy: {

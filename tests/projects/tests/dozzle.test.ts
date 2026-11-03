@@ -5,7 +5,7 @@ import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, 
 import { getEnv } from '#/utils/utils.ts';
 
 const app = apps.dozzle;
-const agentApp = apps['dozzle-agent'];
+const agentApp = apps.dozzleagent;
 
 test.describe(app.title, () => {
     for (const instance of app.instances) {

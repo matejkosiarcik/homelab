@@ -183,23 +183,23 @@ if should_generate_icon "${input_dir}/prebuild/cloud.png" "${input_dir}/gitman-r
 fi
 
 # Dozzle agent (single
-if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agent.png"; then
+if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagent.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 1000x1000 \) -gravity Center -composite \
         \( -size 300x300 xc:none -fill '#2563eb' -stroke '#ffffff' -strokewidth 25 -draw 'circle 150,150 150,20' -fill none -stroke '#ffffff' -strokewidth 45 -draw 'line 65,240 150,60 line 150,60 235,240 line 95,185 205,185' \) -gravity NorthEast -geometry +0+0 -composite \
-        "${tmpdir}/dozzle-agent.png"
-    convert_image_full "${tmpdir}/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
-    rm -f "${tmpdir}/dozzle-agent.png"
+        "${tmpdir}/dozzleagent.png"
+    convert_image_full "${tmpdir}/dozzleagent.png" "${output_dir}/dozzleagent.png"
+    rm -f "${tmpdir}/dozzleagent.png"
 fi
 
 # Dozzle agents (multiple)
-if should_generate_icon "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agents.png"; then
+if should_generate_icon "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagents.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 500x500 \) -gravity SouthEast -geometry +0+63 -composite \
-        "${tmpdir}/dozzle-agents.png"
-    convert_image_full "${tmpdir}/dozzle-agents.png" "${output_dir}/dozzle-agents.png"
-    rm -f "${tmpdir}/dozzle-agents.png"
+        "${tmpdir}/dozzleagents.png"
+    convert_image_full "${tmpdir}/dozzleagents.png" "${output_dir}/dozzleagents.png"
+    rm -f "${tmpdir}/dozzleagents.png"
 fi
 
 # Public DNS
@@ -255,21 +255,21 @@ rm -f "${tmpdir}/debian.png" "${tmpdir}/ubuntu.png" "${tmpdir}/apt-cache.png"
 
 # Docker cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 700x700 OUTPUT_FILE' "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${tmpdir}/docker.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +175+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/docker.png" "${tmpdir}/docker-cache.png"
-convert_image_full "${tmpdir}/docker-cache.png" "${output_dir}/docker-cache.png"
-rm -f "${tmpdir}/docker.png" "${tmpdir}/docker-cache.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +175+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/docker.png" "${tmpdir}/dockercache.png"
+convert_image_full "${tmpdir}/dockercache.png" "${output_dir}/dockercache.png"
+rm -f "${tmpdir}/docker.png" "${tmpdir}/dockercache.png"
 
 # Git cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 500x500 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${tmpdir}/git.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +275+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/git.png" "${tmpdir}/git-cache.png"
-convert_image_full "${tmpdir}/git-cache.png" "${output_dir}/git-cache.png"
-rm -f "${tmpdir}/git.png" "${tmpdir}/git-cache.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +275+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/git.png" "${tmpdir}/gitcache.png"
+convert_image_full "${tmpdir}/gitcache.png" "${output_dir}/gitcache.png"
+rm -f "${tmpdir}/git.png" "${tmpdir}/gitcache.png"
 
 # NPM cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 750x750 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/npm.svg" "${tmpdir}/npm.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +150+400 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/npm.png" "${tmpdir}/npm-cache.png"
-convert_image_full "${tmpdir}/npm-cache.png" "${output_dir}/npm-cache.png"
-rm -f "${tmpdir}/npm.png" "${tmpdir}/npm-cache.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +150+400 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/npm.png" "${tmpdir}/npmcache.png"
+convert_image_full "${tmpdir}/npmcache.png" "${output_dir}/npmcache.png"
+rm -f "${tmpdir}/npm.png" "${tmpdir}/npmcache.png"
 
 # PyPi cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 600x600 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/python.svg" "${tmpdir}/python.png"

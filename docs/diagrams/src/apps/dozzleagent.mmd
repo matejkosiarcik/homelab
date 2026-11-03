@@ -1,0 +1,34 @@
+---
+title: Dozzle agent
+config:
+    theme: dark
+    flowchart:
+        diagramPadding: 50
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+    classDef strong_border stroke-width:5px;
+
+    subgraph app_wrapper["App"]
+        inbound_interface(" ")
+        app("<div class='custom-node'><img src='../../../../icons/dozzleagent.png' /><p>Dozzle<br/>agent</p></div>")
+        class app strong_border;
+        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Socket<br/>proxy</p></div>")
+        docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host<br/>*global*</p></div>")
+
+        inbound_interface -->|:7007|app
+        app -.->|docker tcp| docker_socket_proxy -.->|docker sock| docker
+    end
+
+    subgraph others_1["Others"]
+        home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
+        dozzle_server("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Server</p></div>")
+        gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
+
+        home_network <--> inbound_interface
+        dozzle_server -->|collect logs| inbound_interface
+        gatus -->|monitor| inbound_interface
+    end

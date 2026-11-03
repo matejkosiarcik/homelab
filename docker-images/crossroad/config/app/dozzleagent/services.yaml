@@ -1,24 +1,24 @@
 - Apps:
     - Dozzle Agent - Odroid H3:
         description: Docker Monitoring Agent
-        href: "#copy://dozzle-agent-odroid-h3.matejhome.com:7007"
-        ping: dozzle-agent-odroid-h3.matejhome.com
-        icon: /icons/dozzle-agent.png
+        href: "#copy://dozzleagent-odroid-h3.matejhome.com:7007"
+        ping: dozzleagent-odroid-h3.matejhome.com
+        icon: /icons/dozzleagent.png
 
     - Dozzle Agent - Odroid H4 Ultra:
         description: Docker Monitoring Agent
-        href: "#copy://dozzle-agent-odroid-h4-ultra.matejhome.com:7007"
-        ping: dozzle-agent-odroid-h4-ultra.matejhome.com
-        icon: /icons/dozzle-agent.png
+        href: "#copy://dozzleagent-odroid-h4-ultra.matejhome.com:7007"
+        ping: dozzleagent-odroid-h4-ultra.matejhome.com
+        icon: /icons/dozzleagent.png
 
     - Dozzle Agent - Raspberry Pi 4B 2GB:
         description: Docker Monitoring Agent
-        href: "#copy://dozzle-agent-raspberry-pi-4b-2g.matejhome.com:7007"
-        ping: dozzle-agent-raspberry-pi-4b-2g.matejhome.com
-        icon: /icons/dozzle-agent.png
+        href: "#copy://dozzleagent-raspberry-pi-4b-2g.matejhome.com:7007"
+        ping: dozzleagent-raspberry-pi-4b-2g.matejhome.com
+        icon: /icons/dozzleagent.png
 
     - Dozzle Agent - Raspberry Pi 4B 4GB:
         description: Docker Monitoring Agent
-        href: "#copy://dozzle-agent-raspberry-pi-4b-4g.matejhome.com:7007"
-        ping: dozzle-agent-raspberry-pi-4b-4g.matejhome.com
-        icon: /icons/dozzle-agent.png
+        href: "#copy://dozzleagent-raspberry-pi-4b-4g.matejhome.com:7007"
+        ping: dozzleagent-raspberry-pi-4b-4g.matejhome.com
+        icon: /icons/dozzleagent.png

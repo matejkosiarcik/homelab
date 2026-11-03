@@ -46,12 +46,12 @@ flowchart TB
                     direction LR
                     certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
                     dockerhub_proxy("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>DockerHub<br/>cache<br/>proxy</p></div>")
-                    git_cache_github("<div class='custom-node'><img src='../../../../icons/git-cache.png' /><p>GitHub<br/>cache<br/>(planned)</p></div>")
+                    gitcache_github("<div class='custom-node'><img src='../../../../icons/gitcache.png' /><p>GitHub<br/>cache<br/>(planned)</p></div>")
                     netalertx("<div class='custom-node'><img src='../../../../icons/netalertx.png' /><p>NetAlertX<br/>(planned)</p></div>")
-                    npm_cache("<div class='custom-node'><img src='../../../../icons/npm-cache.png' /><p>NPM<br/>cache<br/>(planned)</p></div>")
+                    npmcache("<div class='custom-node'><img src='../../../../icons/npmcache.png' /><p>NPM<br/>cache<br/>(planned)</p></div>")
                     omadacontroller("<div class='custom-node'><img src='../../../../icons/tp-link-omada.png' /><p>Omada<br/>Controller</p></div>")
                     unificontroller("<div class='custom-node'><img src='../../../../icons/unifi.png' /><p>UniFi<br/>Controller</p></div>")
-                    certbot ~~~ dockerhub_proxy ~~~ git_cache_github ~~~ netalertx ~~~ npm_cache ~~~ omadacontroller ~~~ unificontroller
+                    certbot ~~~ dockerhub_proxy ~~~ gitcache_github ~~~ netalertx ~~~ npmcache ~~~ omadacontroller ~~~ unificontroller
                 end
             end
 
@@ -76,14 +76,14 @@ flowchart TB
                 direction LR
                 docker_stats_1("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>Stats<br/>Exporter</p></div>")
                 dozzle("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle</p></div>")
-                dozzle_agent_1("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
+                dozzleagent_1("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
                 gatus_1("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus 1</p></div>")
                 grafana("<div class='custom-node'><img src='../../../../icons/grafana.png' /><p>Grafana</p></div>")
                 healthchecks("<div class='custom-node'><img src='../../../../icons/healthchecks.png' /><p>Healthchecks</p></div>")
                 nodeexporter_1("<div class='custom-node'><img src='../../../../icons/nodeexporter.png' /><p>Node<br/>Exporter</p></div>")
                 prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
                 uptimekuma("<div class='custom-node'><img src='../../../../icons/uptimekuma.png' /><p>Uptime Kuma</p></div>")
-                docker_stats_1 ~~~ dozzle ~~~ dozzle_agent_1 ~~~ gatus_1 ~~~ grafana ~~~ healthchecks ~~~ nodeexporter_1 ~~~ prometheus ~~~ uptimekuma
+                docker_stats_1 ~~~ dozzle ~~~ dozzleagent_1 ~~~ gatus_1 ~~~ grafana ~~~ healthchecks ~~~ nodeexporter_1 ~~~ prometheus ~~~ uptimekuma
             end
         end
 
@@ -196,11 +196,11 @@ flowchart TB
             subgraph odroid_h3_monitoring_row[" "]
                 direction LR
                 docker_stats_2("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>Stats<br/>Exporter</p></div>")
-                dozzle_agent_2("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
+                dozzleagent_2("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
                 gatus_2("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus 2</p></div>")
                 nodeexporter_2("<div class='custom-node'><img src='../../../../icons/nodeexporter.png' /><p>Node<br/>Exporter</p></div>")
                 uptimekuma_2("<div class='custom-node'><img src='../../../../icons/uptimekuma.png' /><p>Uptime Kuma 2</p></div>")
-                docker_stats_2 ~~~ dozzle_agent_2 ~~~ gatus_2 ~~~ nodeexporter_2 ~~~ uptimekuma_2
+                docker_stats_2 ~~~ dozzleagent_2 ~~~ gatus_2 ~~~ nodeexporter_2 ~~~ uptimekuma_2
             end
         end
 
@@ -226,9 +226,9 @@ flowchart TB
                 subgraph raspberry_pi_4b_4g_monitoring_row[" "]
                     direction LR
                     docker_stats_3("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>Stats<br/>Exporter</p></div>")
-                    dozzle_agent_3("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
+                    dozzleagent_3("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
                     nodeexporter_3("<div class='custom-node'><img src='../../../../icons/nodeexporter.png' /><p>Node<br/>Exporter</p></div>")
-                    docker_stats_3 ~~~ dozzle_agent_3 ~~~ nodeexporter_3
+                    docker_stats_3 ~~~ dozzleagent_3 ~~~ nodeexporter_3
                 end
             end
 
@@ -251,9 +251,9 @@ flowchart TB
                 subgraph raspberry_pi_4b_2g_monitoring_row[" "]
                     direction LR
                     docker_stats_4("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>Stats<br/>Exporter</p></div>")
-                    dozzle_agent_4("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
+                    dozzleagent_4("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Agent</p></div>")
                     nodeexporter_4("<div class='custom-node'><img src='../../../../icons/nodeexporter.png' /><p>Node<br/>Exporter</p></div>")
-                    docker_stats_4 ~~~ dozzle_agent_4 ~~~ nodeexporter_4
+                    docker_stats_4 ~~~ dozzleagent_4 ~~~ nodeexporter_4
                 end
             end
 
@@ -283,4 +283,4 @@ flowchart TB
 
     class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media,raspberry_pi_4b_2g_miscellaneous role
     class raspberry_pi_4b_servers no_border
-    class git_cache_github,npm_cache,netalertx,motioneye,reportportal,tvheadend,vaultwarden planned
+    class gitcache_github,npmcache,netalertx,motioneye,reportportal,tvheadend,vaultwarden planned

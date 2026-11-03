@@ -72,7 +72,7 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/beszel.
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/dawarich.svg" "${output_dir}/dawarich.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/donetick.svg" "${output_dir}/donetick.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/files.svg" "${output_dir}/files.png"
-convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${output_dir}/git-cache.png"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${output_dir}/gitcache.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/gitea.svg" "${output_dir}/gitea.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/gitlab.png" "${output_dir}/gitlab.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/glances.svg" "${output_dir}/glances.png"
@@ -163,7 +163,7 @@ convert_image_full "${tmpdir}/other/windshift.svg" "${output_dir}/windshift.png"
 
 ### Prebuild Icons ###
 
-convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
+convert_image_full "${input_dir}/prebuild/dozzleagent.png" "${output_dir}/dozzleagent.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/lets-encrypt.png"
 convert_image_full "${input_dir}/prebuild/libretranslate.png" "${output_dir}/libretranslate.png"
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
@@ -178,7 +178,7 @@ convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzleagent"
 prepare_output_dir "${output_dir}"
-convert_image_full "${input_dir}/prebuild/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
+convert_image_full "${input_dir}/prebuild/dozzleagent.png" "${output_dir}/dozzleagent.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus"
 prepare_output_dir "${output_dir}"

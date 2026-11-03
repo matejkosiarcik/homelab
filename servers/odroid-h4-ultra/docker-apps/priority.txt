@@ -7,6 +7,6 @@ unbound-*
 pihole-2
 
 # Caches
-docker-cache-dockerhub
-# git-cache-github
-# npm-cache
+dockercache-dockerhub
+# gitcache-github
+# npmcache

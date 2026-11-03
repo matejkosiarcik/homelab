@@ -1,0 +1,20 @@
+app:
+  name: NPMCache
+
+apache:
+  upstream-url:
+    - path: /
+      target: http://app:8080
+
+favicons:
+  default: "@npmcache.png"
+
+gatus:
+  enabled: true
+
+prometheus:
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic

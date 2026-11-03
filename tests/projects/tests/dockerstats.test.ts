@@ -1,0 +1,126 @@
+import { expect, test } from '#/playwright/test.ts';
+import { apps } from '#/utils/apps.ts';
+import { createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { axios, getEnv } from '#/utils/utils.ts';
+import { faker } from '@faker-js/faker';
+
+const app = apps.dockerstats;
+
+test.describe(app.title, () => {
+    for (const instance of app.instances) {
+        if ('enabled' in instance && instance.enabled === false) {
+            test.skip(`Instance ${app.title} ${instance.title} is disabled`, () => {});
+            continue;
+        }
+
+        test.describe(instance.title, () => {
+            createHttpToHttpsRedirectTests(instance.url);
+            createProxyTests(instance.url);
+            createPrometheusTests(instance.url, { auth: 'basic', path: '/metrics' });
+            createTcpTests(instance.url, [80, 443]);
+            createFaviconTests(instance.url);
+
+            const prometheusValidUsers = [
+                {
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: 'prometheus',
+                },
+            ];
+            for (const user of prometheusValidUsers) {
+                test(`API: Get prometheus metrics - User ${user.username}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/metrics`, {
+                            auth: {
+                                username: user.username,
+                                password: getEnv(instance.url, `${user.username}_PASSWORD`),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(200);
+                    });
+                });
+            }
+
+            const prometheusInvalidUsers = [
+                {
+                    username: 'matej',
+                },
+                {
+                    username: 'homelab-viewer',
+                },
+                {
+                    username: 'homelab-test',
+                },
+                {
+                    username: faker.string.alpha(10),
+                    random: true,
+                },
+            ];
+            for (const user of prometheusInvalidUsers) {
+                test(`API: Unsuccessful get prometheus metrics with bad password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/metrics`, {
+                            auth: {
+                                username: user.username,
+                                password: faker.string.alpha(10),
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
+                    });
+                });
+
+                test(`API: Unsuccessful get prometheus metrics without password - ${user.random ? 'Random user' : `User ${user.username}`}`, async () => {
+                    await test.step('Request server', async () => {
+                        const response = await axios.get(`${instance.url}/metrics`, {
+                            auth: {
+                                username: user.username,
+                                password: '',
+                            },
+                        });
+                        expect(response.status, 'Response Status').toStrictEqual(401);
+                    });
+                });
+            }
+
+            test('API: Prometheus metrics content', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'dockerstats_blockio_read_bytes',
+                        'dockerstats_blockio_written_bytes',
+                        'dockerstats_cpu_usage_ratio',
+                        'dockerstats_memory_limit_bytes',
+                        'dockerstats_memory_usage_bytes',
+                        'dockerstats_memory_usage_ratio',
+                        'dockerstats_memory_usage_rss_bytes',
+                        'dockerstats_network_received_bytes',
+                        'dockerstats_network_transmitted_bytes',
+                    ];
+                    for (const metric of metrics) {
+                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                    }
+                });
+            });
+        });
+    }
+});

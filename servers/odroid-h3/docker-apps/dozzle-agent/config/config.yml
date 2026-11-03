@@ -1,5 +1,0 @@
-app:
-  type: dozzle-agent
-
-network:
-  ip: 10.1.10.22
