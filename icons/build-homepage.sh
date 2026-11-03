@@ -172,9 +172,9 @@ output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/docke
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker.png"
 
-output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzle"
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzleagent"
 prepare_output_dir "${output_dir}"
-convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle.png"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagent.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus"
 prepare_output_dir "${output_dir}"
