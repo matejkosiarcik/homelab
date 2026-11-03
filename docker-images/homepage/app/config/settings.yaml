@@ -38,3 +38,9 @@ layout:
   Resources:
     style: row
     columns: 4
+  AI:
+    style: row
+    columns: 4
+  Crossroads:
+    style: row
+    columns: 4

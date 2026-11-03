@@ -633,3 +633,52 @@
         href: https://docker-stats-raspberry-pi-4b-4g.matejhome.com
         ping: docker-stats-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/docker.png
+
+- Crossroads:
+    - Docker Stats:
+        description: Docker Usage Monitoring
+        href: https://dockerstats.matejhome.com
+        ping: dockerstats.matejhome.com
+        icon: /icons/crossroads.png
+
+    - Dozzle Agent:
+        description: Docker Monitoring Agent
+        href: https://dozzleagent.matejhome.com
+        ping: dozzleagent.matejhome.com
+        icon: /icons/crossroads.png
+
+    - Gatus:
+        description: Uptime Monitoring
+        href: https://gatus.matejhome.com
+        ping: gatus.matejhome.com
+        icon: /icons/crossroads.png
+
+    - NodeExporter:
+        description: Resource Monitoring
+        href: https://nodeexporter.matejhome.com
+        ping: nodeexporter.matejhome.com
+        icon: /icons/crossroads.png
+
+    - PiHole:
+        description: DNS Server
+        href: https://pihole.matejhome.com
+        ping: pihole.matejhome.com
+        icon: /icons/crossroads.png
+
+    - Unbound:
+        description: Entrypoint DNS Server
+        href: https://unbound.matejhome.com
+        ping: unbound.matejhome.com
+        icon: /icons/crossroads.png
+
+    - UptimeKuma:
+        description: Uptime Monitoring
+        href: https://uptimekuma.matejhome.com
+        ping: uptimekuma.matejhome.com
+        icon: /icons/crossroads.png
+
+    - VNC:
+        description: Remote Access
+        href: https://vnc.matejhome.com
+        ping: vnc.matejhome.com
+        icon: /icons/crossroads.png
