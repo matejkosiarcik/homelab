@@ -23,8 +23,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 # TODO: Re-enable cache below:
 # COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN printf '' >/root/.gitconfig && \
-#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
-#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
+#     { curl --fail --silent 'https://gitcache-github.matejhome.com' || exit 0; } && \
+#     git config --global 'url.https://gitcache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
 ### Dependencies ###
 

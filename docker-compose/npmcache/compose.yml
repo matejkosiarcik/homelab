@@ -7,27 +7,19 @@ services:
       service: app
     # Override:
     build:
-      dockerfile: ./docker-images/git-cache/Dockerfile
+      dockerfile: ./docker-images/npmcache/Dockerfile
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
-      - ${DOCKER_COMPOSE_APP_PATH}/config/app.env
+    networks: # Internet access required for downloading packages
+      - external-network
+      - internal-network
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
   redis:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: redis
-    # Override:
-    build:
-      args:
-        CONFIG_FILE: git-cache
-
-  postgres:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: postgres
 
   certificator:
     extends:

@@ -16,21 +16,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 # TODO: Re-enable cache below:
 # COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN touch '/root/.npmrc' && \
-#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-#     npm config set proxy https://npm-cache.matejhome.com && \
-#     npm config set https-proxy https://npm-cache.matejhome.com
+#     { curl --fail --silent https://npmcache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npmcache.matejhome.com && \
+#     npm config set https-proxy https://npmcache.matejhome.com
 
 ### App ###
 
 FROM node:26.13.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/git-cache/package-lock.json ./docker-images/git-cache/package.json /homelab/
+COPY ./docker-images/gitcache/package-lock.json ./docker-images/gitcache/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/git-cache/tsconfig.json /homelab/
-COPY ./docker-images/git-cache/src/ /homelab/src/
+COPY ./docker-images/gitcache/tsconfig.json /homelab/
+COPY ./docker-images/gitcache/src/ /homelab/src/
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
@@ -87,7 +87,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
-ENV HOMELAB_CONTAINER_NAME="git-cache" \
+ENV HOMELAB_CONTAINER_NAME="gitcache" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
     PGPASSWORD="" \

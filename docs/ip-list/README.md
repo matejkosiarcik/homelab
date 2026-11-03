@@ -66,8 +66,8 @@
 | `10.1.12.63` | `ollama-private.matejhome.com`                  |
 | `10.1.12.64` | `openwebui-private.matejhome.com`               |
 | `10.1.12.65` | `vaultwarden.matejhome.com`                     |
-| `10.1.12.66` | `git-cache-github.matejhome.com`                |
-| `10.1.12.67` | `npm-cache.matejhome.com`                       |
+| `10.1.12.66` | `gitcache-github.matejhome.com`                |
+| `10.1.12.67` | `npmcache.matejhome.com`                       |
 | `10.1.12.68` | `koffan.matejhome.com`                          |
 | `10.1.12.69` | `vikunja.matejhome.com`                         |
 | `10.1.12.70` | `prebudget.matejhome.com`                       |

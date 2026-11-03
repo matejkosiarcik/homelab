@@ -46,12 +46,12 @@ flowchart TB
                     direction LR
                     certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
                     dockerhub_proxy("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>DockerHub<br/>cache<br/>proxy</p></div>")
-                    git_cache_github("<div class='custom-node'><img src='../../../../icons/git-cache.png' /><p>GitHub<br/>cache<br/>(planned)</p></div>")
+                    gitcache_github("<div class='custom-node'><img src='../../../../icons/gitcache.png' /><p>GitHub<br/>cache<br/>(planned)</p></div>")
                     netalertx("<div class='custom-node'><img src='../../../../icons/netalertx.png' /><p>NetAlertX<br/>(planned)</p></div>")
-                    npm_cache("<div class='custom-node'><img src='../../../../icons/npm-cache.png' /><p>NPM<br/>cache<br/>(planned)</p></div>")
+                    npmcache("<div class='custom-node'><img src='../../../../icons/npmcache.png' /><p>NPM<br/>cache<br/>(planned)</p></div>")
                     omadacontroller("<div class='custom-node'><img src='../../../../icons/tp-link-omada.png' /><p>Omada<br/>Controller</p></div>")
                     unificontroller("<div class='custom-node'><img src='../../../../icons/unifi.png' /><p>UniFi<br/>Controller</p></div>")
-                    certbot ~~~ dockerhub_proxy ~~~ git_cache_github ~~~ netalertx ~~~ npm_cache ~~~ omadacontroller ~~~ unificontroller
+                    certbot ~~~ dockerhub_proxy ~~~ gitcache_github ~~~ netalertx ~~~ npmcache ~~~ omadacontroller ~~~ unificontroller
                 end
             end
 
@@ -283,4 +283,4 @@ flowchart TB
 
     class odroid_h4_ultra_dns,odroid_h4_ultra_infrastructure,odroid_h4_ultra_monitoring,odroid_h4_ultra_ai,odroid_h4_ultra_media,odroid_h4_ultra_data,odroid_h4_ultra_smart_home,odroid_h4_ultra_notifications,odroid_h4_ultra_miscellaneous,odroid_h3_dns,odroid_h3_monitoring,odroid_h3_data,raspberry_pi_4b_4g_monitoring,raspberry_pi_4b_4g_infrastructure,raspberry_pi_4b_2g_monitoring,raspberry_pi_4b_2g_media,raspberry_pi_4b_2g_miscellaneous role
     class raspberry_pi_4b_servers no_border
-    class git_cache_github,npm_cache,netalertx,motioneye,reportportal,tvheadend,vaultwarden planned
+    class gitcache_github,npmcache,netalertx,motioneye,reportportal,tvheadend,vaultwarden planned

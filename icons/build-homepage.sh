@@ -72,7 +72,7 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/beszel.
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/dawarich.svg" "${output_dir}/dawarich.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/donetick.svg" "${output_dir}/donetick.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/files.svg" "${output_dir}/files.png"
-convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${output_dir}/git-cache.png"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${output_dir}/gitcache.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/gitea.svg" "${output_dir}/gitea.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/gitlab.png" "${output_dir}/gitlab.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/glances.svg" "${output_dir}/glances.png"

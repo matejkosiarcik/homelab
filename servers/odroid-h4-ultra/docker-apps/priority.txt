@@ -8,5 +8,5 @@ pihole-2
 
 # Caches
 dockercache-dockerhub
-# git-cache-github
-# npm-cache
+# gitcache-github
+# npmcache

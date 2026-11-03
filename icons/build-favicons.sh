@@ -76,8 +76,8 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound
 ## Prebuilds ##
 
 convert_image_full "${input_dir}/prebuild/dockercache.png" "${output_dir}/dockercache.png"
-convert_image_full "${input_dir}/prebuild/git-cache.png" "${output_dir}/git-cache.png"
-convert_image_full "${input_dir}/prebuild/npm-cache.png" "${output_dir}/npm-cache.png"
+convert_image_full "${input_dir}/prebuild/gitcache.png" "${output_dir}/gitcache.png"
+convert_image_full "${input_dir}/prebuild/npmcache.png" "${output_dir}/npmcache.png"
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/certbot.png"
 

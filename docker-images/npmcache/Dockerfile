@@ -31,7 +31,7 @@ RUN sh '/homelab/create-user.sh' && \
 
 FROM scratch AS homelab_dir
 WORKDIR /homelab
-COPY ./docker-images/npm-cache/entrypoint.sh /homelab/
+COPY ./docker-images/npmcache/entrypoint.sh /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
@@ -50,7 +50,7 @@ RUN chown -R homelab:homelab /srv/app && \
     mv /srv/app/build /srv/app/ncp
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-ENV HOMELAB_CONTAINER_NAME="npm-cache" \
+ENV HOMELAB_CONTAINER_NAME="npmcache" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/srv/app:${PATH}" \
     REDIS_ADDRESS="redis:6379" \

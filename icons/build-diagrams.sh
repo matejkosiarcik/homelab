@@ -285,8 +285,8 @@ convert_image_full "${input_dir}/prebuild/smart-home-devices.png" "${output_dir}
 convert_image_full "${input_dir}/prebuild/personal-devices.png" "${output_dir}/personal-devices.png"
 convert_image_full "${input_dir}/prebuild/servers.png" "${output_dir}/servers.png"
 convert_image_full "${input_dir}/prebuild/squid.png" "${output_dir}/squid.png"
-convert_image_full "${input_dir}/prebuild/git-cache.png" "${output_dir}/git-cache.png"
-convert_image_full "${input_dir}/prebuild/npm-cache.png" "${output_dir}/npm-cache.png"
+convert_image_full "${input_dir}/prebuild/gitcache.png" "${output_dir}/gitcache.png"
+convert_image_full "${input_dir}/prebuild/npmcache.png" "${output_dir}/npmcache.png"
 
 # Custom background icons
 convert_image_full "${input_dir}/prebuild/dwservice.png" "${output_dir}/dwservice.png"

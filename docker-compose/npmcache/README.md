@@ -1,6 +1,6 @@
 # NPM Cache
 
-![diagram](../../docs/diagrams/out/apps/npm-cache.png)
+![diagram](../../docs/diagrams/out/apps/npmcache.png)
 
 ## Docs
 

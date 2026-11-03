@@ -1,5 +1,5 @@
 app:
-  name: NPM Cache
+  name: GitCache
 
 apache:
   upstream-url:
@@ -7,10 +7,13 @@ apache:
       target: http://app:8080
 
 favicons:
-  default: "@npm-cache.png"
+  default: "@gitcache.png"
 
 gatus:
   enabled: true
+
+healthchecks:
+  - slug: certificator
 
 prometheus:
   enabled: true

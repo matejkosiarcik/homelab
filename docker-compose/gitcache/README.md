@@ -1,12 +1,12 @@
 # Git Cache
 
-![diagram](../../docs/diagrams/out/apps/git-cache.png)
+![diagram](../../docs/diagrams/out/apps/gitcache.png)
 
 ## Docs
 
 This server inspired by this blogpost: <https://info.varnish-software.com/blog/speeding-up-git-with-http-caching>.
 However I couldn't get Varnish or other off-the-shelf Git caching proxies to work correctly.
-So I've written this custom git-cache, which fulfills my requirements.
+So I've written this custom GitCache, which fulfills my requirements.
 
 Other considered off-the-shelf projects were:
 

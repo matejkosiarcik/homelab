@@ -648,7 +648,7 @@ gatus)
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzle.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_2.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.git_cache_github.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'GITCACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gitcache_github.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GOTIFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gotify.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GRAFANA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.grafana.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HEALTHCHECKS__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.healthchecks.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -667,7 +667,7 @@ gatus)
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npm_cache.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NPMCACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npmcache.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama_private.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -720,7 +720,7 @@ gatus)
     touch "${initial_output}/favicons.env"
     ;;
 
-git-cache)
+gitcache)
     # Preload #
     postgres_password="$(load_secret ".${app_full_name_key}.postgres.user" dev=default)"
     redis_password="$(load_secret ".${app_full_name_key}.redis.user" dev=default)"
@@ -1170,7 +1170,7 @@ vnc)
     printf 'FAVICON_PASSWORD="%s"\n' "${novnc_matej_password}" >>"${initial_output}/favicons.env"
     ;;
 
-npm-cache)
+npmcache)
     # Preload #
     redis_password="$(load_secret ".${app_full_name_key}.redis.user" dev=default)"
 
@@ -1502,7 +1502,7 @@ prometheus)
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzle.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_2__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_2.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'GIT_CACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.git_cache_github.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'GITCACHE_GITHUB__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gitcache_github.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GOTIFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gotify.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GRAFANA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.grafana.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HEALTHCHECKS__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.healthchecks.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -1521,7 +1521,7 @@ prometheus)
     printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NPM_CACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npm_cache.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NPMCACHE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.npmcache.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'OLLAMA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'OLLAMA_PRIVATE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ollama_private.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"

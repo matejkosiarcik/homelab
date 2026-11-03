@@ -261,15 +261,15 @@ rm -f "${tmpdir}/docker.png" "${tmpdir}/dockercache.png"
 
 # Git cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 500x500 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/git.svg" "${tmpdir}/git.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +275+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/git.png" "${tmpdir}/git-cache.png"
-convert_image_full "${tmpdir}/git-cache.png" "${output_dir}/git-cache.png"
-rm -f "${tmpdir}/git.png" "${tmpdir}/git-cache.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +275+275 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/git.png" "${tmpdir}/gitcache.png"
+convert_image_full "${tmpdir}/gitcache.png" "${output_dir}/gitcache.png"
+rm -f "${tmpdir}/git.png" "${tmpdir}/gitcache.png"
 
 # NPM cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 750x750 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/npm.svg" "${tmpdir}/npm.png"
-convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +150+400 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/npm.png" "${tmpdir}/npm-cache.png"
-convert_image_full "${tmpdir}/npm-cache.png" "${output_dir}/npm-cache.png"
-rm -f "${tmpdir}/npm.png" "${tmpdir}/npm-cache.png"
+convert_image_draft_2 'magick INPUT_FILE1 INPUT_FILE2 -gravity Center -geometry +150+400 -composite OUTPUT_FILE' "${tmpdir}/cache.png" "${tmpdir}/npm.png" "${tmpdir}/npmcache.png"
+convert_image_full "${tmpdir}/npmcache.png" "${output_dir}/npmcache.png"
+rm -f "${tmpdir}/npm.png" "${tmpdir}/npmcache.png"
 
 # PyPi cache proxy
 convert_image_draft 'magick -density 2000 -background none -bordercolor transparent INPUT_FILE -resize 600x600 OUTPUT_FILE' "${input_dir}/gitman-repositories/dashboard-icons/svg/python.svg" "${tmpdir}/python.png"

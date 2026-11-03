@@ -363,7 +363,7 @@
           fetch-retry-mintimeout=1000
           ignore-scripts=true
           min-release-age=1
-        # TODO: Also add: registry=https://npm-cache.matejhome.com
+        # TODO: Also add: registry=https://npmcache.matejhome.com
 
     - name: Update NPM packages
       become: true

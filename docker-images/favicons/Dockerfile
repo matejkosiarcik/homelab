@@ -16,8 +16,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 # TODO: Re-enable cache below:
 # COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN printf '' >/root/.gitconfig && \
-#     { curl --fail --silent 'https://git-cache-github.matejhome.com' || exit 0; } && \
-#     git config --global 'url.https://git-cache-github.matejhome.com/.insteadOf' 'https://github.com/'
+#     { curl --fail --silent 'https://gitcache-github.matejhome.com' || exit 0; } && \
+#     git config --global 'url.https://gitcache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
 FROM node:26.13.0-slim AS npmconfig
 USER root
@@ -32,9 +32,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 # TODO: Re-enable cache below:
 # COPY ./docker-images/.shared/anticache.txt /homelab/
 # RUN touch '/root/.npmrc' && \
-#     { curl --fail --silent https://npm-cache.matejhome.com || exit 0; } && \
-#     npm config set proxy https://npm-cache.matejhome.com && \
-#     npm config set https-proxy https://npm-cache.matejhome.com
+#     { curl --fail --silent https://npmcache.matejhome.com || exit 0; } && \
+#     npm config set proxy https://npmcache.matejhome.com && \
+#     npm config set https-proxy https://npmcache.matejhome.com
 
 ### Dependencies ###
 
