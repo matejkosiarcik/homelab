@@ -48,8 +48,9 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 # WORKDIR /homelab
-ENV GF_PLUGINS_PREINSTALL="" \
-    GF_LOG_LEVEL="error" \
+ENV GF_LOG_LEVEL="error" \
+    GF_PLUGINS_PREINSTALL="" \
+    GF_SECURITY_ADMIN_PASSWORD="" \
     GF_SECURITY_ADMIN_USER="matej" \
     GF_SECURITY_COOKIE_SAMESITE="strict" \
     GF_SECURITY_COOKIE_SECURE="true" \

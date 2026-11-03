@@ -49,7 +49,8 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /app/gotify-server.env /app/gotify-server.env
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
-ENV HOMELAB_CONTAINER_NAME="gotify" \
+ENV GOTIFY_DEFAULTUSER_PASS="" \
+    HOMELAB_CONTAINER_NAME="gotify" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
 USER homelab

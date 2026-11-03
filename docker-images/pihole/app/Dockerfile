@@ -120,6 +120,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_misc_privacylevel="0" \
     FTLCONF_misc_readOnly="false" \
     FTLCONF_webserver_api_allow_destructive="false" \
+    FTLCONF_webserver_api_password="" \
     FTLCONF_webserver_domain="pihole-placeholder" \
     FTLCONF_webserver_interface_theme="default-darker" \
     HOMELAB_CONTAINER_NAME="pihole" \

@@ -65,7 +65,11 @@ COPY --from=prefinal --chown=homelab:homelab /app /app
 COPY --from=prefinal --chown=homelab:homelab /fsroot/certs /etc/ssl/certs
 ENV HOMELAB_CONTAINER_NAME="vikunja" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    TZ="Europe/Bratislava"
+    HOMELAB_TEST_PASSWORD="" \
+    MATEJ_PASSWORD="" \
+    TZ="Europe/Bratislava" \
+    VIKUNJA_METRICS_PASSWORD="" \
+    VIKUNJA_SERVICE_SECRET=""
 WORKDIR /app/vikunja
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "./vikunja", "user", "list" ]

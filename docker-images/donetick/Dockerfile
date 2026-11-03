@@ -50,6 +50,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV DONETICK_DISABLE_SIGNUP="true" \
     DT_ENV="selfhosted" \
     DT_IS_USER_CREATION_DISABLED="true" \
+    DT_JWT_SECRET="" \
     DT_SQLITE_PATH="/data/donetick.db" \
     HOMELAB_CONTAINER_NAME="donetick" \
     HOMELAB_CONTAINER_VARIANT="default" \

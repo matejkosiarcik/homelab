@@ -48,6 +48,7 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV APP_ENV="production" \
+    APP_PASSWORD="" \
     HOMELAB_CONTAINER_NAME="koffan" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PORT="8080" \

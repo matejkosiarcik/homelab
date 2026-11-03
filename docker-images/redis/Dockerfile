@@ -64,6 +64,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="redis" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:${PATH}" \
+    REDIS_PASSWORD="" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "redis-cli --raw incr ping || exit 1" ]

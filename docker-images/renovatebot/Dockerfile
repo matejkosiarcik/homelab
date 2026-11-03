@@ -168,18 +168,23 @@ RUN chown -R homelab:homelab '/usr/src/app' '/home/ubuntu'
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /usr/src/app/config.js /usr/src/app/test-config.js /usr/src/app/
-ENV HOMELAB_CONTAINER_NAME="renovatebot" \
+ENV GITHUB_COM_TOKEN="" \
+    HOMELAB_CONTAINER_NAME="renovatebot" \
     HOMELAB_CONTAINER_VARIANT="default" \
     HOMELAB_CRON_TIMEOUT="30m" \
+    HOMELAB_HEALTHCHECK_URL="" \
     PATH="/homelab/bin:${PATH}" \
     RENOVATE_BASE_DIR="/tmp/renovate" \
+    RENOVATE_TOKEN="" \
     RUNWISP_CONFIG="/homelab/tmpfs/runwisp.toml" \
     RUNWISP_DATA="/runwisp" \
     RUNWISP_HOST="0.0.0.0" \
     RUNWISP_LOG_FORMAT="text" \
+    RUNWISP_PASSWORD="" \
     RUNWISP_PORT="8080" \
     RUNWISP_SOCKET="/homelab/tmpfs/runwisp.sock" \
     RUNWISP_TRUSTED_PROXIES="172.16.0.0/12" \
+    RUNWISP_VIEWER_PASSWORD="" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/runwisp", "status" ]

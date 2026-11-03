@@ -56,6 +56,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /usr/bin/minio /usr/bin/minio
 ENV HOMELAB_CONTAINER_NAME="minio-server" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    MINIO_ROOT_PASSWORD="" \
     MINIO_ROOT_USER="matej" \
     TZ="Europe/Bratislava"
 USER homelab

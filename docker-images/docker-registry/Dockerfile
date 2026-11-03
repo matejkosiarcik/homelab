@@ -90,6 +90,10 @@ ENV HOMELAB_CONTAINER_NAME="docker-registry" \
     HOMELAB_CONTAINER_VARIANT="default" \
     OTEL_TRACES_EXPORTER="none" \
     PATH="/homelab/bin:${PATH}" \
+    REDIS_PASSWORD="" \
+    REGISTRY_HTTP_SECRET="" \
+    REGISTRY_PROXY_PASSWORD="" \
+    REGISTRY_PROXY_USERNAME="" \
     TZ="Europe/Bratislava"
 # TODO: Eventually enable OpenTelemetry
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost" ]

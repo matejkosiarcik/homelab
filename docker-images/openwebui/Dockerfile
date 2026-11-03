@@ -70,7 +70,9 @@ RUN chown -R homelab:homelab /app && \
     rm -rf /app/backend/open_webui/static /app/config
 ENV HOMELAB_CONTAINER_NAME="openwebui" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    TZ="Europe/Bratislava"
+    OLLAMA_BASE_URL="" \
+    TZ="Europe/Bratislava" \
+    WEBUI_SECRET_KEY=""
 USER homelab
 HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/health" ]
 # TODO: Add validation for response 'input.status = "true"'

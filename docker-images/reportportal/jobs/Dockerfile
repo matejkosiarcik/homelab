@@ -66,14 +66,17 @@ ENV DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_VARIANT="default" \
     JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=60 -XX:MaxRAMPercentage=70.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp" \
     RP_AMQP_ANALYZER-VHOST="app-analyzer" \
+    RP_AMQP_APIPASS="" \
     RP_AMQP_APIPORT="15672" \
     RP_AMQP_APIUSER="rabbitmq" \
     RP_AMQP_HOST="rabbitmq" \
     RP_AMQP_MAXLOGCONSUMER="1" \
+    RP_AMQP_PASS="" \
     RP_AMQP_PORT="5672" \
     RP_AMQP_USER="rabbitmq" \
     RP_DB_HOST="postgres" \
     RP_DB_NAME="database" \
+    RP_DB_PASS="" \
     RP_DB_PORT="5432" \
     RP_DB_USER="postgres" \
     RP_ENVIRONMENT_VARIABLE_BATCH-SIZE="10000" \

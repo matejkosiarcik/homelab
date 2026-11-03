@@ -232,6 +232,7 @@ ENV HOMELAB_CONTAINER_NAME="samba" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:${PATH}" \
     SAMBA_GROUP="homelab" \
+    SAMBA_PASSWORD="" \
     SAMBA_USERNAME="homelab" \
     TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "su", "--shell", "/bin/sh", "--command", "exec /homelab/bin/healthcheck --url tcp://localhost:139", "homelab" ]
