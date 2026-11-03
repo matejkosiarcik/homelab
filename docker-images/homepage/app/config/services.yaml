@@ -1,15 +1,15 @@
 - Network:
+    - ISP Router:
+        description: Huawei OptiXstar HG8145X6-10
+        href: 192.168.100.1
+        ping: "192.168.100.1"
+        icon: /icons/router.png
+
     - Main Router:
         description: TP-Link ER605
         href: https://10.1.0.1
         ping: "10.1.0.1"
         icon: /icons/router.png
-
-    - WiFi AP:
-        description: UniFi U6 Mesh
-        href: ""
-        ping: "10.1.0.2"
-        icon: /icons/wifi-ap.png
 
     - Smart Switch:
         description: UniFi USW Flex 2.5G 8-port (Hallway - Server closet)
@@ -35,16 +35,11 @@
         ping: "10.1.0.6"
         icon: /icons/switch.png
 
-    - UniFi Controller:
-        description: SDN Manager
-        href: https://unificontroller.matejhome.com
-        ping: unificontroller.matejhome.com
-        icon: /icons/unifi.png
-        widget:
-          type: unifi
-          url: https://unificontroller.matejhome.com
-          username: homelab-viewer
-          password: "{{HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD}}"
+    - WiFi AP:
+        description: UniFi U6 Mesh
+        href: ""
+        ping: "10.1.0.2"
+        icon: /icons/wifi-ap.png
 
     - Omada Controller:
         description: SDN Manager
@@ -58,6 +53,17 @@
           password: "{{HOMEPAGE_VAR__OMADACONTROLLER__PASSWORD}}"
           site: Home
           fields: ["activeUser", "alerts"]
+
+    - UniFi Controller:
+        description: SDN Manager
+        href: https://unificontroller.matejhome.com
+        ping: unificontroller.matejhome.com
+        icon: /icons/unifi.png
+        widget:
+          type: unifi
+          url: https://unificontroller.matejhome.com
+          username: homelab-viewer
+          password: "{{HOMEPAGE_VAR__UNIFICONTROLLER__PASSWORD}}"
 
 - Servers:
     - Odroid H3:
@@ -133,46 +139,22 @@
           version: 6
           key: "{{HOMEPAGE_VAR__PIHOLE_4__PASSWORD}}"
 
-    - Unbound Default 1:
-        description: Entrypoint DNS Server
-        href: https://unbound-default-1.matejhome.com
-        ping: unbound-default-1.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound Matej 1:
-        description: Entrypoint DNS Server
-        href: https://unbound-matej-1.matejhome.com
-        ping: unbound-matej-1.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound Monika 1:
-        description: Entrypoint DNS Server
-        href: https://unbound-monika-1.matejhome.com
-        ping: unbound-monika-1.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound IoT 1:
-        description: Entrypoint DNS Server
-        href: https://unbound-iot-1.matejhome.com
-        ping: unbound-iot-1.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound Guests 1:
-        description: Entrypoint DNS Server
-        href: https://unbound-guests-1.matejhome.com
-        ping: unbound-guests-1.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound Internal 1:
-        description: Entrypoint DNS Server
-        href: https://unbound-internal-1.matejhome.com
-        ping: unbound-internal-1.matejhome.com
-        icon: /icons/unbound.png
-
     - Unbound Blackhole 1:
         description: Entrypoint DNS Server
         href: https://unbound-blackhole-1.matejhome.com
         ping: unbound-blackhole-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound Blackhole 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-blackhole-2.matejhome.com
+        ping: unbound-blackhole-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound Default 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-default-1.matejhome.com
+        ping: unbound-default-1.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound Default 2:
@@ -181,22 +163,10 @@
         ping: unbound-default-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound Matej 2:
+    - Unbound Guests 1:
         description: Entrypoint DNS Server
-        href: https://unbound-matej-2.matejhome.com
-        ping: unbound-matej-2.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound Monika 2:
-        description: Entrypoint DNS Server
-        href: https://unbound-monika-2.matejhome.com
-        ping: unbound-monika-2.matejhome.com
-        icon: /icons/unbound.png
-
-    - Unbound IoT 2:
-        description: Entrypoint DNS Server
-        href: https://unbound-iot-2.matejhome.com
-        ping: unbound-iot-2.matejhome.com
+        href: https://unbound-guests-1.matejhome.com
+        ping: unbound-guests-1.matejhome.com
         icon: /icons/unbound.png
 
     - Unbound Guests 2:
@@ -205,16 +175,52 @@
         ping: unbound-guests-2.matejhome.com
         icon: /icons/unbound.png
 
+    - Unbound Internal 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-internal-1.matejhome.com
+        ping: unbound-internal-1.matejhome.com
+        icon: /icons/unbound.png
+
     - Unbound Internal 2:
         description: Entrypoint DNS Server
         href: https://unbound-internal-2.matejhome.com
         ping: unbound-internal-2.matejhome.com
         icon: /icons/unbound.png
 
-    - Unbound Blackhole 2:
+    - Unbound IoT 1:
         description: Entrypoint DNS Server
-        href: https://unbound-blackhole-2.matejhome.com
-        ping: unbound-blackhole-2.matejhome.com
+        href: https://unbound-iot-1.matejhome.com
+        ping: unbound-iot-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound IoT 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-iot-2.matejhome.com
+        ping: unbound-iot-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound Matej 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-matej-1.matejhome.com
+        ping: unbound-matej-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound Matej 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-matej-2.matejhome.com
+        ping: unbound-matej-2.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound Monika 1:
+        description: Entrypoint DNS Server
+        href: https://unbound-monika-1.matejhome.com
+        ping: unbound-monika-1.matejhome.com
+        icon: /icons/unbound.png
+
+    - Unbound Monika 2:
+        description: Entrypoint DNS Server
+        href: https://unbound-monika-2.matejhome.com
+        ping: unbound-monika-2.matejhome.com
         icon: /icons/unbound.png
 
 - Smart Home:
@@ -285,67 +291,15 @@
         icon: /icons/tvheadend.png
 
 - Monitoring:
-    - Healthchecks:
-        description: Cron Monitoring System
-        href: https://healthchecks.matejhome.com
-        ping: healthchecks.matejhome.com
-        icon: /icons/healthchecks.png
+    - Changedetection:
+        description: Website Change Monitoring System
+        href: https://changedetection.matejhome.com
+        ping: changedetection.matejhome.com
+        icon: /icons/changedetection.png
         widget:
-          type: healthchecks
-          url: https://healthchecks.matejhome.com
-          key: "{{HOMEPAGE_VAR__HEALTHCHECKS__APIKEY}}"
-
-    - Gatus 1:
-        description: Uptime Monitoring System
-        href: https://gatus-1.matejhome.com
-        ping: gatus-1.matejhome.com
-        icon: /icons/gatus.png
-        widget:
-          type: gatus
-          url: https://gatus-1.matejhome.com
-          username: homelab-viewer
-          password: "{{HOMEPAGE_VAR__GATUS_1__PASSWORD}}"
-
-    - Gatus 2:
-        description: Uptime Monitoring System
-        href: https://gatus-2.matejhome.com
-        ping: gatus-2.matejhome.com
-        icon: /icons/gatus.png
-        widget:
-          type: gatus
-          url: https://gatus-2.matejhome.com
-          username: homelab-viewer
-          password: "{{HOMEPAGE_VAR__GATUS_2__PASSWORD}}"
-
-    - UptimeKuma 1:
-        description: Uptime Monitoring System
-        href: https://uptimekuma-1.matejhome.com
-        ping: uptimekuma-1.matejhome.com
-        icon: /icons/uptimekuma.png
-        widget:
-          type: uptimekuma
-          url: https://uptimekuma-1.matejhome.com
-          slug: homelab
-
-    - UptimeKuma 2:
-        description: Uptime Monitoring System
-        href: https://uptimekuma-2.matejhome.com
-        ping: uptimekuma-2.matejhome.com
-        icon: /icons/uptimekuma.png
-        widget:
-          type: uptimekuma
-          url: https://uptimekuma-2.matejhome.com
-          slug: homelab
-
-    - Prometheus:
-        description: Metrics Monitoring
-        href: https://prometheus.matejhome.com
-        ping: prometheus.matejhome.com
-        icon: /icons/prometheus.png
-        # TODO: Eventually enable prometheus widget to use prometheus directly - https://github.com/gethomepage/homepage/discussions/1985
-        widget:
-          type: prometheus
-          url: http://widgets:8080/prometheus
+          type: changedetectionio
+          url: https://changedetection.matejhome.com
+          key: "{{HOMEPAGE_VAR__CHANGEDETECTION__APIKEY}}"
 
     - Dozzle:
         description: Docker Monitoring
@@ -381,37 +335,27 @@
         icon: /icons/dozzleagent.png
         target: _self
 
-    - SpeedTest Tracker:
-        description: Internet Speed Monitoring System
-        href: https://speedtesttracker.matejhome.com
-        ping: speedtesttracker.matejhome.com
-        icon: /icons/speedtest.png
+    - Gatus 1:
+        description: Uptime Monitoring System
+        href: https://gatus-1.matejhome.com
+        ping: gatus-1.matejhome.com
+        icon: /icons/gatus.png
         widget:
-          type: speedtest
-          url: https://speedtesttracker.matejhome.com
-          key: "{{HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY}}"
-          version: 2
-          bitratePrecision: 1
+          type: gatus
+          url: https://gatus-1.matejhome.com
+          username: homelab-viewer
+          password: "{{HOMEPAGE_VAR__GATUS_1__PASSWORD}}"
 
-    - Changedetection:
-        description: Website Change Monitoring System
-        href: https://changedetection.matejhome.com
-        ping: changedetection.matejhome.com
-        icon: /icons/changedetection.png
+    - Gatus 2:
+        description: Uptime Monitoring System
+        href: https://gatus-2.matejhome.com
+        ping: gatus-2.matejhome.com
+        icon: /icons/gatus.png
         widget:
-          type: changedetectionio
-          url: https://changedetection.matejhome.com
-          key: "{{HOMEPAGE_VAR__CHANGEDETECTION__APIKEY}}"
-
-    - NetAlertX:
-        description: Network Monitoring
-        href: https://netalertx.matejhome.com
-        ping: netalertx.matejhome.com
-        icon: /icons/netalertx.png
-        # widget:
-        #   type: netalertx
-        #   url: https://netalertx.matejhome.com
-        #   key: "{{HOMEPAGE_VAR__NETALERTX__APIKEY}}"
+          type: gatus
+          url: https://gatus-2.matejhome.com
+          username: homelab-viewer
+          password: "{{HOMEPAGE_VAR__GATUS_2__PASSWORD}}"
 
     - Grafana:
         description: Metrics And Log Monitoring
@@ -424,13 +368,69 @@
         #   username: admin
         #   password: "{{HOMEPAGE_VAR__GRAFANA__PASSWORD}}"
 
-- Other Apps:
-    - Homepage:
-        description: Dashboard
-        href: https://homepage.matejhome.com
-        ping: homepage.matejhome.com
-        icon: /icons/homepage.png
+    - Healthchecks:
+        description: Cron Monitoring System
+        href: https://healthchecks.matejhome.com
+        ping: healthchecks.matejhome.com
+        icon: /icons/healthchecks.png
+        widget:
+          type: healthchecks
+          url: https://healthchecks.matejhome.com
+          key: "{{HOMEPAGE_VAR__HEALTHCHECKS__APIKEY}}"
 
+    - NetAlertX:
+        description: Network Monitoring
+        href: https://netalertx.matejhome.com
+        ping: netalertx.matejhome.com
+        icon: /icons/netalertx.png
+        # widget:
+        #   type: netalertx
+        #   url: https://netalertx.matejhome.com
+        #   key: "{{HOMEPAGE_VAR__NETALERTX__APIKEY}}"
+
+    - Prometheus:
+        description: Metrics Monitoring
+        href: https://prometheus.matejhome.com
+        ping: prometheus.matejhome.com
+        icon: /icons/prometheus.png
+        # TODO: Eventually enable prometheus widget to use prometheus directly - https://github.com/gethomepage/homepage/discussions/1985
+        widget:
+          type: prometheus
+          url: http://widgets:8080/prometheus
+
+    - SpeedTest Tracker:
+        description: Internet Speed Monitoring System
+        href: https://speedtesttracker.matejhome.com
+        ping: speedtesttracker.matejhome.com
+        icon: /icons/speedtest.png
+        widget:
+          type: speedtest
+          url: https://speedtesttracker.matejhome.com
+          key: "{{HOMEPAGE_VAR__SPEEDTESTTRACKER__APIKEY}}"
+          version: 2
+          bitratePrecision: 1
+
+    - UptimeKuma 1:
+        description: Uptime Monitoring System
+        href: https://uptimekuma-1.matejhome.com
+        ping: uptimekuma-1.matejhome.com
+        icon: /icons/uptimekuma.png
+        widget:
+          type: uptimekuma
+          url: https://uptimekuma-1.matejhome.com
+          slug: homelab
+
+    - UptimeKuma 2:
+        description: Uptime Monitoring System
+        href: https://uptimekuma-2.matejhome.com
+        ping: uptimekuma-2.matejhome.com
+        icon: /icons/uptimekuma.png
+        widget:
+          type: uptimekuma
+          url: https://uptimekuma-2.matejhome.com
+          slug: homelab
+
+- Other Apps:
     - AdventureLog:
         description: Trip Planner
         href: https://adventurelog.matejhome.com
@@ -443,11 +443,23 @@
         ping: certbot.matejhome.com
         icon: /icons/lets-encrypt.png
 
+    - Dawarich:
+        description: Location Tracking
+        href: https://dawarich.matejhome.com
+        ping: dawarich.matejhome.com
+        icon: /icons/dawarich.png
+
     - Dockerhub proxy:
         description: Dockerhub Transparent Caching Proxy
         href: https://docker-cache-dockerhub.matejhome.com
         ping: docker-cache-dockerhub.matejhome.com
         icon: /icons/docker.png
+
+    - Homepage:
+        description: Dashboard
+        href: https://homepage.matejhome.com
+        ping: homepage.matejhome.com
+        icon: /icons/homepage.png
 
     - Koffan:
         description: Shopping list
@@ -460,6 +472,24 @@
         href: https://libretranslate.matejhome.com
         ping: libretranslate.matejhome.com
         icon: /icons/libretranslate.png
+
+    - MinIO:
+        description: S3 Compatible Storage
+        href: https://minio-console.matejhome.com
+        ping: minio-console.matejhome.com
+        icon: /icons/minio.png
+
+    - OpenSpeedTest:
+        description: LAN Speedtest
+        href: https://openspeedtest.matejhome.com
+        ping: openspeedtest.matejhome.com
+        icon: /icons/openspeedtest.png
+
+    - Renovatebot:
+        description: Dependency Updates
+        href: https://renovatebot.matejhome.com
+        ping: renovatebot.matejhome.com
+        icon: /icons/renovatebot.png
 
     - Smtp4dev:
         description: Simple Email Server
@@ -478,35 +508,11 @@
               field: unread
               format: number
 
-    - MinIO:
-        description: S3 Compatible Storage
-        href: https://minio-console.matejhome.com
-        ping: minio-console.matejhome.com
-        icon: /icons/minio.png
-
-    - OpenSpeedTest:
-        description: LAN Speedtest
-        href: https://openspeedtest.matejhome.com
-        ping: openspeedtest.matejhome.com
-        icon: /icons/openspeedtest.png
-
     - Vaultwarden:
         description: Password Manager
         href: https://vaultwarden.matejhome.com
         ping: vaultwarden.matejhome.com
         icon: /icons/vaultwarden.png
-
-    - Dawarich:
-        description: Location Tracking
-        href: https://dawarich.matejhome.com
-        ping: dawarich.matejhome.com
-        icon: /icons/dawarich.png
-
-    - Renovatebot:
-        description: Dependency Updates
-        href: https://renovatebot.matejhome.com
-        ping: renovatebot.matejhome.com
-        icon: /icons/renovatebot.png
 
     - Wikipedia:
         description: Free Encyclopedia
@@ -540,17 +546,17 @@
         icon: /icons/pushover.png
 
 - Planning:
-    - Planka:
-        description: Homelab Project Management
-        href: https://planka.matejhome.com
-        ping: planka.matejhome.com
-        icon: /icons/planka.png
-
     - DoneTick:
         description: ToDo App for periodic home tasks
         href: https://donetick.matejhome.com
         ping: donetick.matejhome.com
         icon: /icons/donetick.png
+
+    - Planka:
+        description: Homelab Project Management
+        href: https://planka.matejhome.com
+        ping: planka.matejhome.com
+        icon: /icons/planka.png
 
     - Vikunja:
         description: ToDo App
@@ -602,30 +608,6 @@
         icon: /icons/stable-diffusion.png
 
 - Resources:
-    - NodeExporter - Odroid H3:
-        description: Resource Monitoring
-        href: https://nodeexporter-odroid-h3.matejhome.com
-        ping: nodeexporter-odroid-h3.matejhome.com
-        icon: /icons/nodeexporter.png
-
-    - NodeExporter - Odroid H4 Ultra:
-        description: Resource Monitoring
-        href: https://nodeexporter-odroid-h4-ultra.matejhome.com
-        ping: nodeexporter-odroid-h4-ultra.matejhome.com
-        icon: /icons/nodeexporter.png
-
-    - NodeExporter - Raspberry Pi 4B 2GB:
-        description: Resource Monitoring
-        href: https://nodeexporter-raspberry-pi-4b-2g.matejhome.com
-        ping: nodeexporter-raspberry-pi-4b-2g.matejhome.com
-        icon: /icons/nodeexporter.png
-
-    - NodeExporter - Raspberry Pi 4B 4GB:
-        description: Resource Monitoring
-        href: https://nodeexporter-raspberry-pi-4b-4g.matejhome.com
-        ping: nodeexporter-raspberry-pi-4b-4g.matejhome.com
-        icon: /icons/nodeexporter.png
-
     - Docker Stats - Odroid H3:
         description: Docker Usage Monitoring
         href: https://docker-stats-odroid-h3.matejhome.com
@@ -649,6 +631,30 @@
         href: https://docker-stats-raspberry-pi-4b-4g.matejhome.com
         ping: docker-stats-raspberry-pi-4b-4g.matejhome.com
         icon: /icons/docker.png
+
+    - NodeExporter - Odroid H3:
+        description: Resource Monitoring
+        href: https://nodeexporter-odroid-h3.matejhome.com
+        ping: nodeexporter-odroid-h3.matejhome.com
+        icon: /icons/nodeexporter.png
+
+    - NodeExporter - Odroid H4 Ultra:
+        description: Resource Monitoring
+        href: https://nodeexporter-odroid-h4-ultra.matejhome.com
+        ping: nodeexporter-odroid-h4-ultra.matejhome.com
+        icon: /icons/nodeexporter.png
+
+    - NodeExporter - Raspberry Pi 4B 2GB:
+        description: Resource Monitoring
+        href: https://nodeexporter-raspberry-pi-4b-2g.matejhome.com
+        ping: nodeexporter-raspberry-pi-4b-2g.matejhome.com
+        icon: /icons/nodeexporter.png
+
+    - NodeExporter - Raspberry Pi 4B 4GB:
+        description: Resource Monitoring
+        href: https://nodeexporter-raspberry-pi-4b-4g.matejhome.com
+        ping: nodeexporter-raspberry-pi-4b-4g.matejhome.com
+        icon: /icons/nodeexporter.png
 
 - Crossroads:
     - Docker Stats:
