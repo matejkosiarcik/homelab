@@ -675,6 +675,12 @@
         ping: gatus.matejhome.com
         icon: /icons/crossroads.png
 
+    - Kiwix:
+        description: Offline Encyclopedia and Dictionary
+        href: https://kiwix.matejhome.com
+        ping: kiwix.matejhome.com
+        icon: /icons/crossroads.png
+
     - NodeExporter:
         description: Resource Monitoring
         href: https://nodeexporter.matejhome.com

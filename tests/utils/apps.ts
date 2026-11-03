@@ -46,6 +46,8 @@ export const apps = {
             { url: 'https://gatus.matejhome.com', title: 'Gatus' },
             { url: 'https://kiwix.matejhome.com', title: 'Kiwix' },
             { url: 'https://nodeexporter.matejhome.com', title: 'NodeExporter' },
+            { url: 'https://pihole.matejhome.com', title: 'PiHole' },
+            { url: 'https://unbound.matejhome.com', title: 'Unbound' },
             { url: 'https://uptimekuma.matejhome.com', title: 'Uptime Kuma' },
             { url: 'https://vnc.matejhome.com', title: 'VNC' },
         ],

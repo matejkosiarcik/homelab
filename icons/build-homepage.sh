@@ -184,6 +184,11 @@ output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus
 prepare_output_dir "${output_dir}"
 convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
 
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/kiwix"
+prepare_output_dir "${output_dir}"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "${output_dir}/wikipedia.png"
+convert_image_full "${tmpdir}/other/wiktionary.svg" "${output_dir}/wiktionary.png"
+
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/nodeexporter"
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometheus-node-exporter.svg" "${output_dir}/nodeexporter.png"

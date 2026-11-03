@@ -2,5 +2,5 @@ app:
   type: crossroad
 
 network:
-  ip: 10.1.12.76
+  ip: 10.1.12.77
   domain: unbound.matejhome.com
