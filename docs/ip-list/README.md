@@ -14,7 +14,7 @@
 | `10.1.10.11` | `pihole-3.matejhome.com`                        |
 | `10.1.10.12` | `pihole-4.matejhome.com`                        |
 | `10.1.10.21` | `dockerstats-odroid-h3.matejhome.com`          |
-| `10.1.10.22` | `dozzle-agent-odroid-h3.matejhome.com`          |
+| `10.1.10.22` | `dozzleagent-odroid-h3.matejhome.com`          |
 | `10.1.10.23` | `nodeexporter-odroid-h3.matejhome.com`          |
 | `10.1.10.31` | `data.matejhome.com`                            |
 | `10.1.10.32` | `gatus-2.matejhome.com`                         |
@@ -29,7 +29,7 @@
 | `10.1.12.11` | `pihole-1.matejhome.com`                        |
 | `10.1.12.12` | `pihole-2.matejhome.com`                        |
 | `10.1.12.21` | `dockerstats-odroid-h4-ultra.matejhome.com`    |
-| `10.1.12.22` | `dozzle-agent-odroid-h4-ultra.matejhome.com`    |
+| `10.1.12.22` | `dozzleagent-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.23` | `nodeexporter-odroid-h4-ultra.matejhome.com`    |
 | `10.1.12.31` | `unificontroller.matejhome.com`                 |
 | `10.1.12.32` | `omadacontroller.matejhome.com`                 |
@@ -81,10 +81,10 @@
 | `10.1.12.78` | `uptimekuma.matejhome.com`                      |
 | `10.1.12.79` | `vnc.matejhome.com`                             |
 | `10.1.14.21` | `dockerstats-raspberry-pi-4b-2g.matejhome.com` |
-| `10.1.14.22` | `dozzle-agent-raspberry-pi-4b-2g.matejhome.com` |
+| `10.1.14.22` | `dozzleagent-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.14.23` | `nodeexporter-raspberry-pi-4b-2g.matejhome.com` |
 | `10.1.16.21` | `dockerstats-raspberry-pi-4b-4g.matejhome.com` |
-| `10.1.16.22` | `dozzle-agent-raspberry-pi-4b-4g.matejhome.com` |
+| `10.1.16.22` | `dozzleagent-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.23` | `nodeexporter-raspberry-pi-4b-4g.matejhome.com` |
 | `10.1.16.31` | `vnc-raspberry-pi-4b-4g.matejhome.com`          |
 

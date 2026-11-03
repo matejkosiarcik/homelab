@@ -514,7 +514,7 @@ dozzle)
     touch "${initial_output}/favicons.env"
     ;;
 
-dozzle-agent)
+dozzleagent)
     # App #
     openssl genpkey -algorithm RSA -out "${tmpdir}/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "${tmpdir}/key.pem" -out "${tmpdir}/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"

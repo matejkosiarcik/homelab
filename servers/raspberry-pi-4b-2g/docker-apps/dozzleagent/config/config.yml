@@ -1,5 +1,5 @@
 app:
-  type: dozzle-agent
+  type: dozzleagent
 
 network:
   ip: 10.1.14.22

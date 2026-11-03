@@ -85,13 +85,13 @@ export const apps = {
             { url: 'https://dozzle.matejhome.com', title: 'Server' },
         ],
     },
-    'dozzle-agent': {
+    dozzleagent: {
         title: 'Dozzle Agent',
         instances: [
-            { url: 'tcp://dozzle-agent-odroid-h3.matejhome.com', title: 'Odroid H3' },
-            { url: 'tcp://dozzle-agent-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-4b-2g.matejhome.com', title: 'Raspberry Pi 4B 2GB' },
-            { url: 'tcp://dozzle-agent-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
+            { url: 'tcp://dozzleagent-odroid-h3.matejhome.com', title: 'Odroid H3' },
+            { url: 'tcp://dozzleagent-odroid-h4-ultra.matejhome.com', title: 'Odroid H4 Ultra' },
+            { url: 'tcp://dozzleagent-raspberry-pi-4b-2g.matejhome.com', title: 'Raspberry Pi 4B 2GB' },
+            { url: 'tcp://dozzleagent-raspberry-pi-4b-4g.matejhome.com', title: 'Raspberry Pi 4B 4GB' },
         ],
     },
     gatus: {

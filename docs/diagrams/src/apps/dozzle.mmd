@@ -40,10 +40,10 @@ flowchart LR
     subgraph others_2["Others"]
         healthchecks("<div class='custom-node'><img src='../../../../icons/healthchecks.png' /><p>Healthchecks</p></div>")
         certbot("<div class='custom-node'><img src='../../../../icons/lets-encrypt.png' /><p>Certbot</p></div>")
-        dozzle_agents("<div class='custom-node'><img src='../../../../icons/dozzle-agent.png' /><p>Dozzle<br/>agents</p></div>")
-        class dozzle_agents dashed_border
+        dozzleagents("<div class='custom-node'><img src='../../../../icons/dozzleagents.png' /><p>Dozzle<br/>agents</p></div>")
+        class dozzleagents dashed_border
 
-        app -->|read| dozzle_agents
+        app -->|read| dozzleagents
         certificator -->|report status| healthchecks
         certificator -.->|download certificate| certbot
     end

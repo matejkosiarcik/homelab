@@ -1,6 +1,6 @@
 # Dozzle agent
 
-![diagram](../../docs/diagrams/out/apps/dozzle-agent.png)
+![diagram](../../docs/diagrams/out/apps/dozzleagent.png)
 
 ## Docs
 

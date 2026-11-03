@@ -183,23 +183,23 @@ if should_generate_icon "${input_dir}/prebuild/cloud.png" "${input_dir}/gitman-r
 fi
 
 # Dozzle agent (single
-if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agent.png"; then
+if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagent.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 1000x1000 \) -gravity Center -composite \
         \( -size 300x300 xc:none -fill '#2563eb' -stroke '#ffffff' -strokewidth 25 -draw 'circle 150,150 150,20' -fill none -stroke '#ffffff' -strokewidth 45 -draw 'line 65,240 150,60 line 150,60 235,240 line 95,185 205,185' \) -gravity NorthEast -geometry +0+0 -composite \
-        "${tmpdir}/dozzle-agent.png"
-    convert_image_full "${tmpdir}/dozzle-agent.png" "${output_dir}/dozzle-agent.png"
-    rm -f "${tmpdir}/dozzle-agent.png"
+        "${tmpdir}/dozzleagent.png"
+    convert_image_full "${tmpdir}/dozzleagent.png" "${output_dir}/dozzleagent.png"
+    rm -f "${tmpdir}/dozzleagent.png"
 fi
 
 # Dozzle agents (multiple)
-if should_generate_icon "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzle-agents.png"; then
+if should_generate_icon "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagents.png"; then
     magick -size 1000x1000 xc:none \
         \( "${input_dir}/gitman-repositories/kubernetes-community/icons/svg/resources/unlabeled/job.svg" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
         \( "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" -background none -resize 500x500 \) -gravity SouthEast -geometry +0+63 -composite \
-        "${tmpdir}/dozzle-agents.png"
-    convert_image_full "${tmpdir}/dozzle-agents.png" "${output_dir}/dozzle-agents.png"
-    rm -f "${tmpdir}/dozzle-agents.png"
+        "${tmpdir}/dozzleagents.png"
+    convert_image_full "${tmpdir}/dozzleagents.png" "${output_dir}/dozzleagents.png"
+    rm -f "${tmpdir}/dozzleagents.png"
 fi
 
 # Public DNS
