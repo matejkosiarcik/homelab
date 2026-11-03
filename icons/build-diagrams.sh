@@ -70,6 +70,7 @@ convert_image_full "${input_dir}/gitman-repositories/bash-logo/assets/Logos/Icon
 
 ### Dashboard Icons ###
 
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/png/actual-budget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/adventure-log.svg" "${output_dir}/adventurelog.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/aws.svg" "${output_dir}/aws.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/azure.svg" "${output_dir}/azure.png"
@@ -237,7 +238,6 @@ rm -f "${tmpdir}/elecricity-meter.svg"
 
 ## Other Icons ###
 
-convert_image_full "${tmpdir}/other/actualbudget.png" "${output_dir}/actualbudget.png"
 convert_image_full "${tmpdir}/other/antenna.png" "${output_dir}/antenna.png"
 convert_image_full "${tmpdir}/other/antennas.png" "${output_dir}/antennas.png"
 convert_image_full "${tmpdir}/other/apache.svg" "${output_dir}/apache.png"
