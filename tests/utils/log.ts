@@ -12,6 +12,7 @@ export class Log {
 
     private static get instance(): winston.Logger {
         const outputDirectory = testArtifactDirectory();
+        fs.mkdirSync(outputDirectory, { recursive: true });
         const loggerName = path.basename(outputDirectory);
 
         if (this._instances[loggerName]) {
