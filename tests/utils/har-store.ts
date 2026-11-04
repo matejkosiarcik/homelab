@@ -151,8 +151,12 @@ export class AxiosHarStore {
             startedDateTime: entry.request.startDate ? formatISO(entry.request.startDate) : 'N/A',
             time: (entry.request.startDate && entry.response.endDate) ? (entry.response.endDate.getTime() - entry.request.startDate.getTime()) : -1,
             timings: {
+                blocked: -1,
+                connect: -1,
+                dns: -1,
                 receive: 0,
                 send: 0,
+                ssl: -1,
                 wait: 0,
             },
         });
