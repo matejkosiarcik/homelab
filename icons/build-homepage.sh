@@ -170,6 +170,7 @@ convert_image_full "${input_dir}/prebuild/libretranslate.png" "${output_dir}/lib
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"
 convert_image_full "${input_dir}/prebuild/openwebui.png" "${output_dir}/openwebui.png"
 convert_image_full "${input_dir}/prebuild/prebudget.png" "${output_dir}/prebudget.png"
+convert_image_full "${input_dir}/prebuild/unbound-blackhole.png" "${output_dir}/unbound-blackhole.png"
 
 ### Crossroad ###
 
@@ -208,7 +209,7 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/novnc.s
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/unbound"
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
-cp "${output_dir}/unbound.png" "${output_dir}/unbound-blackhole.png"
+convert_image_full "${input_dir}/prebuild/unbound-blackhole.png" "${output_dir}/unbound-blackhole.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/uptimekuma"
 prepare_output_dir "${output_dir}"

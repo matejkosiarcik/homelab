@@ -39,6 +39,7 @@ The Icons are obtained from following locations:
     - Squid: <https://github.com/squid-cache>
     - SSL Certificate: <https://www.flaticon.com/free-icon/ssl-certificate_6472048>
     - Stable Diffusion: <https://custom.typingmind.com/tools/model-icons/stable-diffusion>
+    - Stop sign (hand): <https://www.freeiconspng.com/img/10065>
     - TV: <https://www.iconexperience.com/g_collection/icons/?icon=flatscreen_tv>
     - TV (old): <https://www.flaticon.com/free-icon/television_550486>
     - UPC: <https://www.upc.sk>

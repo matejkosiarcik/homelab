@@ -256,6 +256,16 @@ if should_generate_icon "${tmpdir}/13_05_osa_icons_svg/osa_home.svg" "${tmpdir}/
     rm -f "${tmpdir}/smart-home-devices.png"
 fi
 
+# Unbound blackhole
+if should_generate_icon "${input_dir}/gitman-repositories/dashboard-icons/png/unbound.png" "${input_dir}/other/stop-sign-hand.png" "${output_dir}/unbound-blackhole.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/gitman-repositories/dashboard-icons/png/unbound.png" -background none -resize 1000x1000 \) -gravity Center -geometry +0+0 -composite \
+        \( "${input_dir}/other/stop-sign-hand.png" -background none -resize 400x400 \) -gravity SouthEast -geometry +0+0 -composite \
+        "${tmpdir}/unbound-blackhole.png"
+    convert_image_full "${tmpdir}/unbound-blackhole.png" "${output_dir}/unbound-blackhole.png"
+    rm -f "${tmpdir}/unbound-blackhole.png"
+fi
+
 ### Cache ###
 
 # APT cache proxy
