@@ -1,16 +1,6 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
-### Healthcheck ###
-
-FROM golang:1.27.3-alpine AS healthcheck_build
-USER root
-WORKDIR /homelab
-COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
-RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
-    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
-    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
-
 ### Build config ###
 
 FROM node:26.13.0-slim AS npmconfig
@@ -46,7 +36,22 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
+### Healthcheck ###
+
+FROM golang:1.27.3-alpine AS healthcheck_build
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
+RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
+    --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
+    CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
+
 ### Other ###
+
+FROM debian:13.7-slim AS empty_dir
+USER root
+RUN mkdir /empty && \
+    touch /empty.txt
 
 FROM ghcr.io/gethomepage/homepage:v2.7.0 AS entrypoint
 USER root
@@ -94,6 +99,7 @@ COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 COPY ./docker-images/homepage/app/icons/ /app/public/icons/
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh
+COPY --from=empty_dir /empty /app/config/logs
 
 ### Final ###
 
@@ -101,13 +107,14 @@ FROM ghcr.io/gethomepage/homepage:v2.7.0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
-RUN rm -rf /app/.next/server/pages /app/config
+RUN rm -rf /app/.next/server/pages /app/config /app/config/logs
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 RUN chown -R homelab:homelab /app
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /app/public/icons /app/public/icons
 COPY --from=prefinal --chown=homelab:homelab /fsroot/entrypoint/docker-entrypoint.sh /usr/local/bin/
+COPY --from=prefinal --chown=homelab:homelab /app/config/logs /app/config/logs
 ENV HOMELAB_CONTAINER_NAME="homepage" \
     HOMELAB_CONTAINER_VARIANT="default" \
     HOMEPAGE_AUTH_ENABLED="true" \
