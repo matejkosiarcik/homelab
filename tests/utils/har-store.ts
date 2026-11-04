@@ -2,6 +2,16 @@ import { URL } from 'node:url';
 import { formatISO, parseISO } from 'date-fns';
 import { Entry as HarEntry } from 'har-format';
 
+export type AxiosHarTimings = {
+    blocked?: number;
+    connect?: number;
+    dns?: number;
+    receive?: number;
+    send?: number;
+    ssl?: number;
+    wait?: number;
+};
+
 type AxiosHarStoreEntry = {
     request: {
         body: string;
@@ -19,6 +29,7 @@ type AxiosHarStoreEntry = {
         status: number;
         statusText: string;
         endDate: Date | null;
+        timings: AxiosHarTimings;
     };
 };
 
@@ -151,13 +162,10 @@ export class AxiosHarStore {
             startedDateTime: entry.request.startDate ? formatISO(entry.request.startDate) : 'N/A',
             time: (entry.request.startDate && entry.response.endDate) ? (entry.response.endDate.getTime() - entry.request.startDate.getTime()) : -1,
             timings: {
-                blocked: -1,
-                connect: -1,
-                dns: -1,
-                receive: 0,
-                send: 0,
-                ssl: -1,
-                wait: 0,
+                ...entry.response.timings,
+                receive: entry.response.timings.receive ?? 0,
+                send: entry.response.timings.send ?? 0,
+                wait: entry.response.timings.wait ?? 0,
             },
         });
     }

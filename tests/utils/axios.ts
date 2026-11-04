@@ -1,7 +1,10 @@
+import http, { type ClientRequest } from 'node:http';
 import https from 'node:https';
+import { isIP } from 'node:net';
+import { performance } from 'node:perf_hooks';
 import { default as baseAxios, type CreateAxiosDefaults, type AxiosInstance, type AxiosRequestConfig, AxiosError, isAxiosError, AxiosResponse } from 'axios';
 import _ from 'lodash';
-import { AxiosHarStore } from './har-store';
+import { AxiosHarStore, type AxiosHarTimings } from './har-store';
 import { Log } from './log';
 import { capitalize, formatDuration } from './utils';
 
@@ -9,14 +12,156 @@ type CustomAxiosRequestConfig = AxiosRequestConfig & {
     startedDate?: Date | undefined;
 };
 
+const axiosHarTiming = Symbol('axiosHarTiming');
+const instrumentedAxiosAgents = new WeakSet<object>();
+
+type AgentRequestOptions = {
+    hostname?: string | undefined;
+    protocol?: string | undefined;
+};
+
+type InstrumentedAgent = {
+    addRequest?: ((request: ClientRequest, ...args: unknown[]) => void) | undefined;
+};
+
+type TimedClientRequest = ClientRequest & {
+    [axiosHarTiming]?: AxiosRequestTiming | undefined;
+    _currentRequest?: TimedClientRequest | undefined;
+};
+
+class AxiosRequestTiming {
+    private readonly _startedAt = performance.now();
+    private _connectedAt: number | undefined;
+    private _dnsEndedAt: number | undefined;
+    private _dnsDoesNotApply = false;
+    private _requestFinishedAt: number | undefined;
+    private _responseEndedAt: number | undefined;
+    private _responseStartedAt: number | undefined;
+    private _secureConnectedAt: number | undefined;
+    private _socketAssignedAt: number | undefined;
+    private _socketReused = false;
+    private _tlsDoesNotApply = false;
+
+    public attach(request: TimedClientRequest, options: AgentRequestOptions | undefined): void {
+        this._dnsDoesNotApply = options?.hostname ? isIP(options.hostname) !== 0 : false;
+        this._tlsDoesNotApply = options?.protocol === 'http:';
+
+        request.once('socket', (socket) => {
+            this._socketAssignedAt = performance.now();
+            this._socketReused = !socket.connecting;
+
+            if (this._socketReused) {
+                return;
+            }
+
+            socket.once('lookup', () => {
+                this._dnsEndedAt = performance.now();
+            });
+            socket.once('connect', () => {
+                this._connectedAt = performance.now();
+            });
+            socket.once('secureConnect', () => {
+                this._secureConnectedAt = performance.now();
+            });
+        });
+        request.once('finish', () => {
+            this._requestFinishedAt = performance.now();
+        });
+        request.once('response', (response) => {
+            this._responseStartedAt = performance.now();
+            response.once('end', () => {
+                this._responseEndedAt = performance.now();
+            });
+        });
+    }
+
+    public getHarTimings(): AxiosHarTimings {
+        const socketAssignedAt = this._socketAssignedAt;
+        if (socketAssignedAt === undefined) {
+            return {};
+        }
+
+        const timings: AxiosHarTimings = {
+            blocked: this.getDuration(this._startedAt, socketAssignedAt),
+        };
+
+        if (this._socketReused) {
+            timings.connect = -1;
+            timings.dns = -1;
+            timings.ssl = -1;
+        } else {
+            if (this._dnsEndedAt !== undefined) {
+                timings.dns = this.getDuration(socketAssignedAt, this._dnsEndedAt);
+            } else if (this._dnsDoesNotApply) {
+                timings.dns = -1;
+            }
+
+            if (this._connectedAt !== undefined) {
+                timings.connect = this.getDuration(this._dnsEndedAt ?? socketAssignedAt, this._secureConnectedAt ?? this._connectedAt);
+            }
+
+            if (this._secureConnectedAt !== undefined && this._connectedAt !== undefined) {
+                timings.ssl = this.getDuration(this._connectedAt, this._secureConnectedAt);
+            } else if (this._tlsDoesNotApply) {
+                timings.ssl = -1;
+            }
+        }
+
+        const connectionReadyAt = this._secureConnectedAt ?? this._connectedAt ?? socketAssignedAt;
+        if (this._requestFinishedAt !== undefined) {
+            const requestFinishedAt = Math.max(connectionReadyAt, this._requestFinishedAt);
+            timings.send = this.getDuration(connectionReadyAt, requestFinishedAt);
+
+            if (this._responseStartedAt !== undefined) {
+                timings.wait = this.getDuration(requestFinishedAt, this._responseStartedAt);
+            }
+        }
+
+        if (this._responseStartedAt !== undefined && this._responseEndedAt !== undefined) {
+            timings.receive = this.getDuration(this._responseStartedAt, this._responseEndedAt);
+        }
+
+        return timings;
+    }
+
+    private getDuration(startedAt: number, endedAt: number): number {
+        return Math.max(0, endedAt - startedAt);
+    }
+}
+
+function instrumentAxiosAgent(agent: unknown): void {
+    if (!agent || typeof agent !== 'object' || instrumentedAxiosAgents.has(agent)) {
+        return;
+    }
+
+    const instrumentedAgent = agent as InstrumentedAgent;
+    const addRequest = instrumentedAgent.addRequest;
+    if (!addRequest) {
+        return;
+    }
+
+    instrumentedAgent.addRequest = (request, ...args) => {
+        const timing = new AxiosRequestTiming();
+        const timedRequest = request as TimedClientRequest;
+        timedRequest[axiosHarTiming] = timing;
+        timing.attach(timedRequest, args[0] as AgentRequestOptions | undefined);
+        addRequest.call(agent, request, ...args);
+    };
+    instrumentedAxiosAgents.add(agent);
+}
+
 export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): AxiosInstance {
     const axios = baseAxios.create({
+        httpAgent: http.globalAgent,
         timeout: 2500,
         httpsAgent: new https.Agent({ rejectUnauthorized: false }),
         maxRedirects: 999,
         validateStatus: () => true,
         ...axiosConfig,
     });
+
+    instrumentAxiosAgent(axios.defaults.httpAgent);
+    instrumentAxiosAgent(axios.defaults.httpsAgent);
 
     axios.interceptors.request.use(
         async (request) => {
@@ -57,6 +202,7 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
                     status: response.status,
                     statusText: response.statusText,
                     endDate: endedDate,
+                    timings: getAxiosResponseTimings(response),
                 },
             });
 
@@ -90,6 +236,7 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
                         status: error.status ?? 0,
                         statusText: 'N/A',
                         endDate: endedDate,
+                        timings: getAxiosResponseTimings(error),
                     },
                 });
 
@@ -195,6 +342,17 @@ export function getAxiosResponseHttpVersion(responseOrError: AxiosError | AxiosR
     }
 
     return 'Unknown';
+}
+
+/**
+ * Get HAR timing phases observed by the Node HTTP agent.
+ */
+export function getAxiosResponseTimings(responseOrError: AxiosError | AxiosResponse): AxiosHarTimings {
+    const response = isAxiosError(responseOrError) ? responseOrError.response : responseOrError;
+    const request = (response?.request ?? (isAxiosError(responseOrError) ? responseOrError.request : undefined)) as TimedClientRequest | undefined;
+    const timing = request?.[axiosHarTiming] ?? request?._currentRequest?.[axiosHarTiming];
+
+    return timing?.getHarTimings() ?? {};
 }
 
 /**
