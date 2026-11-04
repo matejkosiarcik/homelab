@@ -2,7 +2,8 @@ import nodeDns from 'node:dns/promises';
 import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
-import { axios, dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
+import { axios } from '#/utils/axios.ts';
+import { dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 

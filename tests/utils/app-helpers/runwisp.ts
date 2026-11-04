@@ -1,7 +1,7 @@
 import { pbkdf2 } from 'node:crypto';
 import { promisify } from 'node:util';
 import { expect } from '#/playwright/test.ts';
-import { axios } from '#/utils/utils.ts';
+import { axios } from '#/utils/axios.ts';
 
 export interface RunWispSession {
     readonly readOnly: boolean;

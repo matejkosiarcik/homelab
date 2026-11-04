@@ -1,7 +1,5 @@
 import fs from 'node:fs';
-import https from 'node:https';
 import process from 'node:process';
-import { default as baseAxios } from 'axios';
 import { execa, ExecaError } from 'execa';
 import * as tar from 'tar';
 import lzma from 'lzma-native';
@@ -102,13 +100,6 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
         }
     }
 }
-
-export const axios = baseAxios.create({
-    timeout: 2500,
-    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-    maxRedirects: 999,
-    validateStatus: () => true,
-});
 
 export async function extractTar(file: string, destination: string): Promise<void> {
     await new Promise((resolve, reject) => {

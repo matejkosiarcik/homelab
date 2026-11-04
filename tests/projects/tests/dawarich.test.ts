@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { axios } from '#/utils/axios.ts';
 import { getEnv } from '#/utils/utils.ts';
-import axios from 'axios';
 
 const app = apps.dawarich;
 
