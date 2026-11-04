@@ -9,6 +9,7 @@ services:
     build:
       dockerfile: ./docker-images/unbound/app/Dockerfile
     cap_add:
+      # TODO: It may be possible to remove this after not using host networking
       - NET_BIND_SERVICE # Necessary to bind to low port in host network mode
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
