@@ -8,6 +8,7 @@ import { test as baseTest } from '@playwright/test';
 import { expect as baseExpect } from '#/playwright/expect.ts';
 import { extendBrowser, extendContext, extendPage, testArtifactDirectory } from '#/playwright/utils.ts';
 import type { OverridenBrowser, OverridenContext, OverridenPage } from '#/types/playwright.d.ts';
+import { AxiosHarStore } from '../utils/har-store';
 
 const customExpect = baseExpect;
 
@@ -59,6 +60,8 @@ const customTest = baseTest.extend<{
             // Attach test start date
             const startDate = new Date();
             baseTest.info().annotations.push({ description: startDate.toISOString(), type: 'datetime-start' });
+
+            AxiosHarStore.shared.clear();
 
             await use();
 
@@ -192,6 +195,29 @@ const customTest = baseTest.extend<{
                         } finally {
                             await fsx.rm(newFile, { force: true });
                         }
+                    }
+                })();
+            } catch (error) {
+                errors.push(error);
+            }
+
+            /**
+             * Attach captured HAR from API to test report
+             */
+            try {
+                await (async () => {
+                    if (AxiosHarStore.shared.entries.length === 0) {
+                        return;
+                    }
+
+                    const content = AxiosHarStore.shared.getOutput();
+                    const filename = `API HAR${retryAttachmentLabel}.txt`;
+                    const newFile = path.join(tmpDirectory, filename);
+                    try {
+                        await fsx.writeFile(newFile, content, 'utf8');
+                        await baseTest.info().attach(filename, { contentType: 'text/plain', body: await fsx.readFile(newFile, 'utf8') });
+                    } finally {
+                        await fsx.rm(newFile, { force: true });
                     }
                 })();
             } catch (error) {

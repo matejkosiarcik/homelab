@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import process from 'node:process';
 import { Locator } from '@playwright/test';
 import { execa, ExecaError } from 'execa';
+import _ from 'lodash';
 import lzma from 'lzma-native';
 import * as tar from 'tar';
 import { apps } from '#/utils/apps.ts';
@@ -183,4 +184,15 @@ export function formatDuration(milliseconds: number): string {
         smallestUnit: "millisecond",
     });
     return new Intl.DurationFormat("en", { style: "short" }).format(duration).replaceAll(/[, ]/g, '');
+}
+
+export function capitalize(text: string): string {
+    return text
+        .split('\n')
+        .map((line) => line
+            .split('-')
+            .map((text) => _.capitalize(text))
+            .join('-'),
+        )
+        .join('\n');
 }
