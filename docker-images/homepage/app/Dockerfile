@@ -35,12 +35,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 FROM node:26.13.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/homepage/app/package-lock.json ./docker-images/homepage/app/package.json /homelab/
+COPY ./docker-images/.shared/homepage-helpers/package-lock.json ./docker-images/.shared/homepage-helpers/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/homepage/app/terser.json ./docker-images/homepage/app/tsconfig.json ./docker-images/homepage/app/vite.config.ts /homelab/
-COPY ./docker-images/homepage/app/src/ /homelab/src/
+COPY ./docker-images/.shared/homepage-helpers/terser.json ./docker-images/.shared/homepage-helpers/tsconfig.json ./docker-images/.shared/homepage-helpers/vite.config.ts /homelab/
+COPY ./docker-images/.shared/homepage-helpers/src/ /homelab/src/
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
