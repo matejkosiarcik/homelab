@@ -16,8 +16,7 @@ ARG UID=1000
 COPY ./docker-images/.shared/build-utils/create-user.sh /homelab/
 RUN sh '/homelab/create-user.sh' && \
     pwconv && \
-    passwd --lock homelab && \
-    usermod --append --groups root homelab
+    passwd --lock homelab
 
 ### Healthcheck ###
 
