@@ -163,6 +163,7 @@ convert_image_full "${tmpdir}/other/windshift.svg" "${output_dir}/windshift.png"
 
 ### Prebuild Icons ###
 
+convert_image_full "${input_dir}/prebuild/dockerstats.png" "${output_dir}/dockerstats.png"
 convert_image_full "${input_dir}/prebuild/dozzleagent.png" "${output_dir}/dozzleagent.png"
 convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/lets-encrypt.png"
 convert_image_full "${input_dir}/prebuild/libretranslate.png" "${output_dir}/libretranslate.png"
@@ -174,7 +175,7 @@ convert_image_full "${input_dir}/prebuild/prebudget.png" "${output_dir}/prebudge
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dockerstats"
 prepare_output_dir "${output_dir}"
-convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker.png"
+convert_image_full "${input_dir}/prebuild/dockerstats.png" "${output_dir}/dockerstats.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/dozzleagent"
 prepare_output_dir "${output_dir}"
@@ -182,12 +183,11 @@ convert_image_full "${input_dir}/prebuild/dozzleagent.png" "${output_dir}/dozzle
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/gatus"
 prepare_output_dir "${output_dir}"
-convert_image_full "${tmpdir}/other/gatus.png" "${output_dir}/gatus.png"
+convert_image_full "${input_dir}/other/gatus.png" "${output_dir}/gatus.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/kiwix"
 prepare_output_dir "${output_dir}"
-convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/wikipedia-light.svg" "${output_dir}/wikipedia.png"
-convert_image_full "${tmpdir}/other/wiktionary.svg" "${output_dir}/wiktionary.png"
+convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/kiwix.svg" "${output_dir}/kiwix.png"
 
 output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/icons/nodeexporter"
 prepare_output_dir "${output_dir}"

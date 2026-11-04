@@ -23,6 +23,7 @@ The Icons are obtained from following locations:
     - Gatus: <https://github.com/TwiN/gatus>
     - Graphics card: <https://www.flaticon.com/free-icon/graphic-card_4617578>
     - IoT: <https://www.flaticon.com/free-icon/iot_10355707>
+    - Line graph: <https://www.flaticon.com/free-icon/line-graph_8730904>
     - Litestream: <https://litestream.io>
     - Odroid: `https://wiki.odroid.com` (server down)
     - Open WebUI: <https://openwebui.com>

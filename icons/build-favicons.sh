@@ -69,13 +69,14 @@ convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/prometh
 
 ## Other ##
 
-convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/dockerstats.png"
+convert_image_full "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${output_dir}/docker.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/samba-server.svg" "${output_dir}/samba.png"
 convert_image_full "${input_dir}/gitman-repositories/dashboard-icons/svg/unbound.svg" "${output_dir}/unbound.png"
 
 ## Prebuilds ##
 
 convert_image_full "${input_dir}/prebuild/dockercache.png" "${output_dir}/dockercache.png"
+convert_image_full "${input_dir}/prebuild/dockerstats.png" "${output_dir}/dockerstats.png"
 convert_image_full "${input_dir}/prebuild/gitcache.png" "${output_dir}/gitcache.png"
 convert_image_full "${input_dir}/prebuild/npmcache.png" "${output_dir}/npmcache.png"
 convert_image_full "${input_dir}/prebuild/ollama.png" "${output_dir}/ollama.png"

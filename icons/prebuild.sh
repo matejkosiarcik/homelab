@@ -182,6 +182,18 @@ if should_generate_icon "${input_dir}/prebuild/cloud.png" "${input_dir}/gitman-r
     rm -f "${tmpdir}/docker-registry.png"
 fi
 
+# Docker stats
+if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" "${input_dir}/other/line-graph.png" "${output_dir}/dockerstats.png"; then
+    magick -size 1000x1000 xc:none \
+        \( "${input_dir}/gitman-repositories/homer-icons/png/docker-moby.png" -background none -resize 1000x1000 \) -gravity Center -composite \
+        \( -size 375x375 xc:none -fill '#f8fafc' -stroke '#1d4ed8' -strokewidth 18 -draw 'circle 187,187 187,8' \
+            \( "${input_dir}/other/line-graph.png" -background none -resize 330x330 \) -gravity Center -composite \
+        \) -gravity SouthEast -geometry +0+0 -composite \
+        "${tmpdir}/dockerstats.png"
+    convert_image_full "${tmpdir}/dockerstats.png" "${output_dir}/dockerstats.png"
+    rm -f "${tmpdir}/dockerstats.png"
+fi
+
 # Dozzle agent (single
 if should_generate_icon "${input_dir}/gitman-repositories/homer-icons/png/dozzle.png" "${output_dir}/dozzleagent.png"; then
     magick -size 1000x1000 xc:none \
