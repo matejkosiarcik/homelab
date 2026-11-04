@@ -51,6 +51,7 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml'
 ARG CROSSROAD_TYPE="placeholder"
+# hadolint ignore=SC2016
 RUN yq --exit-status --arg crossroad_type "${CROSSROAD_TYPE}" 'any(.apps[]; .app_type == $crossroad_type or (.app_type | startswith($crossroad_type + "-")))' '/homelab/app-entries.yml' >/dev/null && \
     yq --in-place --yaml-output --arg crossroad_type "${CROSSROAD_TYPE}" '.apps |= map(select(.app_type == $crossroad_type or (.app_type | startswith($crossroad_type + "-"))))' '/homelab/app-entries.yml' && \
     yq '.' '/homelab/app-entries.yml' >'/homelab/apps.json'
