@@ -6,7 +6,7 @@ import { Log } from './log';
 import { capitalize, formatDuration } from './utils';
 
 type CustomAxiosRequestConfig = AxiosRequestConfig & {
-    startedDate: Date | undefined;
+    startedDate?: Date | undefined;
 };
 
 export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): AxiosInstance {
@@ -31,7 +31,7 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
     axios.interceptors.response.use(
         async (response) => {
             const endedDate = new Date();
-            const request = (response.config satisfies AxiosRequestConfig) as CustomAxiosRequestConfig;
+            const request = response.config as CustomAxiosRequestConfig;
             const startedDate = request.startedDate ?? null;
             const totalTime = startedDate ? endedDate.getTime() - startedDate!.getTime() : -1;
 
