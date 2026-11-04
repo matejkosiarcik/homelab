@@ -2,6 +2,7 @@
 
 import argparse
 import collections
+import grp
 import hashlib
 import json
 import logging
@@ -186,6 +187,7 @@ def load_full_env():
         "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "1000",
         "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "1000",
+        "DOCKER_COMPOSE_DOCKER_GID": str(grp.getgrnam("docker").gr_gid) if env_mode == "prod" else "1000",
     }
 
     # Remove old environment values
