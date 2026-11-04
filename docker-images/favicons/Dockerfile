@@ -204,14 +204,14 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     yq --in-place --yaml-output '.apps |= (sort_by(.app_type) | unique_by(.app_type))' '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output --arg homelab_app_type "${HOMELAB_APP_TYPE}" '.apps |= map(select(.app_type == $homelab_app_type))' '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output --arg homelab_env "${HOMELAB_ENV}" '.apps |= map(if (.proxy_urls | type) == "array" then .proxy_urls |= map(select(.env == null or .env == $homelab_env) | del(.env)) else . end)' '/homelab/app-entries.yml' && \
-    yq '.' '/homelab/app-entries.yml' >'/homelab/data.json'
+    yq '.' '/homelab/app-entries.yml' >'/homelab/apps.json'
 
 FROM jinja AS urls_config_2
 USER root
 WORKDIR /homelab
-COPY --from=urls_config_1 /homelab/data.json /homelab/
+COPY --from=urls_config_1 /homelab/apps.json /homelab/
 COPY ./docker-images/favicons/urls.yml.j2 /homelab/
-RUN jinja2 --strict './urls.yml.j2' './data.json' --format json -o './urls.yml'
+RUN jinja2 --strict './urls.yml.j2' './apps.json' --format json -o './urls.yml'
 
 FROM yq AS urls_config_3
 USER root

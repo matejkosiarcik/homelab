@@ -66,16 +66,16 @@ USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_TYPE=".template"
 ARG HOMELAB_ENV=dev
-COPY ./docker-compose/${HOMELAB_APP_TYPE}/config.yml /homelab/data.yml
+COPY ./docker-compose/${HOMELAB_APP_TYPE}/config.yml /homelab/config.yml
 # hadolint ignore=SC2016
-RUN yq --arg homelab_env "${HOMELAB_ENV}" 'if .apache."upstream-url" == null then . else (.apache."upstream-url") |= map(select(.env == null or .env == $homelab_env) | del(.env)) end' data.yml >data.json
+RUN yq --arg homelab_env "${HOMELAB_ENV}" 'if .apache."upstream-url" == null then . else (.apache."upstream-url") |= map(select(.env == null or .env == $homelab_env) | del(.env)) end' config.yml >config.json
 
 FROM jinja AS htaccess_config_2
 USER root
 WORKDIR /homelab
-COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
+COPY --from=apache_htaccess_config_1 /homelab/config.json /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess-extra.j2 /homelab/
-RUN jinja2 --strict ./.htaccess-extra.j2 ./data.json --format json -o ./.htaccess-extra
+RUN jinja2 --strict ./.htaccess-extra.j2 ./config.json --format json -o ./.htaccess-extra
 
 FROM debian:13.7-slim AS htaccess_config_3
 USER root
@@ -88,9 +88,9 @@ RUN sed -e '/## INSERT_EXTRA_REDIRECTS ##/{' -e 'r /homelab/.htaccess-extra' -e 
 FROM jinja AS apache_config_2
 USER root
 WORKDIR /homelab
-COPY --from=apache_htaccess_config_1 /homelab/data.json /homelab/
+COPY --from=apache_htaccess_config_1 /homelab/config.json /homelab/
 COPY ./docker-images/apache/apache.conf-extra.j2 /homelab/
-RUN jinja2 --strict ./apache.conf-extra.j2 ./data.json --format json -o ./apache.conf-extra
+RUN jinja2 --strict ./apache.conf-extra.j2 ./config.json --format json -o ./apache.conf-extra
 
 FROM debian:13.7-slim AS apache_config_3
 USER root

@@ -51,28 +51,28 @@ ARG HOMELAB_APP_FULLNAME=placeholder
 ARG HOMELAB_APP_SHORTNAME=placeholder
 ARG HOMELAB_APP_TYPE=placeholder
 ARG HOMELAB_ENV=dev
-RUN printf 'env:\n' >>data.yml && \
-    printf '  HOMELAB_APP_EXTERNAL_DOMAIN: %s\n' "${HOMELAB_APP_EXTERNAL_DOMAIN}" >>data.yml && \
-    printf '  HOMELAB_APP_EXTERNAL_IP: %s\n' "${HOMELAB_APP_EXTERNAL_IP}" >>data.yml && \
-    printf '  HOMELAB_APP_EXTERNAL_URL: %s\n' "${HOMELAB_APP_EXTERNAL_URL}" >>data.yml && \
-    printf '  HOMELAB_APP_FULLNAME: %s\n' "${HOMELAB_APP_FULLNAME}" >>data.yml && \
-    printf '  HOMELAB_APP_SHORTNAME: %s\n' "${HOMELAB_APP_SHORTNAME}" >>data.yml && \
-    printf '  HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE}" >>data.yml && \
-    printf '  HOMELAB_ENV: %s\n' "${HOMELAB_ENV}" >>data.yml
+RUN printf 'env:\n' >>'./config-data.yml' && \
+    printf '  HOMELAB_APP_EXTERNAL_DOMAIN: %s\n' "${HOMELAB_APP_EXTERNAL_DOMAIN}" >>'./config-data.yml' && \
+    printf '  HOMELAB_APP_EXTERNAL_IP: %s\n' "${HOMELAB_APP_EXTERNAL_IP}" >>'./config-data.yml' && \
+    printf '  HOMELAB_APP_EXTERNAL_URL: %s\n' "${HOMELAB_APP_EXTERNAL_URL}" >>'./config-data.yml' && \
+    printf '  HOMELAB_APP_FULLNAME: %s\n' "${HOMELAB_APP_FULLNAME}" >>'./config-data.yml' && \
+    printf '  HOMELAB_APP_SHORTNAME: %s\n' "${HOMELAB_APP_SHORTNAME}" >>'./config-data.yml' && \
+    printf '  HOMELAB_APP_TYPE: %s\n' "${HOMELAB_APP_TYPE}" >>'./config-data.yml' && \
+    printf '  HOMELAB_ENV: %s\n' "${HOMELAB_ENV}" >>'./config-data.yml'
 
 FROM yq AS config_2
 USER root
 WORKDIR /homelab
-COPY --from=config_1 /homelab/data.yml /homelab/
-RUN yq . data.yml >data.json
+COPY --from=config_1 /homelab/config-data.yml /homelab/
+RUN yq . './config-data.yml' >'./config-data.json'
 
 FROM jinja AS config_3
 USER root
 WORKDIR /homelab
-COPY --from=config_2 /homelab/data.json /homelab/
+COPY --from=config_2 /homelab/config-data.json /homelab/
 ARG CONFIG=default
 COPY ./docker-images/unbound/app/${CONFIG}.conf.j2 /homelab/unbound.conf.j2
-RUN jinja2 --strict './unbound.conf.j2' './data.json' --format json -o './unbound.conf' && \
+RUN jinja2 --strict './unbound.conf.j2' './config-data.json' --format json -o './unbound.conf' && \
     if grep --quiet --fixed-strings 'ERROR:' './unbound.conf' >/dev/null 2>&1; then \
         printf 'Unbound config is not valid:\n' >&2 && \
         cat './unbound.conf' >&2 && \
@@ -89,7 +89,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_c
         moreutils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=config_3 /homelab/unbound.conf /homelab/
-RUN cat -s unbound.conf | sponge unbound.conf
+RUN cat -s './unbound.conf' | sponge './unbound.conf'
 
 ### User setup ###
 
