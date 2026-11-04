@@ -2,9 +2,9 @@ import events from 'node:events';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import dotenv from 'dotenv';
 import type { PlaywrightTestConfig, Project, ReporterDescription } from '@playwright/test';
 import { defineConfig } from '@playwright/test';
+import dotenv from 'dotenv';
 
 // Increase limit (default is 10) to not run into "MaxListenersExceededWarning"
 events.EventEmitter.defaultMaxListeners = 100;

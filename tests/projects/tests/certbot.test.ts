@@ -3,11 +3,12 @@ import fsx from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { faker } from '@faker-js/faker';
-import { expect, test } from '#/playwright/test.ts';
 import { execa } from 'execa';
+import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
-import { axios, extractTar, getEnv } from '#/utils/utils.ts';
+import { axios } from '#/utils/axios.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { extractTar, getEnv } from '#/utils/utils.ts';
 
 const app = apps.certbot;
 

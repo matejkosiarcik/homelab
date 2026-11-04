@@ -1,8 +1,9 @@
+import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
+import { axios } from '#/utils/axios.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
-import { faker } from '@faker-js/faker';
-import { axios, getEnv } from '../../utils/utils';
+import { getEnv } from '../../utils/utils';
 
 const app = apps.vnc;
 

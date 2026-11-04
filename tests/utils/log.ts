@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseISO } from 'date-fns';
 import winston from 'winston';
 import { testArtifactDirectory } from '#/playwright/utils.ts';
-import { parseISO } from 'date-fns';
 
 /**
  * Logger for usage in tests

@@ -1,10 +1,11 @@
 import nodeDns from 'node:dns/promises';
-import _ from 'lodash';
 import { faker } from '@faker-js/faker';
+import _ from 'lodash';
 import { expect, test } from '#/playwright/test.ts';
-import { axios, dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 import { apps } from '#/utils/apps.ts';
+import { axios } from '#/utils/axios.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 
 const app = apps.pihole;
 

@@ -1,8 +1,9 @@
+import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
+import { axios } from '#/utils/axios.ts';
 import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
-import { axios, getEnv } from '#/utils/utils.ts';
-import { faker } from '@faker-js/faker';
+import { getEnv } from '#/utils/utils.ts';
 import { createRunWispSession } from '../../utils/app-helpers/runwisp';
 
 const app = apps.renovatebot;

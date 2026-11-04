@@ -1,12 +1,10 @@
 import fs from 'node:fs';
-import https from 'node:https';
 import process from 'node:process';
-import { default as baseAxios } from 'axios';
-import { execa, ExecaError } from 'execa';
-import * as tar from 'tar';
-import lzma from 'lzma-native';
-import { apps } from '#/utils/apps.ts';
 import { Locator } from '@playwright/test';
+import { execa, ExecaError } from 'execa';
+import lzma from 'lzma-native';
+import * as tar from 'tar';
+import { apps } from '#/utils/apps.ts';
 
 export const validators = {
     network: {
@@ -103,13 +101,6 @@ export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 
     }
 }
 
-export const axios = baseAxios.create({
-    timeout: 2500,
-    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-    maxRedirects: 999,
-    validateStatus: () => true,
-});
-
 export async function extractTar(file: string, destination: string): Promise<void> {
     await new Promise((resolve, reject) => {
         const stream = fs.createReadStream(file)
@@ -184,4 +175,12 @@ export async function waitForHidden(locator: Locator): Promise<void> {
             }
         }
     }, 3 * timeout, `Timed out waiting for ${locator} to be hidden after ${3 * timeout}ms`);
+}
+
+export function formatDuration(milliseconds: number): string {
+    const duration = Temporal.Duration.from({ milliseconds: milliseconds }).round({
+        largestUnit: "hour",
+        smallestUnit: "millisecond",
+    });
+    return new Intl.DurationFormat("en", { style: "short" }).format(duration).replaceAll(/[, ]/g, '');
 }
