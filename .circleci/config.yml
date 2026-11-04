@@ -19,7 +19,7 @@ jobs:
       server:
         type: string
     docker:
-      - image: docker:29.9.2
+      - image: docker:29.9.3
     environment:
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
     steps:
