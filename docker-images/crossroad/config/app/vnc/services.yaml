@@ -1,6 +1,0 @@
-- Apps:
-    - VNC - Raspberry Pi 4B 4G:
-        description: Remote Access
-        href: https://vnc-raspberry-pi-4b-4g.matejhome.com
-        ping: vnc-raspberry-pi-4b-4g.matejhome.com
-        icon: /icons/vnc.png

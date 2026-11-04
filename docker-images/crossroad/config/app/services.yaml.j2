@@ -1,0 +1,12 @@
+- Apps:
+{% for app in apps %}
+    - {{ app.full_name_pretty }}:
+        description: "N/A"
+        {%- if app.app_type == "dozzleagent" %}
+        href: "#copy://{{ app.domain }}:7007"
+        {%- else %}
+        href: https://{{ app.domain }}
+        {%- endif %}
+        ping: {{ app.domain }}
+        icon: /icons/{{ app.app_type }}.png
+{% endfor %}
