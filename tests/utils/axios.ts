@@ -1,6 +1,7 @@
 import https from 'node:https';
 import { default as baseAxios, type CreateAxiosDefaults, type AxiosInstance, type AxiosRequestConfig, AxiosError, isAxiosError } from 'axios';
 import { Log } from './log';
+import { formatDuration } from './utils';
 
 type CustomAxiosRequestConfig = AxiosRequestConfig & {
     startedDate: Date | undefined;
@@ -45,7 +46,7 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
                 const request = error.config as CustomAxiosRequestConfig;
                 const startedDate = request.startedDate ?? null;
                 const totalTime = startedDate ? endedDate.getTime() - startedDate!.getTime() : -1;
-                Log.error(`Axios request failed: ${error.message}\n${error.stack}\nRequest: ${JSON.stringify(request, null, 2)}\nResponse: ${JSON.stringify(error.response, null, 2)}\nStarted: ${startedDate?.toISOString()}\nEnded: ${endedDate.toISOString()}\nTotal time: ${totalTime}ms`);
+                Log.error(`Axios request failed: ${error.message}\n- ${error.stack}\n- Started: ${startedDate?.toISOString()}\n- Ended: ${endedDate.toISOString()}\n- Total time: ${formatDuration(totalTime)}\n- Request: ${JSON.stringify(request, null, 2).replaceAll(/^/gm, '-- ')}\n- Response: ${JSON.stringify(error.response, null, 2).replaceAll(/^/gm, '-- ')}`);
             } else if (_error instanceof Error) {
                 const error = _error as Error;
                 Log.error(`Axios request failed: ${error.message}\n${error.stack}`);

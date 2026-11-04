@@ -176,3 +176,11 @@ export async function waitForHidden(locator: Locator): Promise<void> {
         }
     }, 3 * timeout, `Timed out waiting for ${locator} to be hidden after ${3 * timeout}ms`);
 }
+
+export function formatDuration(milliseconds: number): string {
+    const duration = Temporal.Duration.from({ milliseconds: milliseconds }).round({
+        largestUnit: "hour",
+        smallestUnit: "millisecond",
+    });
+    return new Intl.DurationFormat("en", { style: "short" }).format(duration).replaceAll(/[, ]/g, '');
+}
