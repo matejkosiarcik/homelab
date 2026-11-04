@@ -7,8 +7,8 @@ apache:
       target: http://app:3000
 
 favicons:
-  default: /apple-touch-icon.png
-  # ico: /favicon-32x32.png
+  default: /icons/favicon/favicon.png
+  # ico: /icons/favicon/favicon.ico
 
 gatus:
   enabled: true

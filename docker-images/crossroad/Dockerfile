@@ -157,6 +157,7 @@ COPY --from=homelab_dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh
 ARG CROSSROAD_TYPE="placeholder"
 COPY ./docker-images/crossroad/icons/${CROSSROAD_TYPE}/ /app/public/icons/
+COPY ./docker-images/crossroad/favicon/ /app/public/icons/favicon/
 
 ### Final ###
 

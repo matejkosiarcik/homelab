@@ -130,6 +130,18 @@ optimize_image "${tmpdir}/renovatebot-32.png"
 convert_ico "${tmpdir}/renovatebot-16.png ${tmpdir}/renovatebot-32.png" "${output_dir}/favicon.ico"
 rm -f "${tmpdir}/renovatebot-16.png" "${tmpdir}/renovatebot-32.png"
 
+## Crossroad ##
+
+output_dir="$(git rev-parse --show-toplevel)/docker-images/crossroad/favicon"
+prepare_output_dir "${output_dir}"
+convert_image_full "${tmpdir}/other/crossroads.svg" "${output_dir}/favicon.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${tmpdir}/other/crossroads.svg" "${tmpdir}/crossroad-favicon-16.png"
+optimize_image "${tmpdir}/crossroad-favicon-16.png"
+convert_image_draft 'magick -background none INPUT_FILE -resize 32x32 -density 1200 OUTPUT_FILE' "${tmpdir}/other/crossroads.svg" "${tmpdir}/crossroad-favicon-32.png"
+optimize_image "${tmpdir}/crossroad-favicon-32.png"
+convert_ico "${tmpdir}/crossroad-favicon-16.png ${tmpdir}/crossroad-favicon-32.png" "${output_dir}/favicon.ico"
+rm -f "${tmpdir}/crossroad-favicon-16.png" "${tmpdir}/crossroad-favicon-32.png"
+
 ### Cleanup ###
 
 rm -rf "${tmpdir}"

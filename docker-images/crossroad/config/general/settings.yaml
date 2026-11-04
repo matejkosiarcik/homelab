@@ -2,6 +2,7 @@ color: gray
 disableCollapse: true
 disableIndexing: true
 disableUpdateCheck: true
+favicon: /icons/favicon/favicon.png
 hideVersion: true
 language: en
 logpath: /homelab/logs/default
