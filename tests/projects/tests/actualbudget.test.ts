@@ -1,5 +1,5 @@
-import os from 'node:os';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import actualbudgetApi from '@actual-app/api';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';

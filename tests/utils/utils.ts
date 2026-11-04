@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import process from 'node:process';
-import { execa, ExecaError } from 'execa';
-import * as tar from 'tar';
-import lzma from 'lzma-native';
-import { apps } from '#/utils/apps.ts';
 import { Locator } from '@playwright/test';
+import { execa, ExecaError } from 'execa';
+import lzma from 'lzma-native';
+import * as tar from 'tar';
+import { apps } from '#/utils/apps.ts';
 
 export const validators = {
     network: {
