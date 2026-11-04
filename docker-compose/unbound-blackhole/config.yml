@@ -1,5 +1,5 @@
 app:
-  name: Unbound [blackhole]
+  name: Unbound blackhole
 
 apache:
   upstream-url:

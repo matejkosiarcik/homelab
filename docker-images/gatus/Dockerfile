@@ -59,14 +59,14 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
     cat '/homelab/extra-entries.yml' '/homelab/server-entries.yml' '/homelab/app-entries.yml' >'/homelab/all-entries.yml' && \
-    yq '.' '/homelab/all-entries.yml' >'/homelab/data.json'
+    yq '.' '/homelab/all-entries.yml' >'/homelab/apps.json'
 
 FROM jinja AS config_2
 USER root
 WORKDIR /homelab
-COPY --from=monitoring_entries /homelab/data.json /homelab/
+COPY --from=monitoring_entries /homelab/apps.json /homelab/
 COPY ./docker-images/gatus/config.yml.j2 /homelab/
-RUN jinja2 --strict './config.yml.j2' './data.json' --format json -o './config.yml'
+RUN jinja2 --strict './config.yml.j2' './apps.json' --format json -o './config.yml'
 
 ### Healthcheck ###
 

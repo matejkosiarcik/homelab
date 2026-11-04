@@ -1,6 +1,68 @@
 # syntax=docker/dockerfile:1
 # checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
+### Dependencies ###
+
+FROM debian:13.7-slim AS yq
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_yq_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/yq/requirements.txt /homelab/
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+
+FROM debian:13.7-slim AS jinja
+USER root
+WORKDIR /homelab
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_jinja_aptlibcache \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
+        jq python3 python3-pip >/dev/null && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./docker-images/.shared/dependencies/jinja/requirements.txt /homelab/
+ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
+    PIP_ROOT_USER_ACTION="ignore" \
+    PYTHONDONTWRITEBYTECODE="1"
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
+    python3 -m pip install --no-compile --requirement requirements.txt --target python-vendor --quiet
+ENV PATH="/homelab/python-vendor/bin:${PATH}" \
+    PYTHONPATH="/homelab/python-vendor"
+
+### App config ###
+
+FROM yq AS monitoring_entries
+USER root
+WORKDIR /homelab
+COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/crossroad/parse-app-entry.sh /homelab/
+RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
+    --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
+    printf 'apps:\n' >'/homelab/app-entries.yml' && \
+    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
+    yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml'
+ARG CROSSROAD_TYPE="placeholder"
+# hadolint ignore=SC2016
+RUN yq --exit-status --arg crossroad_type "${CROSSROAD_TYPE}" 'any(.apps[]; .app_type == $crossroad_type or (.app_type | startswith($crossroad_type + "-")))' '/homelab/app-entries.yml' >/dev/null && \
+    yq --in-place --yaml-output --arg crossroad_type "${CROSSROAD_TYPE}" '.apps |= map(select(.app_type == $crossroad_type or (.app_type | startswith($crossroad_type + "-"))))' '/homelab/app-entries.yml' && \
+    yq '.' '/homelab/app-entries.yml' >'/homelab/apps.json'
+
+FROM jinja AS homepage_config
+USER root
+WORKDIR /homelab
+COPY --from=monitoring_entries /homelab/apps.json /homelab/
+COPY ./docker-images/crossroad/config/app/services.yaml.j2 /homelab/
+RUN jinja2 --strict './services.yaml.j2' './apps.json' --format json -o './services.yaml'
+
 ### Healthcheck ###
 
 FROM golang:1.27.3-alpine AS healthcheck_build
@@ -35,12 +97,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 FROM node:26.13.0-slim AS nodejs_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/crossroad/package-lock.json ./docker-images/crossroad/package.json /homelab/
+COPY ./docker-images/.shared/homepage-helpers/package-lock.json ./docker-images/.shared/homepage-helpers/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
-COPY ./docker-images/crossroad/terser.json ./docker-images/crossroad/tsconfig.json ./docker-images/crossroad/vite.config.ts /homelab/
-COPY ./docker-images/crossroad/src/ /homelab/src/
+COPY ./docker-images/.shared/homepage-helpers/terser.json ./docker-images/.shared/homepage-helpers/tsconfig.json ./docker-images/.shared/homepage-helpers/vite.config.ts /homelab/
+COPY ./docker-images/.shared/homepage-helpers/src/ /homelab/src/
 RUN npm run build && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
@@ -84,11 +146,10 @@ USER root
 WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY ./docker-images/crossroad/config/general/ /homelab/config/
+COPY --from=homepage_config /homelab/services.yaml /homelab/config/services.yaml
 COPY --from=nodejs_build /homelab/dist/main.js /homelab/config/custom.js
 COPY --from=nodejs_build /homelab/dist/main.css /homelab/config/custom.css
 COPY --from=runtime_dirs /homelab/original /homelab/original
-ARG CROSSROAD_TYPE="placeholder"
-COPY ./docker-images/crossroad/config/app/${CROSSROAD_TYPE}/ /homelab/config/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -97,6 +158,7 @@ COPY --from=homelab_dir /homelab /homelab
 COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-entrypoint.sh
 ARG CROSSROAD_TYPE="placeholder"
 COPY ./docker-images/crossroad/icons/${CROSSROAD_TYPE}/ /app/public/icons/
+COPY ./docker-images/crossroad/favicon/ /app/public/icons/favicon/
 
 ### Final ###
 

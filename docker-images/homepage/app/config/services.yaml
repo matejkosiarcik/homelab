@@ -143,13 +143,13 @@
         description: Entrypoint DNS Server
         href: https://unbound-blackhole-1.matejhome.com
         ping: unbound-blackhole-1.matejhome.com
-        icon: /icons/unbound.png
+        icon: /icons/unbound-blackhole.png
 
     - Unbound Blackhole 2:
         description: Entrypoint DNS Server
         href: https://unbound-blackhole-2.matejhome.com
         ping: unbound-blackhole-2.matejhome.com
-        icon: /icons/unbound.png
+        icon: /icons/unbound-blackhole.png
 
     - Unbound Default 1:
         description: Entrypoint DNS Server
@@ -612,25 +612,25 @@
         description: Docker Usage Monitoring
         href: https://dockerstats-odroid-h3.matejhome.com
         ping: dockerstats-odroid-h3.matejhome.com
-        icon: /icons/docker.png
+        icon: /icons/dockerstats.png
 
     - Docker Stats - Odroid H4 Ultra:
         description: Docker Usage Monitoring
         href: https://dockerstats-odroid-h4-ultra.matejhome.com
         ping: dockerstats-odroid-h4-ultra.matejhome.com
-        icon: /icons/docker.png
+        icon: /icons/dockerstats.png
 
     - Docker Stats - Raspberry Pi 4B 2GB:
         description: Docker Usage Monitoring
         href: https://dockerstats-raspberry-pi-4b-2g.matejhome.com
         ping: dockerstats-raspberry-pi-4b-2g.matejhome.com
-        icon: /icons/docker.png
+        icon: /icons/dockerstats.png
 
     - Docker Stats - Raspberry Pi 4B 4GB:
         description: Docker Usage Monitoring
         href: https://dockerstats-raspberry-pi-4b-4g.matejhome.com
         ping: dockerstats-raspberry-pi-4b-4g.matejhome.com
-        icon: /icons/docker.png
+        icon: /icons/dockerstats.png
 
     - NodeExporter - Odroid H3:
         description: Resource Monitoring
