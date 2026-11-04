@@ -38,10 +38,13 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
             response.headers['X-Test-Response-Date'] = endedDate.toISOString();
             response.headers['X-Test-Response-Duration'] = totalTime.toString();
 
+            const httpVersion = getAxiosResponseHttpVersion(response);
+
             AxiosHarStore.shared.addEntry({
                 request: {
                     body: getAxiosRequestRawText(request),
                     headers: getAxiosRequestHeaders(request),
+                    httpVersion: httpVersion,
                     method: request.method ?? 'N/A',
                     url: request.url ?? 'N/A',
                     startDate: startedDate,
@@ -50,6 +53,7 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
                     body: await getAxiosResponseRawText(response),
                     error: null,
                     headers: getAxiosResponseHeaders(response),
+                    httpVersion: httpVersion,
                     status: response.status,
                     statusText: response.statusText,
                     endDate: endedDate,
@@ -67,10 +71,13 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
                 const startedDate = request.startedDate ?? null;
                 const totalTime = startedDate ? endedDate.getTime() - startedDate!.getTime() : -1;
 
+                const httpVersion = getAxiosResponseHttpVersion(error);
+
                 AxiosHarStore.shared.addEntry({
                     request: {
                         body: getAxiosRequestRawText(request),
                         headers: getAxiosRequestHeaders(request),
+                        httpVersion: httpVersion,
                         method: request.method ?? 'N/A',
                         url: request.url ?? 'N/A',
                         startDate: startedDate,
@@ -79,6 +86,7 @@ export function createAxios(axiosConfig?: CreateAxiosDefaults | undefined): Axio
                         body: await getAxiosResponseRawText(error),
                         error: null,
                         headers: getAxiosResponseHeaders(error),
+                        httpVersion: httpVersion,
                         status: error.status ?? 0,
                         statusText: 'N/A',
                         endDate: endedDate,
@@ -166,6 +174,27 @@ export function getAxiosResponseHeaders(responseOrError: AxiosError | AxiosRespo
             },
             {} as Record<string, Array<string>>,
         );
+}
+
+/**
+ * Get the protocol version used by Axios's Node HTTP adapter
+ */
+export function getAxiosResponseHttpVersion(responseOrError: AxiosError | AxiosResponse): string {
+    const response = isAxiosError(responseOrError) ? responseOrError.response : responseOrError;
+    const request = response?.request as {
+        res?: { httpVersion?: string | undefined } | undefined;
+        session?: unknown;
+    } | undefined;
+
+    if (request?.res?.httpVersion) {
+        return `HTTP/${request.res.httpVersion}`;
+    }
+
+    if (request?.session) {
+        return 'HTTP/2.0';
+    }
+
+    return 'Unknown';
 }
 
 /**

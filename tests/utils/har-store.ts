@@ -6,6 +6,7 @@ type AxiosHarStoreEntry = {
     request: {
         body: string;
         headers: Record<string, MaybeArray<string>>;
+        httpVersion: string;
         method: string;
         url: string;
         startDate: Date | null,
@@ -14,6 +15,7 @@ type AxiosHarStoreEntry = {
         body: string;
         error: string | null;
         headers: Record<string, MaybeArray<string>>;
+        httpVersion: string;
         status: number;
         statusText: string;
         endDate: Date | null;
@@ -67,7 +69,7 @@ export class AxiosHarStore {
                         })
                         .flat(),
                 headersSize: -1,
-                httpVersion: '',
+                httpVersion: entry.request.httpVersion,
                 method: entry.request.method.toUpperCase(),
                 postData:
                     entry.request.body ?
@@ -141,7 +143,7 @@ export class AxiosHarStore {
                         })
                         .flat(),
                 headersSize: -1,
-                httpVersion: '',
+                httpVersion: entry.response.httpVersion,
                 redirectURL: '',
                 status: entry.response.status,
                 statusText: entry.response.statusText,
