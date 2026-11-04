@@ -162,10 +162,13 @@ export class AxiosHarStore {
             startedDateTime: entry.request.startDate ? formatISO(entry.request.startDate) : 'N/A',
             time: (entry.request.startDate && entry.response.endDate) ? (entry.response.endDate.getTime() - entry.request.startDate.getTime()) : -1,
             timings: {
-                ...entry.response.timings,
-                receive: entry.response.timings.receive ?? 0,
-                send: entry.response.timings.send ?? 0,
-                wait: entry.response.timings.wait ?? 0,
+                blocked: entry.response.timings.blocked ?? -1,
+                connect: entry.response.timings.connect ?? -1,
+                dns: entry.response.timings.dns ?? -1,
+                receive: entry.response.timings.receive ?? -1,
+                send: entry.response.timings.send ?? -1,
+                ssl: entry.response.timings.ssl ?? -1,
+                wait: entry.response.timings.wait ?? -1,
             },
         });
     }

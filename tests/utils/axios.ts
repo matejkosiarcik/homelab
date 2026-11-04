@@ -125,7 +125,7 @@ class AxiosRequestTiming {
     }
 
     private getDuration(startedAt: number, endedAt: number): number {
-        return Math.max(0, endedAt - startedAt);
+        return Math.round(Math.max(0, endedAt - startedAt) * 100) / 100;
     }
 }
 
