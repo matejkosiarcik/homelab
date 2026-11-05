@@ -65,6 +65,7 @@ server:
     module-config: "subnetcache validator iterator"
     max-client-subnet-ipv4: 32
     max-client-subnet-ipv6: 128
+    client-subnet-always-forward: no
     {{- default_piholes_ecs() }}
     # These options are not in debian's unbound version yet:
     # cache-max-negative-ttl: 10
