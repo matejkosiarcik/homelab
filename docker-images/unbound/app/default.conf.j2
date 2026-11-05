@@ -1,14 +1,14 @@
 {%- macro default_piholes() -%}
   {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
-    forward-addr: 10.1.12.11
-    forward-addr: 10.1.12.12
-    forward-addr: 10.1.10.11
+    {# forward-addr: 10.1.12.11 #}
+    {# forward-addr: 10.1.12.12 #}
+    {# forward-addr: 10.1.10.11 #}
     forward-addr: 10.1.10.12
   {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
-    forward-addr: 10.1.10.11
+    {# forward-addr: 10.1.10.11 #}
     forward-addr: 10.1.10.12
-    forward-addr: 10.1.12.11
-    forward-addr: 10.1.12.12
+    {# forward-addr: 10.1.12.11 #}
+    {# forward-addr: 10.1.12.12 #}
   {%- else %}
     # ERROR: Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
   {%- endif %}
@@ -16,15 +16,15 @@
 
 {%- macro default_piholes_ecs() -%}
   {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
-    send-client-subnet: 10.1.12.11
-    send-client-subnet: 10.1.12.12
-    send-client-subnet: 10.1.10.11
+    {# send-client-subnet: 10.1.12.11 #}
+    {# send-client-subnet: 10.1.12.12 #}
+    {# send-client-subnet: 10.1.10.11 #}
     send-client-subnet: 10.1.10.12
   {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
-    send-client-subnet: 10.1.10.11
+    {# send-client-subnet: 10.1.10.11 #}
     send-client-subnet: 10.1.10.12
-    send-client-subnet: 10.1.12.11
-    send-client-subnet: 10.1.12.12
+    {# send-client-subnet: 10.1.12.11 #}
+    {# send-client-subnet: 10.1.12.12 #}
   {%- else %}
     # ERROR: Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
   {%- endif %}
