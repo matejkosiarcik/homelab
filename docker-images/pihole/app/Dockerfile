@@ -105,6 +105,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_dns_domain_local="true" \
     FTLCONF_dns_domain_name="matejhome.com" \
     FTLCONF_dns_domainNeeded="true" \
+    FTLCONF_dns_EDNS0ECS="true" \
     FTLCONF_dns_ignoreLocalhost="false" \
     FTLCONF_dns_listeningMode="all" \
     FTLCONF_dns_piholePTR="HOSTNAMEFQDN" \
