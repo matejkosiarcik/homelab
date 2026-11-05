@@ -5,11 +5,11 @@ x-definitions:
 services:
   app:
     <<: *common-service-options
-    volumes:
-      - ${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw
     ports:
       - ${DOCKER_COMPOSE_NETWORK_IP}:139:139
       - ${DOCKER_COMPOSE_NETWORK_IP}:445:445
+    volumes:
+      - ${DOCKER_COMPOSE_SAMBA_PATH}:/data:rw
 
   certificator:
     <<: *common-service-options

@@ -6,12 +6,12 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: template
     # Override:
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
     build:
       dockerfile: ./docker-images/adventurelog/frontend/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
     environment:
       ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-frontend/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -35,19 +35,19 @@ services:
     networks: # Internet access necessary for downloading data from raw.githubusercontent.com
       - external-network
       - internal-network
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/media:/code/media:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/healthcheck:/homelab/logs/healthcheck:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/nginx:/var/log/nginx:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/cron:/homelab/logs/cron:rw
     tmpfs:
       - /etc/adventurelog:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/lib/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/log/adventurelog:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/lib/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/media:/code/media:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/cron:/homelab/logs/cron:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backend/nginx:/var/log/nginx:rw
 
   postgis:
     extends:

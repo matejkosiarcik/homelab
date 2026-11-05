@@ -145,10 +145,10 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rabbitmq.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq:1.0.0
     tmpfs:
-      - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/.rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/.rabbitmq/mnesia:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/rabbitmq/healthcheck:/homelab/logs/healthcheck:rw
 

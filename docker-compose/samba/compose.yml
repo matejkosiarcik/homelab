@@ -34,9 +34,9 @@ services:
       - /var/lib/samba/private:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
       - /var/lib/samba/usershares:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
       - /var/log/samba:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
+      - /var/log/samba_exporter:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
       - /var/log/samba_smbd:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
       - /var/log/samba_statusd:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
-      - /var/log/samba_exporter:rw,noexec,nodev,noatime,nodiratime,uid=0,gid=0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/exporter:/homelab/logs/samba_exporter:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw

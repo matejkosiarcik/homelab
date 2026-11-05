@@ -6,8 +6,8 @@ services:
   app:
     <<: *common-service-options
     environment:
-      APP_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       APP_DEBUG: "true"
+      APP_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       SPEEDTEST_SCHEDULE: "*/5 * * * *"
 
   app-setup:
