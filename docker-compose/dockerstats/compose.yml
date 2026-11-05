@@ -6,13 +6,13 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: app
     # Override:
-    depends_on:
-      docker-socket-proxy:
-        condition: service_healthy
-      docker-proxy-filter:
-        condition: service_healthy
     build:
       dockerfile: ./docker-images/docker-stats-exporter/Dockerfile
+    depends_on:
+      docker-proxy-filter:
+        condition: service_healthy
+      docker-socket-proxy:
+        condition: service_healthy
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 

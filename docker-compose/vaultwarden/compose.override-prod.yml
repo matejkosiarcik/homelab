@@ -6,9 +6,9 @@ services:
   app:
     <<: *common-service-options
     environment:
-      VAULTWARDEN_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
       DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
       SMTP_FROM: ${DOCKER_COMPOSE_APP_FULLNAME}@matejhome.com
+      VAULTWARDEN_DOMAIN: ${DOCKER_COMPOSE_NETWORK_DOMAIN}
     # Uncomment for initial setup (sending invitations):
     # networks:
     #   - external-network

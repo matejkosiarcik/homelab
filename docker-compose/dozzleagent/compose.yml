@@ -16,8 +16,8 @@ services:
       - 10.1.12.7
       - 10.1.10.7
     environment:
-      DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
       DOCKER_HOST: tcp://docker-proxy-filter:2375
+      DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
     networks:
       - external-network
       - internal-network

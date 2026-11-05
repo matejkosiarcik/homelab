@@ -102,8 +102,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs/apache:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/healthcheck:/homelab/logs/healthcheck:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-prometheus.htpasswd:/homelab/users/proxy-prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/proxy-status.htpasswd:/homelab/users/proxy-status.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:
@@ -135,15 +135,15 @@ services:
     # Override:
     build:
       dockerfile: ./docker-images/docker-socket-proxy/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     group_add:
       - "${DOCKER_COMPOSE_DOCKER_GID}"
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-socket-proxy/healthcheck:/homelab/logs/healthcheck:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   docker-app-setup:
     extends:
@@ -213,8 +213,8 @@ services:
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/data:/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/redis/healthcheck:/homelab/logs/healthcheck:rw
 
   postgres:
@@ -232,9 +232,9 @@ services:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres/data:/var/lib/postgresql/data:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/postgres/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
 
   postgis:
     extends:
@@ -247,11 +247,11 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis:1.0.0
     shm_size: 1G
+    tmpfs:
+      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis/data:/var/lib/postgresql/data:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/var/shared:rw # TODO: Determine if necessary
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/postgis/healthcheck:/homelab/logs/healthcheck:rw
-    tmpfs:
-      - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.crt:/homelab/certs/postgres.crt:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.key:/homelab/certs/postgres.key:ro

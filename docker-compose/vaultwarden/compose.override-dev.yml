@@ -6,9 +6,9 @@ services:
   app:
     <<: *common-service-options
     environment:
-      VAULTWARDEN_DOMAIN: localhost
       DOMAIN: ${DOCKER_COMPOSE_NETWORK_URL}
       SMTP_FROM: vaultwarden@localhost
+      VAULTWARDEN_DOMAIN: localhost
 
   certificator:
     <<: *common-service-options
