@@ -14,6 +14,22 @@
   {%- endif %}
 {%- endmacro -%}
 
+{%- macro default_piholes_ecs() -%}
+  {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
+    send-client-subnet: 10.1.12.11
+    send-client-subnet: 10.1.12.12
+    send-client-subnet: 10.1.10.11
+    send-client-subnet: 10.1.10.12
+  {%- elif env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.10.") %}
+    send-client-subnet: 10.1.10.11
+    send-client-subnet: 10.1.10.12
+    send-client-subnet: 10.1.12.11
+    send-client-subnet: 10.1.12.12
+  {%- else %}
+    # ERROR: Unknown IP: {{- env["HOMELAB_APP_EXTERNAL_IP"] -}}
+  {%- endif %}
+{%- endmacro -%}
+
 {%- macro blackhole_unbounds() -%}
   {%- if env["HOMELAB_APP_EXTERNAL_IP"].startswith("10.1.12.") or env["HOMELAB_APP_EXTERNAL_IP"] == "127.0.0.1" %}
     forward-addr: 10.1.12.7
@@ -45,6 +61,11 @@ server:
     extended-statistics: yes
     cache-max-ttl: 60
     cache-min-ttl: 1
+    # Forward the original client address to trusted Pi-hole upstreams through EDNS Client Subnet so Pi-hole can attribute queries to that client.
+    module-config: "subnetcache validator iterator"
+    max-client-subnet-ipv4: 32
+    max-client-subnet-ipv6: 128
+    {{- default_piholes_ecs() }}
     # These options are not in debian's unbound version yet:
     # cache-max-negative-ttl: 10
     # cache-min-negative-ttl: 1
