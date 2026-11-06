@@ -1,15 +1,15 @@
 ip,device,group
 10.1.12.1,Unbound Default 1,Default
-10.1.12.2,Unbound Matej 1,Default
-10.1.12.3,Unbound Monika 1,Adfull
-10.1.12.4,Unbound IoT 1,Default
-10.1.12.5,Unbound Guests 1,Default
+10.1.12.2,Unbound Matej 1,Matej
+10.1.12.3,Unbound Monika 1,Monika
+10.1.12.4,Unbound IoT 1,IoT
+10.1.12.5,Unbound Guests 1,Guests
 10.1.12.6,Unbound Internal 1,Default
-10.1.12.7,Unbound Blackhole 1,Default
+10.1.12.7,Unbound Blackhole 1,Blackhole
 10.1.10.1,Unbound Default 2,Default
-10.1.10.2,Unbound Matej 2,Default
-10.1.10.3,Unbound Monika 2,Adfull
-10.1.10.4,Unbound IoT 2,Default
-10.1.10.5,Unbound Guests 2,Default
+10.1.10.2,Unbound Matej 2,Matej
+10.1.10.3,Unbound Monika 2,Monika
+10.1.10.4,Unbound IoT 2,IoT
+10.1.10.5,Unbound Guests 2,Guests
 10.1.10.6,Unbound Internal 2,Default
-10.1.10.7,Unbound Blackhole 2,Default
+10.1.10.7,Unbound Blackhole 2,Blackhole
