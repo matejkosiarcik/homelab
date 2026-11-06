@@ -85,9 +85,11 @@ sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description)
 guests_group_id="$(sql "SELECT id FROM [group] WHERE name='Guests';")"
 sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Blackhole', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
 blackhole_group_id="$(sql "SELECT id FROM [group] WHERE name='Blackhole';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'App', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
+app_group_id="$(sql "SELECT id FROM [group] WHERE name='App';")"
 
 # Copy default policies to these groups to keep default settings (adblocking enabled)
-for group_id in "${matej_group_id}" "${iot_group_id}" "${guests_group_id}" "${blackhole_group_id}"; do
+for group_id in "${matej_group_id}" "${iot_group_id}" "${guests_group_id}" "${blackhole_group_id}" "${app_group_id}"; do
     sql "INSERT INTO [adlist_by_group] (adlist_id, group_id) SELECT adlist_id, '${group_id}' FROM [adlist_by_group] WHERE group_id='${default_group_id}';"
     sql "INSERT INTO [domainlist_by_group] (domainlist_id, group_id) SELECT domainlist_id, '${group_id}' FROM [domainlist_by_group] WHERE group_id='${default_group_id}';"
 done
