@@ -31,7 +31,7 @@ async function execa(command: string[]): Promise<void> {
     const execaOptions: ExecaOptions = {
         all: true,
         env: execaEnvOptions,
-        timeout: 2 * 60_000, // 2 minutes
+        timeout: 3 * 60_000, // 3 minutes
     };
     await baseExeca(command[0], command.slice(1), execaOptions);
 }
