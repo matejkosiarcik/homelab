@@ -166,9 +166,9 @@ sql "UPDATE [client_by_group] SET group_id='${blackhole_group_id}' WHERE client_
 sql "UPDATE [client_by_group] SET group_id='${blackhole_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
 
 # Set custom local domains
-custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
+custom_domains_a="$(printf '%s\n' "[ $(sed -E 's~^(.*)$~"\1"~' <'/homelab/custom-domains-type-a.txt' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]")"
 pihole-FTL --config dns.hosts "${custom_domains_a}"
-custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
+custom_domains_cname="$(printf '%s\n' "[ $(sed -E 's~^(.*) (.*)$~"\1,\2"~' <'/homelab/custom-domains-type-cname.txt' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]")"
 pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 
 # Set additional dnsmasq records. PTR targets must be locally known hostnames.
@@ -178,7 +178,7 @@ dnsmasq_lines='[
   "ptr-record=2.12.1.10.in-addr.arpa,unbound-matej-1",
   "ptr-record=3.12.1.10.in-addr.arpa,unbound-monika-1",
   "ptr-record=2.10.1.10.in-addr.arpa,unbound-matej-2",
-  "ptr-record=101.12.2.10.in-addr.arpa,Matej--MacBook-Air-M1-v1"
+  "ptr-record=101.12.2.10.in-addr.arpa,matej--macbook-air-m1"
 ]'
 pihole-FTL --config misc.dnsmasq_lines "${dnsmasq_lines}"
 
