@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### App config ###
 
-FROM yq AS dns_entries
+FROM yq AS pihole_config
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
@@ -81,7 +81,7 @@ RUN sh '/homelab/create-user.sh' && \
 FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/setup.sh /homelab/setup.sh
-COPY --from=dns_entries /homelab/config/ /homelab/config/
+COPY --from=pihole_config /homelab/config/ /homelab/config/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
