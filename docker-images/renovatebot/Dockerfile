@@ -159,7 +159,7 @@ COPY ./docker-images/renovatebot/config.js ./docker-images/renovatebot/test-conf
 
 ### Final ###
 
-FROM renovate/renovate:44.216.3-full AS final
+FROM renovate/renovate:44.221.2-full AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
