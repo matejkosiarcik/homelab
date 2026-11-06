@@ -177,8 +177,8 @@ dnsmasq_lines='[
   "ptr-record=1.12.1.10.in-addr.arpa,unbound-default-1",
   "ptr-record=2.12.1.10.in-addr.arpa,unbound-matej-1",
   "ptr-record=3.12.1.10.in-addr.arpa,unbound-monika-1",
-  "ptr-record=101.12.2.10.in-addr.arpa,Matej--MacBook-Air-M1-v1",
-  "ptr-record=10.2.12.101.in-addr.arpa,Matej--MacBook-Air-M1-v2"
+  "ptr-record=2.10.1.10.in-addr.arpa,unbound-matej-2",
+  "ptr-record=101.12.2.10.in-addr.arpa,Matej--MacBook-Air-M1-v1"
 ]'
 pihole-FTL --config misc.dnsmasq_lines "${dnsmasq_lines}"
 
