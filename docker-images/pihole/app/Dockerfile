@@ -41,9 +41,9 @@ COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-image
 COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
+    mkdir -p '/homelab/config' '/homelab/config/FTL' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
     cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' >'/homelab/config/custom-domains-all.txt' && \
-    mkdir -p '/homelab/config' '/homelab/config/FTL' && \
     grep -E '^[0-9]' <'/homelab/config/custom-domains-all.txt' >'/homelab/config/custom-domains-type-a.txt' && \
     printf '%s\n' "[ $(sed -E 's~^(.*)$~"\1"~' <'/homelab/config/custom-domains-type-a.txt' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]" >'/homelab/config/FTL/dns.hosts.txt' && \
     grep -E '^[a-zA-Z]' <'/homelab/config/custom-domains-all.txt' >'/homelab/config/custom-domains-type-cname.txt' && \
