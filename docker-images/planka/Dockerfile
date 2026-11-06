@@ -3,7 +3,7 @@
 
 ### App ###
 
-FROM ghcr.io/plankanban/planka:2.3.0 AS entrypoint
+FROM ghcr.io/plankanban/planka:2.3.1 AS entrypoint
 USER root
 WORKDIR /homelab
 COPY ./docker-images/planka/entrypoint-extra.sh /homelab/
@@ -52,7 +52,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM ghcr.io/plankanban/planka:2.3.0 AS final
+FROM ghcr.io/plankanban/planka:2.3.1 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
