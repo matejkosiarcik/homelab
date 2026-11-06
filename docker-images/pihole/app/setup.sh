@@ -167,7 +167,7 @@ sql "UPDATE [client_by_group] SET group_id='${blackhole_group_id}' WHERE client_
 
 # Set custom FTL config
 find '/homelab/config/FTL' -mindepth 1 -maxdepth 1 -type f | while read -r file; do
-    printf 'Config: %s\n' "$(basename "${file}" .txt)"
+    printf 'Setting pihole-FTL config: %s\n' "$(basename "${file}" .txt)"
     pihole-FTL --config "$(basename "${file}" .txt)" "$(cat "${file}")"
 done
 
