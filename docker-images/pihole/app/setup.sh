@@ -171,6 +171,17 @@ pihole-FTL --config dns.hosts "${custom_domains_a}"
 custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
 pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
 
+# Set additional dnsmasq records. PTR targets must be locally known hostnames.
+dnsmasq_lines='[
+  "local-ttl=600",
+  "ptr-record=1.12.1.10.in-addr.arpa,unbound-default-1",
+  "ptr-record=2.12.1.10.in-addr.arpa,unbound-matej-1",
+  "ptr-record=3.12.1.10.in-addr.arpa,unbound-monika-1",
+  "ptr-record=101.12.2.10.in-addr.arpa,Matej--MacBook-Air-M1-v1",
+  "ptr-record=10.2.12.101.in-addr.arpa,Matej--MacBook-Air-M1-v2"
+]'
+pihole-FTL --config misc.dnsmasq_lines "${dnsmasq_lines}"
+
 # Reload group policies and restart DNS
 pihole reloadlists
 pihole reloaddns
