@@ -196,7 +196,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_f
         /usr/sbin/getpcaps \
         /usr/sbin/setcap \
         /usr/sbin/unbound-anchor \
-        /usr/sbin/unbound-control \
         /usr/sbin/unbound-control-setup \
         /usr/sbin/unbound-host
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
@@ -207,5 +206,5 @@ ENV HOMELAB_CONTAINER_NAME="unbound" \
     HOMELAB_CONTAINER_VARIANT="default" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "dig @${HOMELAB_APP_EXTERNAL_IP} +short placeholder.matejhome.com || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "unbound-control", "-q", "-c", "/homelab/unbound.conf", "status" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
