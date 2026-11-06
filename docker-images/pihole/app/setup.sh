@@ -165,10 +165,11 @@ sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id
 sql "UPDATE [client_by_group] SET group_id='${blackhole_group_id}' WHERE client_id='${unbound_blackhole_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${blackhole_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
 
-# Set custom local domains
-pihole-FTL --config dns.hosts "$(cat '/homelab/config-dns-hosts.txt')"
-pihole-FTL --config dns.cnameRecords "$(cat '/homelab/config-dns-cnameRecords.txt')"
-pihole-FTL --config misc.dnsmasq_lines "$(cat '/homelab/config-misc-dnsmasq_lines.txt')"
+# Set custom FTL config
+find '/homelab/config/FTL' -mindepth 1 -maxdepth 1 -type f | while read -r file; do
+    printf 'Config: %s\n' "$(basename "${file}" .txt)"
+    pihole-FTL --config "$(basename "${file}" .txt)" "$(cat "${file}")"
+done
 
 # Reload group policies and restart DNS
 pihole reloadlists
