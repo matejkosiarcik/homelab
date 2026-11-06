@@ -70,11 +70,19 @@ sql 'DELETE FROM [client_by_group];'
 sql 'DELETE FROM [group] WHERE id!=0;'
 sql 'DELETE FROM [client];'
 
-# Add custom open group
+# Add custom groups
 default_group_id='0'
 sql "UPDATE [group] SET name='Default', description='Default group' WHERE id='${default_group_id}';"
-sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Adfull', 0, 0, 'Custom group without adblocking');"
-adfull_group_id="$(sql "SELECT id FROM [group] WHERE name='Adfull';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Monika', 0, 0, 'Custom group without adblocking');"
+monika_group_id="$(sql "SELECT id FROM [group] WHERE name='Monika';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Matej', 0, 0, 'Custom group with default policies');"
+matej_group_id="$(sql "SELECT id FROM [group] WHERE name='Matej';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'IoT', 0, 0, 'Custom group with default policies');"
+iot_group_id="$(sql "SELECT id FROM [group] WHERE name='IoT';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Guests', 0, 0, 'Custom group with default policies');"
+guests_group_id="$(sql "SELECT id FROM [group] WHERE name='Guests';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Blackhole', 0, 0, 'Custom group with default policies');"
+blackhole_group_id="$(sql "SELECT id FROM [group] WHERE name='Blackhole';")"
 
 # Custom clients
 unbound_default_1_ip='10.1.12.1'
@@ -138,16 +146,24 @@ sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_default_2_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_matej_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_matej_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${adfull_group_id}' WHERE client_id='${unbound_monika_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${adfull_group_id}' WHERE client_id='${unbound_monika_2_id}';"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_matej_1_id}', '${matej_group_id}');"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_matej_2_id}', '${matej_group_id}');"
+sql "UPDATE [client_by_group] SET group_id='${monika_group_id}' WHERE client_id='${unbound_monika_1_id}';"
+sql "UPDATE [client_by_group] SET group_id='${monika_group_id}' WHERE client_id='${unbound_monika_2_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_iot_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_iot_2_id}';"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_iot_1_id}', '${iot_group_id}');"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_iot_2_id}', '${iot_group_id}');"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_guests_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_guests_2_id}';"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_guests_1_id}', '${guests_group_id}');"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_guests_2_id}', '${guests_group_id}');"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_internal_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_internal_2_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_1_id}';"
 sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_blackhole_1_id}', '${blackhole_group_id}');"
+sql "INSERT INTO [client_by_group] (client_id, group_id) VALUES ('${unbound_blackhole_2_id}', '${blackhole_group_id}');"
 
 # Set custom local domains
 custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
