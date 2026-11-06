@@ -46,7 +46,7 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     grep -E '^[a-zA-Z]' <'/homelab/custom-domains-all.txt' >'/homelab/custom-domains-type-cname.txt' && \
     printf '%s\n' "[ $(sed -E 's~^(.*) (.*)$~"\1,\2"~' <'/homelab/custom-domains-type-cname.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config-dns-cnameRecords.txt' && \
     sed -E 's~\.matejhome\.com~~;s~^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+) ~\4.\3.\2.\1.in-addr.arpa ~' <'/homelab/custom-domains-type-a.txt' >'/homelab/custom-domains-type-ptr.txt' && \
-    printf '%s\n' "[ \"local-ttl=600\", $(sed -E 's~^(.*) (.*)$~"ptr-record=\1,\2"~' <'/homelab/custom-domains-type-ptr.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config-misc-dnsmasq_lines.txt'
+    printf '%s\n' "[ \"local-ttl=600\", "ptr-record=1.0.0.127,localhost", $(sed -E 's~^(.*) (.*)$~"ptr-record=\1,\2"~' <'/homelab/custom-domains-type-ptr.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config-misc-dnsmasq_lines.txt'
 
 ### User setup ###
 
