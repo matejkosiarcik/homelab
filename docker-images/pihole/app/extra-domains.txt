@@ -5,6 +5,30 @@
 10.1.4.3 server-raspberry-pi-4b-2g.matejhome.com
 10.1.4.4 server-raspberry-pi-4b-4g.matejhome.com
 
+### Network devices ###
+
+10.1.0.2 unifi-wifi-u6-mesh.matejhome.com
+10.1.0.3 unifi-switch-server-closet.matejhome.com
+10.1.0.4 unifi-switch-matej-desk.matejhome.com
+10.1.0.5 unifi-switch-monika-desk.matejhome.com
+10.1.0.6 unifi-switch-tv-closet.matejhome.com
+
+### Personal devices ###
+
+10.2.12.1 matej-macbook-wifi.matejhome.com
+10.2.12.2 matej-macbook-eth.matejhome.com
+10.2.12.3 matej-iphone-wifi.matejhome.com
+10.2.12.11 matej-work-macbook-wifi.matejhome.com
+10.2.12.12 matej-work-macbook-eth.matejhome.com
+
+10.2.13.1 monika-notebook-eth.matejhome.com
+10.2.13.2 monika-notebook-old-wifi.matejhome.com
+10.2.13.3 monika-notebook-wifi.matejhome.com
+10.2.13.4 monika-work-notebook-wifi.matejhome.com
+10.2.13.5 monika-phone-old.matejhome.com
+10.2.13.6 monika-phone.matejhome.com
+10.2.13.7 monika-ipad.matejhome.com
+
 ### IoT Devices ###
 
 10.1.4.201 desklamp-left.matejhome.com

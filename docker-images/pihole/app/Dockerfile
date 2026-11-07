@@ -36,7 +36,7 @@ FROM yq AS pihole_config
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
-COPY ./docker-images/pihole/app/devices.txt ./docker-images/pihole/app/extra-domains.txt /homelab/
+COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     mkdir -p '/homelab/config' '/homelab/config/FTL' && \
@@ -48,6 +48,12 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     printf '%s\n' "[ $(sed -E 's~^(.*) (.*)$~"\1,\2"~' <'/homelab/config/custom-domains-type-cname.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config/FTL/dns.cnameRecords.txt' && \
     sed -E 's~\.matejhome\.com~~;s~^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+) ~\4.\3.\2.\1.in-addr.arpa ~' <'/homelab/config/custom-domains-type-a.txt' >'/homelab/config/custom-domains-type-ptr.txt' && \
     printf '%s\n' "[ \"local-ttl=600\", \"ptr-record=1.0.0.127,localhost\", $(sed -E 's~^(.*) (.*)$~"ptr-record=\1,\2"~' <'/homelab/config/custom-domains-type-ptr.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config/FTL/misc.dnsmasq_lines.txt'
+
+FROM python:3.15.2-slim AS pihole_config_devices
+USER root
+WORKDIR /homelab
+COPY ./docker-images/pihole/app/clients-groups.csv /homelab/
+# TODO: Copy '/homelab/config/custom-domains-all.txt' and finish the instructions
 
 ### User setup ###
 
