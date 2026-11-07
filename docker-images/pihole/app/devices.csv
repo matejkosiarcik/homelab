@@ -1,19 +1,19 @@
 ip,device,group
 
-10.1.12.1,app--unbound-default-1,Default
-10.1.12.2,app--unbound-matej-1,Matej
-10.1.12.3,app--unbound-monika-1,Monika
-10.1.12.4,app--unbound-iot-1,IoT
-10.1.12.5,app--unbound-guests-1,Guests
-10.1.12.6,app--unbound-internal-1,Default
-10.1.12.7,app--unbound-blackhole-1,Blackhole
-10.1.10.1,app--unbound-default-2,Default
-10.1.10.2,app--unbound-matej-2,Matej
-10.1.10.3,app--unbound-monika-2,Monika
-10.1.10.4,app--unbound-iot-2,IoT
-10.1.10.5,app--unbound-guests-2,Guests
-10.1.10.6,app--unbound-internal-2,Default
-10.1.10.7,app--unbound-blackhole-2,Blackhole
+10.1.12.1,unbound-default-1,Default
+10.1.12.2,unbound-matej-1,Matej
+10.1.12.3,unbound-monika-1,Monika
+10.1.12.4,unbound-iot-1,IoT
+10.1.12.5,unbound-guests-1,Guests
+10.1.12.6,unbound-internal-1,Default
+10.1.12.7,unbound-blackhole-1,Blackhole
+10.1.10.1,unbound-default-2,Default
+10.1.10.2,unbound-matej-2,Matej
+10.1.10.3,unbound-monika-2,Monika
+10.1.10.4,unbound-iot-2,IoT
+10.1.10.5,unbound-guests-2,Guests
+10.1.10.6,unbound-internal-2,Default
+10.1.10.7,unbound-blackhole-2,Blackhole
 
 10.2.12.101,device--matej--macbook-air-m1,Matej
 
