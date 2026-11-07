@@ -36,7 +36,7 @@ FROM yq AS pihole_config
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
-COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
+COPY ./docker-images/pihole/app/devices.txt ./docker-images/pihole/app/extra-domains.txt /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     mkdir -p '/homelab/config' '/homelab/config/FTL' && \
