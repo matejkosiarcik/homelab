@@ -62,24 +62,15 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_docker_pr
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_docker_proxy_filter_build_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        binutils build-essential file jq >/dev/null && \
+        binutils build-essential file musl-tools >/dev/null && \
     rm -rf /var/lib/apt/lists/*
-COPY ./docker-images/.shared/dependencies/cargo-cross/Cargo.toml ./docker-images/.shared/dependencies/cargo-cross/Cargo.lock /homelab/cargo-cross-dependency/
-COPY ./docker-images/.shared/dependencies/cargo-cross/src /homelab/cargo-cross-dependency/src
-WORKDIR /homelab/cargo-cross-dependency
-RUN version="$(cargo metadata --format-version 1 | jq -r '.packages[] | select(.name == "cargo-cross").version')" && \
-    cargo install "cargo-cross@${version}" && \
-    rustup target add "$(uname -m)-unknown-linux-musl"
+RUN rustup target add "$(uname -m)-unknown-linux-musl"
 COPY --from=docker_proxy_filter_gitman /homelab/gitman-repositories/docker-proxy-filter/ /homelab/docker-proxy-filter/
 WORKDIR /homelab/docker-proxy-filter
-ENV OPENSSL_STATIC=1 \
-    PKG_CONFIG_ALLOW_CROSS=1 \
-    RUSTFLAGS="-C target-feature=+crt-static"
-RUN PKG_CONFIG_SYSROOT_DIR="/opt/openssl-$(uname -m)-musl" && \
-    export PKG_CONFIG_SYSROOT_DIR && \
-    PKG_CONFIG_PATH="${PKG_CONFIG_SYSROOT_DIR}/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/lib/pkgconfig:${PKG_CONFIG_SYSROOT_DIR}/usr/share/pkgconfig" && \
-    export PKG_CONFIG_PATH && \
-    cargo cross build --release --target "$(uname -m)-unknown-linux-musl" && \
+ENV RUSTFLAGS="-C target-feature=+crt-static"
+RUN CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER=musl-gcc \
+    CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=musl-gcc \
+    cargo build --release --target "$(uname -m)-unknown-linux-musl" && \
     strip --strip-all "./target/$(uname -m)-unknown-linux-musl/release/docker-proxy-filter" && \
     cp "./target/$(uname -m)-unknown-linux-musl/release/docker-proxy-filter" '/homelab/docker-proxy-filter-bin'
 WORKDIR /homelab
