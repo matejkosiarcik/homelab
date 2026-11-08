@@ -32,7 +32,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### App config ###
 
-FROM yq AS pihole_config
+FROM yq AS pihole_config_domains
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
@@ -53,7 +53,13 @@ FROM python:3.15.2-slim AS pihole_config_devices
 USER root
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/clients-groups.csv /homelab/
-# TODO: Copy '/homelab/config/custom-domains-all.txt' and finish the instructions
+COPY ./docker-images/pihole/app/unfurl-clients-groups.py /homelab/
+COPY --from=pihole_config_domains /homelab/config/custom-domains-all.txt /homelab/config/custom-domains-all.txt
+RUN python3 '/homelab/unfurl-clients-groups.py' '/homelab/clients-groups.csv' '/homelab/config/custom-domains-all.txt' '/homelab/clients-groups.txt'
+
+FROM scratch AS pihole_config_final
+COPY --from=pihole_config_domains /homelab/config/ /homelab/config/
+COPY --from=pihole_config_devices /homelab/clients-groups.txt /homelab/config/clients-groups.txt
 
 ### User setup ###
 
@@ -84,7 +90,7 @@ RUN sh '/homelab/create-user.sh' && \
 FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/setup.sh /homelab/setup.sh
-COPY --from=pihole_config /homelab/config/ /homelab/config/
+COPY --from=pihole_config_final /homelab/config/ /homelab/config/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
