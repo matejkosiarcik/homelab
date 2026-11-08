@@ -41,7 +41,9 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     mkdir -p '/homelab/config' '/homelab/config/FTL' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
-    cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' >'/homelab/config/custom-domains-all.txt' && \
+    cat '/homelab/app-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sort --version-sort >'/homelab/config/custom-domains-apps.txt' && \
+    cat '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sort --version-sort >'/homelab/config/custom-domains-extra.txt' && \
+    cat '/homelab/config/custom-domains-apps.txt' '/homelab/config/custom-domains-extra.txt' | sort --version-sort >'/homelab/config/custom-domains-all.txt' && \
     grep -E '^[0-9]' <'/homelab/config/custom-domains-all.txt' >'/homelab/config/custom-domains-type-a.txt' && \
     printf '%s\n' "[ $(sed -E 's~^(.*)$~"\1"~' <'/homelab/config/custom-domains-type-a.txt' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]" >'/homelab/config/FTL/dns.hosts.txt' && \
     grep -E '^[a-zA-Z]' <'/homelab/config/custom-domains-all.txt' >'/homelab/config/custom-domains-type-cname.txt' && \
@@ -54,8 +56,9 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/clients-groups.csv /homelab/
 COPY ./docker-images/pihole/app/unfurl-clients-groups.py /homelab/
+COPY --from=pihole_config_domains /homelab/config/custom-domains-apps.txt /homelab/custom-domains-apps.txt
 COPY --from=pihole_config_domains /homelab/config/custom-domains-all.txt /homelab/config/custom-domains-all.txt
-RUN python3 '/homelab/unfurl-clients-groups.py' '/homelab/clients-groups.csv' '/homelab/config/custom-domains-all.txt' '/homelab/clients-groups.txt'
+RUN python3 '/homelab/unfurl-clients-groups.py' '/homelab/clients-groups.csv' '/homelab/config/custom-domains-all.txt' '/homelab/custom-domains-apps.txt' '/homelab/clients-groups.txt'
 
 FROM scratch AS pihole_config_final
 COPY --from=pihole_config_domains /homelab/config/ /homelab/config/

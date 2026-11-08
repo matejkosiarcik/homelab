@@ -16,6 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("clients_groups", type=Path, help="input clients-groups.csv file")
     parser.add_argument("domains_all", type=Path, help="input domains-all.txt file")
+    parser.add_argument("domains_apps", type=Path, help="input app domains file")
     parser.add_argument("output", type=Path, help="output clients-groups.txt file")
     return parser.parse_args()
 
@@ -58,7 +59,9 @@ def load_domain_names(path: Path) -> dict[str, str]:
     return domain_names
 
 
-def load_clients(path: Path, domain_names: dict[str, str]) -> dict[str, tuple[str, str]]:
+def load_clients(
+    path: Path, domain_names: dict[str, str], app_ips: set[str]
+) -> dict[str, tuple[str, str]]:
     """Expand client rows and retain only the last row for each IP address."""
     clients: dict[str, tuple[str, str]] = {}
     with path.open(encoding="utf-8-sig", newline="") as source:
@@ -82,6 +85,8 @@ def load_clients(path: Path, domain_names: dict[str, str]) -> dict[str, tuple[st
                 client = values["client"].replace("<IP>", placeholder_ip)
                 group = values["group"].replace("<IP>", placeholder_ip)
                 client = domain_names.get(ip_text, client)
+                if ip_text in app_ips:
+                    client = f"app--{client}"
 
                 if any(character.isspace() for character in client) or any(
                     character.isspace() for character in group
@@ -107,7 +112,8 @@ def write_clients(path: Path, clients: dict[str, tuple[str, str]]) -> None:
 def main() -> None:
     args = parse_args()
     domain_names = load_domain_names(args.domains_all)
-    clients = load_clients(args.clients_groups, domain_names)
+    app_ips = set(load_domain_names(args.domains_apps))
+    clients = load_clients(args.clients_groups, domain_names, app_ips)
     write_clients(args.output, clients)
 
 
