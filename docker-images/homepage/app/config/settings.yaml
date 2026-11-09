@@ -13,13 +13,40 @@ title: Homepage
 layout:
   Network:
     style: row
-    columns: 4
+    columns: 1
+    Routers:
+      style: row
+      columns: 4
+    Switches:
+      style: row
+      columns: 4
+    WiFi APs:
+      style: row
+      columns: 4
+    Network Controllers:
+      style: row
+      columns: 4
+    Miscellaneous:
+      style: row
+      columns: 4
   Servers:
     style: row
-    columns: 4
+    columns: 1
+    Main:
+      style: row
+      columns: 4
+    Extra:
+      style: row
+      columns: 4
   DNS:
     style: row
-    columns: 4
+    columns: 1
+    PiHole:
+      style: row
+      columns: 4
+    Unbound:
+      style: row
+      columns: 4
   Smart Home:
     style: row
     columns: 4
@@ -35,9 +62,6 @@ layout:
   Monitoring:
     style: row
     columns: 4
-  Other Apps:
-    style: row
-    columns: 4
   Notifications:
     style: row
     columns: 4
@@ -46,11 +70,29 @@ layout:
     columns: 4
   Remote Access:
     style: row
-    columns: 4
+    columns: 1
+    VNC:
+      style: row
+      columns: 4
   Resources:
     style: row
-    columns: 4
+    columns: 1
+    DockerStats:
+      style: row
+      columns: 4
+    NodeExporter:
+      style: row
+      columns: 4
   AI:
+    style: row
+    columns: 1
+    LLM:
+      style: row
+      columns: 4
+    Images:
+      style: row
+      columns: 4
+  Other Apps:
     style: row
     columns: 4
   Crossroads:
