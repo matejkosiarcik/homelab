@@ -15,7 +15,7 @@
     "express": "^5.3.0",
     "png-to-ico": "^3.0.2",
     "sharp": "^0.35.5",
-    "tough-cookie": "^6.0.2",
+    "tough-cookie": "^6.1.0",
     "winston": "^3.19.0"
   },
   "devDependencies": {
