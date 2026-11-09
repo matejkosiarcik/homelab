@@ -4,6 +4,10 @@
     display: none;
 }
 
-.services-group {
+.services-group:not(.subgroup) {
     margin-bottom: 50px;
+}
+
+.services-group.subgroup {
+    margin-bottom: 10px;
 }
