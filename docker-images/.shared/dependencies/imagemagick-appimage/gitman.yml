@@ -16,7 +16,7 @@ sources:
 sources_locked:
   - repo: https://github.com/pkgforge-dev/ImageMagick-AppImage.git
     name: imagemagick-appimage
-    rev: 74af0236d7880a733df3088cef88bfc0b7bed76e
+    rev: a901e1da7deab168fce5a8c1c5b771e06565f75e
     type: git
     params:
     sparse_paths:
