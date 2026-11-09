@@ -138,7 +138,7 @@ jobs:
       - name: Install Pip dependencies
         run: |
           set -euf
-          python3 -m pip install --no-compile --require-hashes --requirement './docker-images/.shared/dependencies/yq/requirements.txt'
+          python3 -m pip install --no-compile --require-hashes --requirement "${GITHUB_WORKSPACE}/docker-images/.shared/dependencies/yq/requirements.txt"
 
       - name: Debug build environment
         run: |
