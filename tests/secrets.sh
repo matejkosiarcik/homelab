@@ -501,6 +501,7 @@ rm -f './.secrets.env'
 
     printf 'VIKUNJA__MATEJ_PASSWORD=%s\n' "$(load_secret '.vikunja.app.matej_user')"
     printf 'VIKUNJA__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.vikunja.app.homelab_test_user')"
+    printf 'VIKUNJA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.app.prometheus_user')"
     printf 'VIKUNJA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.status_user')"
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.prometheus_user')"
 
