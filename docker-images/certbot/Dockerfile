@@ -121,12 +121,24 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_se
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_script_setup_package_curl_final_aptlibcache \
     apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive DEBCONF_TERSE=yes DEBCONF_NOWARNINGS=yes apt-get install -qq --yes --no-install-recommends --no-install-suggests \
-        ca-certificates curl xz-utils >/dev/null && \
+        ca-certificates curl jq xz-utils >/dev/null && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=package_curl_version /homelab/curl-tag.txt /homelab/
 RUN tag="$(cat '/homelab/curl-tag.txt')" && \
+    asset="curl-linux-$(uname -m)-glibc-${tag}.tar.xz" && \
     tmpdir="$(mktemp -d)" && \
-    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/curl-linux-$(uname -m)-glibc-${tag}.tar.xz" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 \
+        --header 'Accept: application/vnd.github+json' \
+        --output "${tmpdir}/release.json" \
+        "https://api.github.com/repos/stunnel/static-curl/releases/tags/${tag}" && \
+    expected_sha256="$( \
+        jq --exit-status --raw-output --arg asset "${asset}" \
+            '.assets[] | select(.name == $asset) | .digest | select(startswith("sha256:")) | ltrimstr("sha256:")' \
+            "${tmpdir}/release.json" \
+    )" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 --output "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/${asset}" && \
+    printf '%s  %s\n' "${expected_sha256}" "${tmpdir}/curl.tar.xz" >"${tmpdir}/curl.tar.xz.sha256" && \
+    sha256sum --check --status "${tmpdir}/curl.tar.xz.sha256" && \
     mkdir -p "${tmpdir}/curl.d" && \
     tar -xJf "${tmpdir}/curl.tar.xz" -C "${tmpdir}/curl.d" && \
     mkdir -p '/homelab/bin' && \
