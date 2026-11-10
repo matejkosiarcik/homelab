@@ -3,7 +3,7 @@
 
 ### Entrypoint ###
 
-FROM homeassistant/home-assistant:2026.11.0 AS entrypoint
+FROM homeassistant/home-assistant:2026.11.1 AS entrypoint
 USER root
 COPY ./docker-images/homeassistant/entrypoint-extra.sh /homelab/
 RUN head -n 1 /init >/homelab/entrypoint-upstream-shebang.sh && \
@@ -54,7 +54,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/init
 
 ### Final ###
 
-FROM homeassistant/home-assistant:2026.11.0 AS final
+FROM homeassistant/home-assistant:2026.11.1 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
