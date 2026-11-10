@@ -1131,9 +1131,9 @@ rich==12.6.0 \
     --hash=sha256:a4eb26484f2c82589bd9a17c73d32a010b1e29d89f1604cd9bf3a2097b81bb5e \
     --hash=sha256:ba3a3775974105c221d31141f2c116f4fd65c5ceb0698657a11e9f295ec93fd0
     # via flask-limiter
-sacremoses==0.1.1 \
-    --hash=sha256:31e04c98b169bfd902144824d191825cd69220cdb4ae4bcf1ec58a7db5587b1a \
-    --hash=sha256:b6fd5d3a766b02154ed80b962ddca91e1fd25629c0978c7efba21ebccf663934
+sacremoses==0.2.0 \
+    --hash=sha256:5aec4792efc2726710243d3566b381990e6b678cb1fd7b9d2dae216b4b8f1b1e \
+    --hash=sha256:d413d118486b3a449f829566b3759a4b33bbc56b12496369316b52708585f594
     # via argos-translate-lt
 sentencepiece==0.2.3 \
     --hash=sha256:016218e381da4c492323f2d7959012338795a2fb2dfccf14a2bc421c1b040612 \
