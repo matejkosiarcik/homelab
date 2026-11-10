@@ -44,8 +44,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-# hadolint ignore=DL3007
-FROM gcr.io/distroless/nodejs22-debian13:latest@sha256:74224b87e0ca49c53adcc9b475d13f4080a10eea5ab2fdd4684e5094accd4041 AS final
+FROM gcr.io/distroless/nodejs24-debian13:latest@sha256:b770c59f44ed459329508a73794e6d284f6c10143f83c8012a8f775cd514eca2 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
