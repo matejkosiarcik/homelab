@@ -15,6 +15,9 @@ NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not \( -pat
 DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8 ' | tr ' ' '\n' | base64)
 PYTHON_COMPONENTS := $(shell find '.' -type f -name 'requirements.txt' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 
+# TODO: Remove explicit python version for ansible after ansible is compatible with python 3.15
+ANSIBLE_PYTHON ?= $(shell command -v python3.14 2>/dev/null || command -v python3)
+
 .POSIX:
 .SILENT:
 
@@ -54,12 +57,13 @@ bootstrap:
 	#
 
 	printf '%s' "$(PYTHON_COMPONENTS)" | tr -d ' ' | base64 -d | while read -r component; do \
+		if [ "$${component}" = './ansible' ]; then python="$(ANSIBLE_PYTHON)"; else python='python3'; fi && \
 		cd "$(PROJECT_DIR)/$${component}" && \
-		if [ -e ./venv ]; then true; else python3 -m venv ./venv; fi && \
+		if [ -e './venv' ]; then true; else "$${python}" -m venv ./venv; fi && \
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK='1' \
 		PYTHONDONTWRITEBYTECODE='1' \
-			python3 -m pip install --no-compile --require-hashes --requirement './requirements.txt' --quiet --upgrade && \
+			python -m pip install --no-compile --require-hashes --requirement './requirements.txt' --quiet --upgrade && \
 	true; done
 
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \
