@@ -629,6 +629,7 @@ gatus)
     printf 'UNBOUND_MONIKA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'VIKUNJA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
     # Runwisp metrics credentials #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
@@ -1492,6 +1493,7 @@ prometheus)
     printf 'UNBOUND_MONIKA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'VIKUNJA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
     # Runwisp #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"

@@ -11,9 +11,11 @@ favicons:
   # ico: /favicon.ico
 
 gatus:
-  enabled: false
+  enabled: true
   endpoints:
     - path: /api/v1/metrics
+      authentication:
+        basic: prometheus
 
 healthchecks:
   - slug: certificator
@@ -22,5 +24,8 @@ prometheus:
   enabled: true
   endpoints:
     - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /api/v1/metrics
       auth:
         type: basic
