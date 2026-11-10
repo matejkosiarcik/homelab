@@ -13,7 +13,6 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### User setup ###
 
-# hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f AS user_setup_base
 
 FROM debian:13.7-slim AS user_setup
@@ -55,7 +54,6 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-# hadolint ignore=DL3007
 FROM linuxserver/tvheadend:latest@sha256:989fd717b2b143b8861ab60c31053c1d3542368532af1d429e996fa61e4fc04b AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"

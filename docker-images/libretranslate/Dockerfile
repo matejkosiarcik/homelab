@@ -54,7 +54,6 @@ RUN mkdir /empty
 
 ### User setup ###
 
-# hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f AS user_setup_base
 
 FROM debian:13.7-slim AS user_setup
@@ -83,7 +82,7 @@ COPY --from=libretranslate_build /root/.local-copy /home/homelab/.local
 
 ### Final ###
 
-# hadolint ignore=DL3007,DL3029
+# hadolint ignore=DL3029
 FROM --platform=linux/amd64 debian:13.7-slim AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"

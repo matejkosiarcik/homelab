@@ -22,7 +22,6 @@ RUN mkdir /empty
 
 ### User setup ###
 
-# hadolint ignore=DL3007
 FROM gcr.io/distroless/static-debian13:latest@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f AS user_setup_base
 
 FROM debian:13.7-slim AS user_setup
