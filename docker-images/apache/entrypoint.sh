@@ -79,8 +79,6 @@ export PROXY_EXTERNAL_HOST
 # Set PROXY_FORCE_HTTPS
 if [ "${HOMELAB_FORCE_PROTOCOL-}" = 'HTTP' ]; then
     PROXY_FORCE_HTTPS='false'
-elif [ "${HOMELAB_APP_TYPE}" = 'unificontroller' ] && [ "${HOMELAB_CONTAINER_VARIANT}" = 'admin-raw' ]; then
-    PROXY_FORCE_HTTPS='false' # TODO: Enable HTTPS redirection after Let's Encrypt certificates
 else
     PROXY_FORCE_HTTPS='true'
 fi
