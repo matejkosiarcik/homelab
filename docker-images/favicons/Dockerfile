@@ -102,9 +102,8 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet
 WORKDIR /homelab/gitman-repositories/imagemagick-appimage
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    git fetch --tags && \
     cat './LATEST_VERSION' >'/homelab/imagemagick-version.txt' && \
-    git tag --list --sort=-creatordate "$(cat '/homelab/imagemagick-version.txt')@*" | head -n1  >'/homelab/imagemagick-tag.txt'
+    git describe --tags --abbrev=0 --first-parent HEAD >'/homelab/imagemagick-tag.txt'
 
 FROM debian:13.7-slim AS imagemagick_final
 USER root
@@ -118,8 +117,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_favicons_
 COPY --from=imagemagick_appimage_version /homelab/imagemagick-tag.txt /homelab/imagemagick-version.txt /homelab/
 RUN tag="$(cat '/homelab/imagemagick-tag.txt')" && \
     version="$(cat '/homelab/imagemagick-version.txt')" && \
+    asset="ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
     tmpdir="$(mktemp -d)" && \
-    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/ImageMagick.AppImage" "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/ImageMagick-${version}-anylinux-$(uname -m).AppImage" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 \
+        --output "${tmpdir}/release.html" \
+        "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/expanded_assets/${tag}" && \
+    expected_sha256="$(grep --fixed-strings "aria-label=\"Copy to clipboard digest for ${asset}\"" "${tmpdir}/release.html" | sed -nE 's/.*value="sha256:([0-9a-f]{64})".*/\1/p')" && \
+    test "${#expected_sha256}" -eq 64 && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 --output "${tmpdir}/ImageMagick.AppImage" "https://github.com/pkgforge-dev/ImageMagick-AppImage/releases/download/${tag}/${asset}" && \
+    printf '%s  %s\n' "${expected_sha256}" "${tmpdir}/ImageMagick.AppImage" >"${tmpdir}/ImageMagick.AppImage.sha256" && \
+    sha256sum --check --status "${tmpdir}/ImageMagick.AppImage.sha256" && \
     chmod a+x "${tmpdir}/ImageMagick.AppImage" && \
     "${tmpdir}/ImageMagick.AppImage" --appimage-extract && \
     mv "./AppDir" '/homelab/imagemagick' && \

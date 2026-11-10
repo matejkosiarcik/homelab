@@ -111,8 +111,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet
 WORKDIR /homelab/gitman-repositories/static-curl
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    git fetch --tags && \
-    git tag --list --sort=-creatordate | head -n 1 >'/homelab/curl-tag.txt'
+    git describe --tags --abbrev=0 --first-parent HEAD >'/homelab/curl-tag.txt'
 
 FROM debian:13.7-slim AS package_curl_final
 USER root
@@ -125,8 +124,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_se
     rm -rf /var/lib/apt/lists/*
 COPY --from=package_curl_version /homelab/curl-tag.txt /homelab/
 RUN tag="$(cat '/homelab/curl-tag.txt')" && \
+    asset="curl-linux-$(uname -m)-glibc-${tag}.tar.xz" && \
     tmpdir="$(mktemp -d)" && \
-    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 -o "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/curl-linux-$(uname -m)-glibc-${tag}.tar.xz" && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 \
+        --output "${tmpdir}/release.html" \
+        "https://github.com/stunnel/static-curl/releases/expanded_assets/${tag}" && \
+    expected_sha256="$(grep --fixed-strings "aria-label=\"Copy to clipboard digest for ${asset}\"" "${tmpdir}/release.html" | sed -nE 's/.*value="sha256:([0-9a-f]{64})".*/\1/p')" && \
+    test "${#expected_sha256}" -eq 64 && \
+    curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 --output "${tmpdir}/curl.tar.xz" "https://github.com/stunnel/static-curl/releases/download/${tag}/${asset}" && \
+    printf '%s  %s\n' "${expected_sha256}" "${tmpdir}/curl.tar.xz" >"${tmpdir}/curl.tar.xz.sha256" && \
+    sha256sum --check --status "${tmpdir}/curl.tar.xz.sha256" && \
     mkdir -p "${tmpdir}/curl.d" && \
     tar -xJf "${tmpdir}/curl.tar.xz" -C "${tmpdir}/curl.d" && \
     mkdir -p '/homelab/bin' && \

@@ -9,6 +9,21 @@
     "enabled": true,
     "rebaseWhen": "auto"
   },
+  "pip-compile": {
+    "enabled": true,
+    "managerFilePatterns": [
+      "/(^|/)requirements(?:[.-]\\w+)?\\.txt$/"
+    ],
+    "lockFileMaintenance": {
+      "enabled": true
+    }
+  },
+  "pip_requirements": {
+    "enabled": false
+  },
+  "pip_setup": {
+    "enabled": false
+  },
   "customManagers": [
     {
       "customType": "regex",
