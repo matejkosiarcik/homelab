@@ -59,9 +59,7 @@ def load_domain_names(path: Path) -> dict[str, str]:
     return domain_names
 
 
-def load_clients(
-    path: Path, domain_names: dict[str, str], app_ips: set[str]
-) -> dict[str, tuple[str, str]]:
+def load_clients(path: Path, domain_names: dict[str, str], app_ips: set[str]) -> dict[str, tuple[str, str]]:
     """Expand client rows and retain only the last row for each IP address."""
     clients: dict[str, tuple[str, str]] = {}
     with path.open(encoding="utf-8-sig", newline="") as source:
@@ -88,12 +86,8 @@ def load_clients(
                 if ip_text in app_ips:
                     client = f"app--{client}"
 
-                if any(character.isspace() for character in client) or any(
-                    character.isspace() for character in group
-                ):
-                    raise ValueError(
-                        f"Clients CSV line {line_number}: expanded client and group values cannot contain whitespace"
-                    )
+                if any(character.isspace() for character in client) or any(character.isspace() for character in group):
+                    raise ValueError(f"Clients CSV line {line_number}: expanded client and group values cannot contain whitespace")
 
                 # Popping first makes output order reflect the final definition, too.
                 clients.pop(ip_text, None)
