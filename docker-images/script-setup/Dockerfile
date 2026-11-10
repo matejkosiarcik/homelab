@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
 ### Build config ###
 
@@ -107,8 +106,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Users ###
 
-# hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
+FROM gcr.io/distroless/static-debian13:latest@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f AS user_setup_base
 
 FROM debian:13.7-slim AS user_setup
 USER root
@@ -141,8 +139,7 @@ COPY --from=package_moreutils /usr/bin/sponge /fsroot/usr/bin/
 
 ### Final ###
 
-# hadolint ignore=DL3007
-FROM gcr.io/distroless/base-debian13:latest AS final
+FROM gcr.io/distroless/base-debian13:latest@sha256:ca90dc2333005edbc15bccbd7cd61c08ee0fd9dd1fa5ac68bc72778e6659ec5d AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

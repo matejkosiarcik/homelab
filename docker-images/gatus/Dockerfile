@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-# checkov:skip=CKV_DOCKER_7: Unfortunately there is no other useful tag other than :latest
 
 ### App ###
 
@@ -91,8 +90,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_c
 
 ### User setup ###
 
-# hadolint ignore=DL3007
-FROM gcr.io/distroless/static-debian13:latest AS user_setup_base
+FROM gcr.io/distroless/static-debian13:latest@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f AS user_setup_base
 
 FROM debian:13.7-slim AS user_setup
 USER root
