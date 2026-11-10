@@ -32,15 +32,37 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### App config ###
 
-FROM yq AS dns_entries
+FROM yq AS pihole_config_domains
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
 COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
 RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
+    mkdir -p '/homelab/config' '/homelab/config/FTL' && \
     find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
-    cat '/homelab/app-domains.txt' '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sort --version-sort >'/homelab/custom-domains.txt'
+    cat '/homelab/app-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sort --version-sort >'/homelab/config/custom-domains-apps.txt' && \
+    cat '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sort --version-sort >'/homelab/config/custom-domains-extra.txt' && \
+    cat '/homelab/config/custom-domains-apps.txt' '/homelab/config/custom-domains-extra.txt' | sort --version-sort >'/homelab/config/custom-domains-all.txt' && \
+    grep -E '^[0-9]' <'/homelab/config/custom-domains-all.txt' >'/homelab/config/custom-domains-type-a.txt' && \
+    printf '%s\n' "[ $(sed -E 's~^(.*)$~"\1"~' <'/homelab/config/custom-domains-type-a.txt' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]" >'/homelab/config/FTL/dns.hosts.txt' && \
+    grep -E '^[a-zA-Z]' <'/homelab/config/custom-domains-all.txt' >'/homelab/config/custom-domains-type-cname.txt' && \
+    printf '%s\n' "[ $(sed -E 's~^(.*) (.*)$~"\1,\2"~' <'/homelab/config/custom-domains-type-cname.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config/FTL/dns.cnameRecords.txt' && \
+    sed -E 's~\.matejhome\.com~~;s~^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+) ~\4.\3.\2.\1.in-addr.arpa ~' <'/homelab/config/custom-domains-type-a.txt' >'/homelab/config/custom-domains-type-ptr.txt' && \
+    printf '%s\n' "[ \"local-ttl=600\", \"ptr-record=1.0.0.127,localhost\", $(sed -E 's~^(.*) (.*)$~"ptr-record=\1,\2"~' <'/homelab/config/custom-domains-type-ptr.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config/FTL/misc.dnsmasq_lines.txt'
+
+FROM python:3.15.2-slim AS pihole_config_devices
+USER root
+WORKDIR /homelab
+COPY ./docker-images/pihole/app/clients-groups.csv /homelab/
+COPY ./docker-images/pihole/app/unfurl-clients-groups.py /homelab/
+COPY --from=pihole_config_domains /homelab/config/custom-domains-apps.txt /homelab/custom-domains-apps.txt
+COPY --from=pihole_config_domains /homelab/config/custom-domains-all.txt /homelab/config/custom-domains-all.txt
+RUN python3 '/homelab/unfurl-clients-groups.py' '/homelab/clients-groups.csv' '/homelab/config/custom-domains-all.txt' '/homelab/custom-domains-apps.txt' '/homelab/clients-groups.txt'
+
+FROM scratch AS pihole_config_final
+COPY --from=pihole_config_domains /homelab/config/ /homelab/config/
+COPY --from=pihole_config_devices /homelab/clients-groups.txt /homelab/config/clients-groups.txt
 
 ### User setup ###
 
@@ -71,7 +93,7 @@ RUN sh '/homelab/create-user.sh' && \
 FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/setup.sh /homelab/setup.sh
-COPY --from=dns_entries /homelab/custom-domains.txt /homelab/
+COPY --from=pihole_config_final /homelab/config/ /homelab/config/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
@@ -105,6 +127,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_dns_domain_local="true" \
     FTLCONF_dns_domain_name="matejhome.com" \
     FTLCONF_dns_domainNeeded="true" \
+    FTLCONF_dns_EDNS0ECS="true" \
     FTLCONF_dns_ignoreLocalhost="false" \
     FTLCONF_dns_listeningMode="all" \
     FTLCONF_dns_piholePTR="HOSTNAMEFQDN" \
@@ -112,7 +135,6 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_dns_rateLimit_interval="0" \
     FTLCONF_dns_replyWhenBusy="BLOCK" \
     FTLCONF_dns_upstreams="1.1.1.1;8.8.8.8;9.9.9.9" \
-    FTLCONF_misc_dnsmasq_lines="local-ttl=600" \
     FTLCONF_misc_nice="-999" \
     FTLCONF_misc_privacylevel="0" \
     FTLCONF_misc_readOnly="false" \

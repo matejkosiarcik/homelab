@@ -21,6 +21,13 @@ log() {
     done >&2
 }
 
+sql_escape() {
+    case "${1}" in
+    *"'"*) printf '%s' "${1}" | sed "s/'/''/g" ;;
+    *) printf '%s' "${1}" ;;
+    esac
+}
+
 sql() {
     command="${1}"
     i=0
@@ -65,97 +72,89 @@ while true; do
 done
 log INFO 'Main table found'
 
+setup_db_date="$(date '+%s')"
+
 # Wipe other existing entities
 sql 'DELETE FROM [client_by_group];'
 sql 'DELETE FROM [group] WHERE id!=0;'
 sql 'DELETE FROM [client];'
 
-# Add custom open group
+# Add custom groups
 default_group_id='0'
-sql "UPDATE [group] SET name='Default', description='Default group' WHERE id='${default_group_id}';"
-sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Adfull', 0, 0, 'Custom group without adblocking');"
-adfull_group_id="$(sql "SELECT id FROM [group] WHERE name='Adfull';")"
+sql "UPDATE [group] SET name='Default', date_modified=${setup_db_date}, description='Default group' WHERE id='${default_group_id}';"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Monika', ${setup_db_date}, ${setup_db_date}, 'Custom group without adblocking');"
+monika_group_id="$(sql "SELECT id FROM [group] WHERE name='Monika';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Matej', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
+matej_group_id="$(sql "SELECT id FROM [group] WHERE name='Matej';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'IoT', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
+iot_group_id="$(sql "SELECT id FROM [group] WHERE name='IoT';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Guests', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
+guests_group_id="$(sql "SELECT id FROM [group] WHERE name='Guests';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'Blackhole', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
+blackhole_group_id="$(sql "SELECT id FROM [group] WHERE name='Blackhole';")"
+sql "INSERT INTO [group] (enabled, name, date_added, date_modified, description) VALUES (1, 'App', ${setup_db_date}, ${setup_db_date}, 'Custom group with default policies');"
+app_group_id="$(sql "SELECT id FROM [group] WHERE name='App';")"
 
-# Custom clients
-unbound_default_1_ip='10.1.12.1'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_default_1_ip}', 0, 0, 'Unbound Default 1');"
-unbound_default_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_default_1_ip}';")"
+# Copy default policies to these groups to keep default settings (adblocking enabled)
+for group_id in "${matej_group_id}" "${iot_group_id}" "${guests_group_id}" "${blackhole_group_id}" "${app_group_id}"; do
+    sql "INSERT INTO [adlist_by_group] (adlist_id, group_id) SELECT adlist_id, '${group_id}' FROM [adlist_by_group] WHERE group_id='${default_group_id}';"
+    sql "INSERT INTO [domainlist_by_group] (domainlist_id, group_id) SELECT domainlist_id, '${group_id}' FROM [domainlist_by_group] WHERE group_id='${default_group_id}';"
+done
 
-unbound_matej_1_ip='10.1.12.2'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_matej_1_ip}', 0, 0, 'Unbound Matej 1');"
-unbound_matej_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_matej_1_ip}';")"
+# Save custom clients in database in batches
+clients_sql=''
+clients_count='0'
+while IFS=' ' read -r client_ip client_name client_group; do
+    if [ "${client_ip}" = 'ip' ]; then
+        # Skip header
+        continue
+    fi
 
-unbound_monika_1_ip='10.1.12.3'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_monika_1_ip}', 0, 0, 'Unbound Monika 1');"
-unbound_monika_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_monika_1_ip}';")"
+    case "${client_group}" in
+    Default) client_group_id="${default_group_id}" ;;
+    Monika) client_group_id="${monika_group_id}" ;;
+    Matej) client_group_id="${matej_group_id}" ;;
+    IoT) client_group_id="${iot_group_id}" ;;
+    Guests) client_group_id="${guests_group_id}" ;;
+    Blackhole) client_group_id="${blackhole_group_id}" ;;
+    App) client_group_id="${app_group_id}" ;;
+    *)
+        log ERROR "Unknown group ${client_group} for client ${client_ip}"
+        exit 1
+        ;;
+    esac
 
-unbound_iot_1_ip='10.1.12.4'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_iot_1_ip}', 0, 0, 'Unbound IoT 1');"
-unbound_iot_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_iot_1_ip}';")"
+    client_ip_escaped="$(sql_escape "${client_ip}")"
+    client_name_escaped="$(sql_escape "${client_name}")"
+    clients_sql="${clients_sql}
+INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${client_ip_escaped}', ${setup_db_date}, ${setup_db_date}, '${client_name_escaped}');
+UPDATE [client_by_group] SET group_id='${client_group_id}' WHERE client_id=(SELECT id FROM [client] WHERE ip='${client_ip_escaped}');"
+    clients_count="$((clients_count + 1))"
 
-unbound_guests_1_ip='10.1.12.5'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_guests_1_ip}', 0, 0, 'Unbound Guests 1');"
-unbound_guests_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_guests_1_ip}';")"
+    # Insert full batch of clients into database
+    if [ "$((clients_count % 100))" -eq '0' ]; then
+        sql "BEGIN;
+${clients_sql}
+COMMIT;"
+        clients_sql=''
+    fi
+done <'/homelab/config/clients-groups.txt'
 
-unbound_internal_1_ip='10.1.12.6'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_internal_1_ip}', 0, 0, 'Unbound Internal 1');"
-unbound_internal_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_internal_1_ip}';")"
+# Execute last non-full batch
+if [ "${clients_sql}" != '' ]; then
+    sql "BEGIN;
+${clients_sql}
+COMMIT;"
+fi
 
-unbound_blackhole_1_ip='10.1.12.7'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_blackhole_1_ip}', 0, 0, 'Unbound Blackhole 1');"
-unbound_blackhole_1_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_blackhole_1_ip}';")"
+# Set custom FTL config
+find '/homelab/config/FTL' -mindepth 1 -maxdepth 1 -type f | while read -r file; do
+    printf 'Setting pihole-FTL config: %s\n' "$(basename "${file}" .txt)"
+    pihole-FTL --config "$(basename "${file}" .txt)" "$(cat "${file}")"
+done
 
-unbound_default_2_ip='10.1.10.1'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_default_2_ip}', 0, 0, 'Unbound Default 2');"
-unbound_default_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_default_2_ip}';")"
-
-unbound_matej_2_ip='10.1.10.2'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_matej_2_ip}', 0, 0, 'Unbound Matej 2');"
-unbound_matej_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_matej_2_ip}';")"
-
-unbound_monika_2_ip='10.1.10.3'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_monika_2_ip}', 0, 0, 'Unbound Monika 2');"
-unbound_monika_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_monika_2_ip}';")"
-
-unbound_iot_2_ip='10.1.10.4'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_iot_2_ip}', 0, 0, 'Unbound IoT 2');"
-unbound_iot_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_iot_2_ip}';")"
-
-unbound_guests_2_ip='10.1.10.5'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_guests_2_ip}', 0, 0, 'Unbound Guests 2');"
-unbound_guests_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_guests_2_ip}';")"
-
-unbound_internal_2_ip='10.1.10.6'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_internal_2_ip}', 0, 0, 'Unbound Internal 2');"
-unbound_internal_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_internal_2_ip}';")"
-
-unbound_blackhole_2_ip='10.1.10.7'
-sql "INSERT INTO [client] (ip, date_added, date_modified, comment) VALUES ('${unbound_blackhole_2_ip}', 0, 0, 'Unbound Blackhole 2');"
-unbound_blackhole_2_id="$(sql "SELECT id FROM [client] WHERE ip='${unbound_blackhole_2_ip}';")"
-
-# Assign clients to groups
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_default_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_default_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_matej_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_matej_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${adfull_group_id}' WHERE client_id='${unbound_monika_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${adfull_group_id}' WHERE client_id='${unbound_monika_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_iot_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_iot_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_guests_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_guests_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_internal_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_internal_2_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_1_id}';"
-sql "UPDATE [client_by_group] SET group_id='${default_group_id}' WHERE client_id='${unbound_blackhole_2_id}';"
-
-# Set custom local domains
-custom_domains_a="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[0-9]' | sed -E 's~^(.*)$~"\1"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
-pihole-FTL --config dns.hosts "${custom_domains_a}"
-custom_domains_cname="[ $(sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' <'/homelab/custom-domains.txt' | grep -vE '^ *$' | grep -E '^[a-zA-Z]' | sed -E 's~^(.*) (.*)$~"\1,\2"~' | tr '\n' ',' | sed -E 's~,$~~;s~,~, ~g') ]"
-pihole-FTL --config dns.cnameRecords "${custom_domains_cname}"
-
-# Restart DNS
+# Reload group policies and restart DNS
+pihole reloadlists
 pihole reloaddns
 
 # Update and resolve current version
