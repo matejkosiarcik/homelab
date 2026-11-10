@@ -342,9 +342,9 @@ flask-babel==3.1.0 \
     --hash=sha256:be015772c5d7f046f3b99c508dcf618636eb93d21b713b356db79f3e79f69f39 \
     --hash=sha256:deb3ee272d5adf97f5974ed09ab501243d63e7fb4a047501a00de4bd4aca4830
     # via libretranslate
-flask-limiter==2.6.3 \
-    --hash=sha256:01c32180e6136e6f68aeb60852a9a2881cc350eca8932ef9b4591a7ef9f9581c \
-    --hash=sha256:6e37cb64127c2ae2cc184f982a4eaa55a07c97e939d7333356eea92039e0f79f
+Flask-Limiter==2.9.2 \
+    --hash=sha256:041bf0d72c8c62d2cb54c772de1ad842c82bdefeddfadc1c9171739f296484e2 \
+    --hash=sha256:64c6456204d88006324127071598a04cdd77be1576e00e8f5b74fad80925ea37
     # via libretranslate
 flask-swagger==0.2.14 \
     --hash=sha256:3caddb1311388eafc86f82f8e64ba386a5df6b84e5f16dfae19ca08173eba216 \
