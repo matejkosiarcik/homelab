@@ -50,7 +50,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ghcr.io/motioneye-project/motioneye:edge AS final
+FROM ghcr.io/motioneye-project/motioneye:0.44.0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
