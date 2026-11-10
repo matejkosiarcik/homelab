@@ -80,11 +80,14 @@ services, configuration, integrations, or generated assets.
 
 ### Deployment instance
 
-- When deploying the service to a server, add the server-specific application
-  directory at `servers/<server>/docker-apps/<instance>/`. Include the standard
-  `Taskfile.yml` that imports `utils/app-helpers/Taskfile.yml` and
-  `config/config.yml` with the instance's type or variant (when needed), IP,
-  and domain override (when needed). One deployment instance maps to one
-  `docker-compose` stack.
-- Do not invent a server, IP address, or non-default domain. Ask for the
-  deployment target when it is not already specified.
+- Do not connect to, deploy to, restart, or otherwise modify the running
+  physical servers (Odroids and Raspberry Pis).
+- Add a server-specific application directory at
+  `servers/<server>/docker-apps/<instance>/` only when the user explicitly
+  requests deployment on that named server. Include the standard `Taskfile.yml`
+  that imports `utils/app-helpers/Taskfile.yml` and `config/config.yml` with
+  the instance's type or variant when needed. One deployment instance maps to
+  one `docker-compose` stack.
+- For a requested deployment instance, determine the highest IP already used in
+  that server's `docker-apps/*/config/config.yml` files and assign the next IP
+  address. Preserve the default domain unless a domain override is requested.
