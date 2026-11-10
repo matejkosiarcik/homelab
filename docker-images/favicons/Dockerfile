@@ -102,9 +102,8 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet
 WORKDIR /homelab/gitman-repositories/imagemagick-appimage
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    git fetch --tags && \
     cat './LATEST_VERSION' >'/homelab/imagemagick-version.txt' && \
-    git tag --list --sort=-creatordate "$(cat '/homelab/imagemagick-version.txt')@*" | head -n1  >'/homelab/imagemagick-tag.txt'
+    git describe --tags --abbrev=0 --first-parent HEAD >'/homelab/imagemagick-tag.txt'
 
 FROM debian:13.7-slim AS imagemagick_final
 USER root

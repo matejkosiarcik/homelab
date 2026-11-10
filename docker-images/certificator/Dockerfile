@@ -111,8 +111,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet
 WORKDIR /homelab/gitman-repositories/static-curl
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
-    git fetch --tags && \
-    git tag --list --sort=-creatordate | head -n 1 >'/homelab/curl-tag.txt'
+    git describe --tags --abbrev=0 --first-parent HEAD >'/homelab/curl-tag.txt'
 
 FROM debian:13.7-slim AS package_curl_final
 USER root
