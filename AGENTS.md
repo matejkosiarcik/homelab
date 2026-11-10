@@ -9,8 +9,8 @@ services, configuration, integrations, or generated assets.
 
 ### Image
 
-- Add the application image under `docker-images/`. Put the `Dockerfile` and
-  files used only by that image (configuration, entrypoints, and similar
+- Add the application image under `docker-images/<app>/`. Put the `Dockerfile`
+  and files used only by that image (configuration, entrypoints, and similar
   assets) together in its directory.
 - For split applications, use component directories such as
   `docker-images/<app>/frontend/Dockerfile` and
@@ -21,11 +21,22 @@ services, configuration, integrations, or generated assets.
   image.
 - Follow existing Dockerfile conventions, especially creating and using the
   `homelab` user and `/homelab` as the image's main directory.
+- Define a container `HEALTHCHECK`, normally by reusing the matching helper in
+  `docker-images/.shared/healthchecks/`. Check for and preserve a useful
+  upstream health check when one already exists.
+- Dockerfiles are built with the repository root as their build context and
+  must build for both `linux/amd64` and `linux/arm64/v8`.
 
 ### Compose, networking, and observability
 
 - Add the application's Compose definition under `docker-compose/<app>/` and
-  include the configuration it needs.
+  include `compose.yml`, `compose.override-dev.yml`,
+  `compose.override-prod.yml`, and `config.yml`. Add a README with the diagram,
+  upstream references, and any manual setup or operational steps.
+- Start services from `docker-compose/.shared/compose.yml` templates whenever
+  possible. Preserve their hardening defaults (dropped capabilities,
+  read-only filesystem, no-new-privileges, init, and restrictive `tmpfs`), then
+  grant only the writable paths or privileges the application requires.
 - Reuse and extend shared services such as Apache and Certificator rather than
   recreating their responsibilities.
 - Prefer local directory bind mounts for persistent data and logs. Store them
@@ -37,7 +48,11 @@ services, configuration, integrations, or generated assets.
   service. Use blackhole DNS for an application that needs IP access but no
   domain resolution; use internal DNS for local-only access without internet.
 - Add the appropriate Gatus and Prometheus endpoints, following the patterns
-  used by comparable Compose applications.
+  used by comparable Compose applications. Add applicable Healthchecks
+  integration too.
+- Keep the default network disabled (`driver: none`), expose web applications
+  through the shared Apache service instead of directly publishing application
+  ports, and declare internal or external networks explicitly when needed.
 
 ### User-facing integration and assets
 
@@ -60,3 +75,16 @@ services, configuration, integrations, or generated assets.
 - Add tests following `tests/projects/tests/` conventions. Cover required
   application endpoints and every exposed port. For a UI, test page access;
   when authentication exists, include both successful and failed login tests.
+- Register the deployed service and its instances in `tests/utils/apps.ts` so
+  its tests can use the shared test helpers.
+
+### Deployment instance
+
+- When deploying the service to a server, add the server-specific application
+  directory at `servers/<server>/docker-apps/<instance>/`. Include the standard
+  `Taskfile.yml` that imports `utils/app-helpers/Taskfile.yml` and
+  `config/config.yml` with the instance's type or variant (when needed), IP,
+  and domain override (when needed). One deployment instance maps to one
+  `docker-compose` stack.
+- Do not invent a server, IP address, or non-default domain. Ask for the
+  deployment target when it is not already specified.
