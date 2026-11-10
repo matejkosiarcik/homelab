@@ -4,9 +4,9 @@
 #
 #    pip-compile --generate-hashes --output-file=./requirements.txt --strip-extras ./requirements.in
 #
-apscheduler==3.11.2 \
-    --hash=sha256:2a9966b052ec805f020c8c4c3ae6e6a06e24b1bf19f2e11d91d8cca0473eef41 \
-    --hash=sha256:ce005177f741409db4e4dd40a7431b76feb856b9dd69d57e0da49d6715bfd26d
+APScheduler==3.11.3 \
+    --hash=sha256:bbeb2ec02d23d3c06a6c07ed7f0f3939ada6680eb121fae809a69bb42c537a30 \
+    --hash=sha256:cd2fcc9330039a81a5893472ad49facf23a6d5604cbe1d918c835c6de7834d5a
     # via libretranslate
 argos-translate-files==1.4.4 \
     --hash=sha256:7737f5112a04f3b87fad3eed3f5fb3e862037950e66ae93302c036e5192beb5d
