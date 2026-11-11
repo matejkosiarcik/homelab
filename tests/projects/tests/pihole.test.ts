@@ -118,14 +118,16 @@ test.describe(app.title, () => {
 
                 for (const domain of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
-                        await test.step.soft(`Check domain ${domain.name} via ${transportVariant.toUpperCase()}`, async () => {
-                            const responseEntries = (await dnsLookupWithRetry(domain.name, transportVariant, 'A', instanceIp)).toSorted();
-                            const expectedCount = domain.ips.filter((ip) => (ip.type === 'A' || ip.type === 'CNAME')).length;
-                            expect(responseEntries, `Domain ${domain.name} should be resolved to exactly ${expectedCount} entries`).toHaveLength(expectedCount);
-                            expect(responseEntries.map((el) => el.replace(/\.$/, '')), `Domain ${domain.name} should match expected entries`).toStrictEqual(
-                                domain.ips.filter((el) => el.type === 'A' || el.type === 'CNAME').map((el) => el.ip).toSorted()
-                            );
-                        });
+                        for (const queryType of ['A', 'AAAA'] as const) {
+                            await test.step.soft(`Check domain ${domain.name} type ${queryType} via ${transportVariant.toUpperCase()}`, async () => {
+                                const responseEntries = (await dnsLookupWithRetry(domain.name, transportVariant, queryType, instanceIp)).toSorted();
+                                const expectedCount = domain.ips.filter((ip) => (ip.type === queryType || ip.type === 'CNAME')).length;
+                                expect(responseEntries, `Domain ${domain.name} should be resolved to exactly ${expectedCount} entries`).toHaveLength(expectedCount);
+                                expect(responseEntries.map((el) => el.replace(/\.$/, '')), `Domain ${domain.name} should match expected entries`).toStrictEqual(
+                                    domain.ips.filter((el) => el.type === queryType || el.type === 'CNAME').map((el) => el.ip).toSorted()
+                                );
+                            });
+                        }
                     }
                 }
             });
