@@ -17,6 +17,9 @@ configuration, integrations, or generated assets.
   image.
 - Follow existing Dockerfile conventions, especially creating and using the `homelab` user and `/homelab` as the
   image's main directory.
+- Configure as much as possible at build time through configuration copied into the image or `ENV` values in the
+  Dockerfile. For secrets and passwords, use empty placeholders that runtime environment files populate; never bake
+  their values into the image.
 - Define a container `HEALTHCHECK`, normally by reusing the matching helper in `docker-images/.shared/healthchecks/`.
   Check for and preserve a useful upstream health check when one already exists.
 - Dockerfiles are built with the repository root as their build context and must build for both `linux/amd64` and
