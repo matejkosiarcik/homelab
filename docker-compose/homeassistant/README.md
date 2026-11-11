@@ -27,4 +27,11 @@
 - Configure basic settings
 - Create admin users: `homelab-viewer` and setup access token
 - Create non-admin users: `homelab-admin`, `homelab-test`, and `monika`
-- Connect smart devices
+- Connect smart devices. Use these exact names and identifiers from the list of devices below.
+
+Devices:
+
+| Device          | Name                 | ID                   | Network domain                   |
+|-----------------|----------------------|----------------------|----------------------------------|
+| TV (TCL)        | `Living Room TV`     | `living_room_tv`     | `livingroom-tv.matejhome.com`    |
+| TV Box (Xiaomi) | `Living Room TV Box` | `living_room_tv_box` | `livingroom-tvbox.matejhome.com` |
