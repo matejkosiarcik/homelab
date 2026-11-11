@@ -28,8 +28,8 @@ configuration, integrations, or generated assets.
 ### Compose, networking, and observability
 
 - Add the application's Compose definition under `docker-compose/<app>/` and include `compose.yml`,
-  `compose.override-dev.yml`, `compose.override-prod.yml`, and `config.yml`. Add a README with the diagram, upstream
-  references, and any manual setup or operational steps.
+  `compose.override-dev.yml`, `compose.override-prod.yml`, and `config.yml`. Add a `README.md` with the diagram,
+  upstream references, and any manual setup or operational steps.
 - Start services from `docker-compose/.shared/compose.yml` templates whenever possible. Preserve their hardening
   defaults (dropped capabilities, read-only filesystem, no-new-privileges, init, and restrictive `tmpfs`), then grant
   only the writable paths or privileges the application requires.
