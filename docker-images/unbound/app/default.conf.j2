@@ -87,6 +87,10 @@ forward-zone:
     {{- default_piholes() }}
 
 forward-zone:
+    name: "unifi.lan."
+    {{- default_piholes() }}
+
+forward-zone:
     name: "."
     {{- blackhole_unbounds() }}
 {% else %}
