@@ -27,7 +27,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Dependencies ###
 
-FROM golang:1.27.3-trixie AS envsubst_build
+FROM golang:1.27.4-trixie AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -78,7 +78,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     mkdir -p /root/.gitcache-copy && \
     cp -R /root/.gitcache/samba_exporter.reference /root/.gitcache-copy/samba_exporter.reference
 
-FROM golang:1.27.3-trixie AS samba_exporter_build
+FROM golang:1.27.4-trixie AS samba_exporter_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_samba_prometheus_exporter_build_aptcache \
@@ -103,7 +103,7 @@ RUN sh validate-executable.sh ./samba_exporter/bin/samba_exporter && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.3-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
