@@ -51,7 +51,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet && \
     find '.' -type d -name '.git' -prune -exec rm -rf {} \;
 
-FROM golang:1.27.3-trixie AS runwisp_build_tweak_paths
+FROM golang:1.27.4-trixie AS runwisp_build_tweak_paths
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_build_aptcache \
@@ -75,7 +75,7 @@ RUN --mount=type=cache,target=/root/.bun/install/cache,sharing=shared,id=homelab
 WORKDIR /homelab/runwisp/apps/ui
 RUN bunx --bun vite build
 
-FROM golang:1.27.3-trixie AS runwisp_build_backend
+FROM golang:1.27.4-trixie AS runwisp_build_backend
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_build_aptcache \
@@ -106,7 +106,7 @@ FROM debian:13.7-slim AS empty_dir
 USER root
 RUN mkdir /empty
 
-FROM golang:1.27.3-trixie AS envsubst_build
+FROM golang:1.27.4-trixie AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \

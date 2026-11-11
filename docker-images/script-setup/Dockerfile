@@ -103,7 +103,7 @@ RUN mkdir -p '/fsroot/bin' && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.3-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
