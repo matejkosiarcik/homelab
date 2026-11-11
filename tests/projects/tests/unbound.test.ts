@@ -243,20 +243,22 @@ test.describe(app.title, () => {
                     return instanceIps[0];
                 })();
 
-                const domains = getAllHomelabDomains();
+                const domains = await getAllHomelabDomains();
 
                 for (const domain of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
-                        await test.step.soft(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
-                            const ips = await dnsLookup(domain, transportVariant, 'A', instanceIp);
-                            if (instance.title.toLowerCase().includes('blackhole')) {
-                                expect(ips, `Domain ${domain} should be resolved`).toHaveLength(1);
-                                expect(ips[0], `Domain ${domain} should be resolved to no IP address`).toMatch(validators.network.ipv4.zero);
+                        await test.step.soft(`Check domain ${domain.name} via ${transportVariant.toUpperCase()}`, async () => {
+                            const isBlackhole = instance.title.toLowerCase().includes('blackhole');
+                            const responseEntries = (await dnsLookup(domain.name, transportVariant, 'A', instanceIp)).toSorted();
+                            if (isBlackhole) {
+                                expect(responseEntries, `Domain ${domain.name} should be resolved`).toHaveLength(1);
+                                expect(responseEntries[0], `Domain ${domain.name} should be resolved to no IP address`).toMatch(validators.network.ipv4.zero);
                             } else {
-                                expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
-                                for (const ip of ips) {
-                                    expect(ip, `Resolved entry should be valid IPv4`).toMatch(validators.network.homelabIp);
-                                }
+                                const expectedCount = domain.ips.filter((ip) => (ip.type === 'A' || ip.type === 'CNAME')).length;
+                                expect(responseEntries, `Domain ${domain.name} should be resolved to exactly ${expectedCount} entries`).toHaveLength(expectedCount);
+                                expect(responseEntries.map((el) => el.replace(/\.$/, '')), `Domain ${domain.name} should match expected entries`).toStrictEqual(
+                                    domain.ips.filter((el) => el.type === 'A' || el.type === 'CNAME').map((el) => el.ip).toSorted()
+                                );
                             }
                         });
                     }
