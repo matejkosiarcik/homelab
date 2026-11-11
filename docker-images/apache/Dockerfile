@@ -109,7 +109,15 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/apache/errors/eleventy.config.js ./docker-images/apache/errors/postcss.config.js ./docker-images/apache/errors/terser.json ./docker-images/apache/errors/vite.config.ts ./docker-images/apache/errors/tsconfig.json /homelab/
 COPY ./docker-images/apache/errors/src/ /homelab/src/
-RUN npm run build && \
+RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
+    if [ "$(uname -m)" = 'x86_64' ] && ! grep --quiet --word-regexp 'avx2' '/proc/cpuinfo'; then \
+        rolldown_version="$(node --print 'require("./node_modules/rolldown/package.json").version')" && \
+        printf '%s\n' "Detected an x86_64 CPU without AVX2; using Rolldown ${rolldown_version}'s WASM binding." && \
+        npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund --loglevel=error --cpu=wasm32 --os=wasip1-threads "@rolldown/binding-wasm32-wasi@${rolldown_version}" && \
+        NAPI_RS_FORCE_WASI=error npm run build; \
+    else \
+        npm run build; \
+    fi && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
     npm prune --production
