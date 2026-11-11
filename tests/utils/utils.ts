@@ -1,11 +1,18 @@
 import fs from 'node:fs';
+import fsx from 'node:fs/promises';
+import net from 'node:net';
+import os from 'node:os';
 import process from 'node:process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Locator } from '@playwright/test';
 import { execa, ExecaError } from 'execa';
 import _ from 'lodash';
 import lzma from 'lzma-native';
+import pParallel from 'p-parallel';
 import * as tar from 'tar';
-import { apps } from '#/utils/apps.ts';
+
+const repositoryPath = fileURLToPath(new URL('../..', import.meta.url));
 
 export const validators = {
     network: {
@@ -66,11 +73,11 @@ export function getEnv(instanceUrl: string, name: string): string {
     return process.env[envName];
 }
 
-export async function dnsLookupWithRetry(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
+export async function dnsLookupWithRetry(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA' | 'CNAME', dnsServer: string): Promise<string[]> {
     return await retry(() => dnsLookup(domain, transport, type, dnsServer), { retries: 2 });
 }
 
-export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA', dnsServer: string): Promise<string[]> {
+export async function dnsLookup(domain: string, transport: 'tcp' | 'udp', type: 'A' | 'AAAA' | 'CNAME', dnsServer: string): Promise<string[]> {
     const timeout = 1000;
     const queryDescription = `DNS query for ${type} record "${domain}" via ${transport.toUpperCase()} to ${dnsServer}`;
     const timeoutError = new Error(`${queryDescription} timed out after ${timeout}ms`);
@@ -117,16 +124,115 @@ export async function extractTar(file: string, destination: string): Promise<voi
     });
 }
 
-export function getAllHomelabDomains(): string[] {
-    const domains = Object.values(apps)
-        .map((app) => app.instances)
-        .flat()
-        .filter((instance) => ((instance as { enabled?: boolean | undefined }).enabled ?? true) === true)
-        .flatMap((instance) => Object.entries(instance))
-        .filter(([key, value]) => (key === 'url' || key.toLowerCase().endsWith('url') || key.toLowerCase().startsWith('url')) && typeof value === 'string' && /^https?:\/\/[a-zA-Z0-9_-]+\.matejhome\.com$/.test(value))
-        .map(([, value]) => URL.parse(`${value}` as string)?.hostname)
-        .filter((hostname): hostname is string => typeof hostname === 'string');
-    return [...new Set(domains)];
+export type HomelabDomain = {
+    name: string;
+    ips: {
+        type: 'A' | 'AAAA' | 'CNAME',
+        ip: string,
+    }[],
+};
+
+let _allHomelabDomains: HomelabDomain[] | undefined = undefined;
+
+export async function getAllHomelabDomains(): Promise<HomelabDomain[]> {
+    _allHomelabDomains ??= await loadAllHomelabDomains();
+    return _allHomelabDomains;
+}
+
+async function loadAllHomelabDomains(): Promise<HomelabDomain[]> {
+    const appEntryUtilsPath = path.join(repositoryPath, 'docker-images', '.shared', 'build-utils', 'parse-app-entry-utils.sh');
+    const appEntryParallelLimit = Math.max(1, Math.floor(os.cpus().length / 2));
+
+    const servers = await fsx.readdir(path.join(repositoryPath, 'servers'), { withFileTypes: true });
+    const appDirectories = (await pParallel(
+        servers
+            .filter((server) => server.isDirectory() && !server.name.startsWith('.'))
+            .map((server) => async () => {
+                const dockerAppsPath = path.join(repositoryPath, 'servers', server.name, 'docker-apps');
+                try {
+                    return (await fsx.readdir(dockerAppsPath, { withFileTypes: true }))
+                        .filter((app) => app.isDirectory() && !app.name.startsWith('.'))
+                        .map((app) => path.join(dockerAppsPath, app.name));
+                } catch (error) {
+                    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+                        return [];
+                    }
+                    throw error;
+                }
+            }),
+        appEntryParallelLimit,
+    )).flat()
+        .sort();
+
+    const appDomains: HomelabDomain[] = await pParallel(
+        appDirectories.map((appDirectory) => async () => {
+            const { stdout } = await execa('sh', [
+                '-c',
+                '. "$1"; get_app_domain "$2"; get_app_ip "$2"',
+                'sh',
+                appEntryUtilsPath,
+                appDirectory,
+            ]);
+            const [name, ip] = stdout.trim().split('\n');
+            const ipVersion = net.isIP(ip);
+            if (!name || (ipVersion !== 4 && ipVersion !== 6)) {
+                throw new Error(`Could not parse the domain and IP for ${appDirectory}`);
+            }
+            return {
+                name: name,
+                ips: [{ type: ipVersion === 4 ? 'A' as const : 'AAAA', ip: ip }],
+            } satisfies HomelabDomain;
+        }),
+        appEntryParallelLimit,
+    );
+
+    const extraDomains: HomelabDomain[] = (await fsx.readFile(path.join(repositoryPath, 'docker-images', 'pihole', 'app', 'extra-domains.txt'), 'utf8'))
+        .split('\n')
+        .flatMap<HomelabDomain>((line) => {
+            const entries = line.replace(/#.*/, '').trim().split(/\s+/);
+            const [value = '', ...names] = entries;
+            const ipVersion = net.isIP(value);
+            if (names.length === 0) {
+                return [];
+            }
+            if (ipVersion === 4 || ipVersion === 6) {
+                return names.map((name) => ({ name: name, ips: [{ type: ipVersion === 4 ? 'A' as const : 'AAAA', ip: value }] } satisfies HomelabDomain));
+            }
+            if (names.length === 1) {
+                return [{ name: value, ips: [{ type: 'CNAME' as const, ip: names[0] }] } satisfies HomelabDomain];
+            }
+            return [];
+        });
+
+    const domains = Object.values(_.groupBy([...appDomains, ...extraDomains], 'name'))
+        .map((domains) => {
+            const ips = _.uniqBy(domains.flatMap((domain) => domain.ips), ({ type, ip }) => `${type}:${ip ?? ''}`);
+            return {
+                name: domains[0].name,
+                ips: ips,
+            };
+        })
+        .sort((lhs, rhs) => lhs.name.localeCompare(rhs.name));
+
+    const domainsByName = new Map(domains.map((domain) => [domain.name, domain]));
+    const resolveIps = (domain: HomelabDomain, cnamePath: string[] = [domain.name]): HomelabDomain['ips'] => domain.ips.flatMap((ip) => {
+        if (ip.type !== 'CNAME') {
+            return [ip];
+        }
+        if (cnamePath.includes(ip.ip)) {
+            throw new Error(`CNAME loop detected: ${[...cnamePath, ip.ip].join(' -> ')}`);
+        }
+        const targetDomain = domainsByName.get(ip.ip);
+        if (!targetDomain) {
+            throw new Error(`Could not resolve CNAME ${domain.name} to ${ip.ip}`);
+        }
+        return [ip, ...resolveIps(targetDomain, [...cnamePath, ip.ip])];
+    });
+
+    return domains.map((domain) => ({
+        name: domain.name,
+        ips: _.uniqBy(resolveIps(domain), ({ type, ip }) => `${type}:${ip}`),
+    }));
 }
 
 /**

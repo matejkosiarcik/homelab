@@ -114,16 +114,17 @@ test.describe(app.title, () => {
                     return instanceIps[0];
                 })();
 
-                const domains = getAllHomelabDomains();
+                const domains = await getAllHomelabDomains();
 
                 for (const domain of domains) {
                     for (const transportVariant of ['tcp', 'udp'] as const) {
-                        await test.step.soft(`Check domain ${domain} via ${transportVariant.toUpperCase()}`, async () => {
-                            const ips = await dnsLookupWithRetry(domain, transportVariant, 'A', instanceIp);
-                            expect(ips, `Domain ${domain} should be resolved`).not.toHaveLength(0);
-                            for (const ip of ips) {
-                                expect(ip, `Resolved entry should be valid IPv4`).toMatch(validators.network.homelabIp);
-                            }
+                        await test.step.soft(`Check domain ${domain.name} via ${transportVariant.toUpperCase()}`, async () => {
+                            const responseEntries = (await dnsLookupWithRetry(domain.name, transportVariant, 'A', instanceIp)).toSorted();
+                            const expectedCount = domain.ips.filter((ip) => (ip.type === 'A' || ip.type === 'CNAME')).length;
+                            expect(responseEntries, `Domain ${domain.name} should be resolved to exactly ${expectedCount} entries`).toHaveLength(expectedCount);
+                            expect(responseEntries.map((el) => el.replace(/\.$/, '')), `Domain ${domain.name} should match expected entries`).toStrictEqual(
+                                domain.ips.filter((el) => el.type === 'A' || el.type === 'CNAME').map((el) => el.ip).toSorted()
+                            );
                         });
                     }
                 }
