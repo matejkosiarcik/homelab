@@ -1,7 +1,23 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import util from 'node:util';
 import winston from 'winston';
 import { parseISO } from 'date-fns';
+
+function formatMessagePart(part: unknown): string {
+    if (typeof part === 'string') {
+        return part;
+    }
+
+    return util.inspect(part, {
+        breakLength: 120,
+        colors: false,
+        compact: false,
+        depth: null,
+        maxArrayLength: null,
+        maxStringLength: null,
+    });
+}
 
 /**
  * General logger
@@ -29,7 +45,7 @@ export class Log {
                 winston.format.timestamp({ format: 'YYYY-MM-DDTHH:mm:ss.SSSZ' }),
                 winston.format.printf(({ timestamp, level, message }) => {
                     const editedTimestamp = parseISO(timestamp as string).toISOString();
-                    message = Array.isArray(message) ? message.map((el) => `${el}`).join(' ') : `${message}`;
+                    message = Array.isArray(message) ? message.map((el) => formatMessagePart(el)).join('\n') : formatMessagePart(message);
                     return `${message}`
                         .trim()
                         .split('\n')
