@@ -28,7 +28,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
     PIP_ROOT_USER_ACTION="ignore" \
     PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --no-compile --require-hashes --requirement './requirements.txt' --target './python-vendor' --quiet
+    python3 -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' --target './python-vendor'
 
 FROM debian:13.7-slim AS package_moreutils
 USER root
