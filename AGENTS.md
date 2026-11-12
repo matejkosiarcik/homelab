@@ -24,6 +24,12 @@ configuration, integrations, or generated assets.
   Check for and preserve a useful upstream health check when one already exists.
 - Dockerfiles are built with the repository root as their build context and must build for both `linux/amd64` and
   `linux/arm64/v8`.
+- Join multiple commands in Dockerfile `RUN` instructions with `&& \`.
+
+### Shell scripts
+
+- In Dockerfile, shell scripts and other files, use `~` as the separator in `sed` expressions (for example,
+  `sed 's~from~to~g'`).
 
 ### Compose, networking, and observability
 

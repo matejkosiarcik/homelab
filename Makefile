@@ -63,7 +63,7 @@ bootstrap:
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK='1' \
 		PYTHONDONTWRITEBYTECODE='1' \
-			python -m pip install --no-compile --require-hashes --requirement './requirements.txt' --quiet --upgrade && \
+			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' && \
 	true; done
 
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \

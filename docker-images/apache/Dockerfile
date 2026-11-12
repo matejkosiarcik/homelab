@@ -16,7 +16,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
     PIP_ROOT_USER_ACTION="ignore" \
     PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --no-compile --require-hashes --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' --target './python-vendor'
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
@@ -34,7 +34,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
     PIP_ROOT_USER_ACTION="ignore" \
     PYTHONDONTWRITEBYTECODE="1"
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
-    python3 -m pip install --no-compile --require-hashes --requirement requirements.txt --target python-vendor --quiet
+    python3 -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' --target './python-vendor'
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
@@ -109,15 +109,41 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
     NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
 COPY ./docker-images/apache/errors/eleventy.config.js ./docker-images/apache/errors/postcss.config.js ./docker-images/apache/errors/terser.json ./docker-images/apache/errors/vite.config.ts ./docker-images/apache/errors/tsconfig.json /homelab/
 COPY ./docker-images/apache/errors/src/ /homelab/src/
+# TODO: Remove the wasm workaround after decommisioning Odroid H3 server
+# hadolint ignore=DL3016 # The version is read from the locked rolldown dependency
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
     if [ "$(uname -m)" = 'x86_64' ] && ! grep --quiet --word-regexp 'avx2' '/proc/cpuinfo'; then \
         rolldown_version="$(node --print 'require("./node_modules/rolldown/package.json").version')" && \
         printf '%s\n' "Detected an x86_64 CPU without AVX2; using Rolldown ${rolldown_version}'s WASM binding." && \
-        npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund --loglevel=error --cpu=wasm32 --os=wasip1-threads "@rolldown/binding-wasm32-wasi@${rolldown_version}" && \
-        NAPI_RS_FORCE_WASI=error npm run build; \
-    else \
-        npm run build; \
-    fi && \
+        tmpdir="$(mktemp -d)" && \
+        npm install --prefix "${tmpdir}" --no-save --package-lock=false --ignore-scripts --no-audit --no-fund --loglevel=error --cpu=wasm32 --os=wasip1-threads "@rolldown/binding-wasm32-wasi@${rolldown_version}" && \
+        copy_missing() { \
+            source_dir="$1"; \
+            relative_dir="${source_dir#"${tmpdir}/node_modules/"}"; \
+            target_dir="./node_modules/${relative_dir}"; \
+            if [ ! -e "${target_dir}" ]; then \
+                mkdir --parents "$(dirname "${target_dir}")" && \
+                cp --recursive "${source_dir}" "${target_dir}" && \
+            true; fi; \
+        }; \
+        for source_dir in "${tmpdir}"/node_modules/*; do \
+            if [ ! -d "${source_dir}" ]; then \
+                continue && \
+            true; fi && \
+            case "$(basename "${source_dir}")" in \
+                @*) for scoped_dir in "${source_dir}"/*; do \
+                    if [ -d "${scoped_dir}" ]; then \
+                        copy_missing "${scoped_dir}" && \
+                    true; fi && \
+                true; done ;; \
+                *) copy_missing "${source_dir}" ;; \
+            esac && \
+        true; done && \
+        rm --recursive --force "${tmpdir}" && \
+        NAPI_RS_FORCE_WASI=error npm run build && \
+    true; else \
+        npm run build && \
+    true; fi && \
     npx modclean --patterns default:safe --run --error-halt && \
     npx node-prune && \
     npm prune --production
