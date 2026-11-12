@@ -556,9 +556,10 @@ def main(argv):
 
     env_mode = args.mode
     if env_mode is None:
-        env_mode = os.environ["HOMELAB_ENV"]
+        env_mode = os.environ.get("HOMELAB_ENV")
     if env_mode is None:
         log.error("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
+        sys.exit(1)
     if env_mode not in ["dev", "prod"]:
         log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)

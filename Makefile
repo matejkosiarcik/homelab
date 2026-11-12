@@ -39,7 +39,7 @@ bootstrap:
 	#
 
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
+		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline </dev/null && \
 	true; done
 
 	# Must run postinstall script for zopfli-png, otherwise zopfli binaries are unavailable
@@ -63,7 +63,7 @@ bootstrap:
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK='1' \
 		PYTHONDONTWRITEBYTECODE='1' \
-			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' && \
+			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' </dev/null && \
 	true; done
 
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \
@@ -79,7 +79,7 @@ build:
 	$(define_log_function); \
 	printf '%s' "$(NPM_COMPONENTS_FOR_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
-		npm run build --prefix "$(PROJECT_DIR)/$${component}" && \
+		npm run build --prefix "$(PROJECT_DIR)/$${component}" </dev/null && \
 		printf '\n\n' && \
 	true; done
 
@@ -88,7 +88,7 @@ docker-build:
 	$(define_log_function); \
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
-		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" && \
+		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" </dev/null && \
 		printf '\n\n' && \
 	true; done
 
@@ -105,7 +105,7 @@ docker-build-multiarch:
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 			log INFO "Building $${component} for linux/$${arch}" && \
-			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" </dev/null && \
 			printf '\n\n' && \
 		true; done && \
 	true; done
@@ -113,7 +113,7 @@ docker-build-multiarch:
 .PHONY: dryrun
 dryrun:
 	printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
+		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build </dev/null && \
 		printf '\n\n' && \
 	true; done
 

@@ -134,7 +134,6 @@ def main(argv: list[str]):
         subcommand.add_argument("--dry-run", action="store_true", help="Dry run")
         subcommand.add_argument("--only", type=str, help=f"{subcommand_name.capitalize()} only these apps")
         subcommand.add_argument("--skip", type=str, help=f"{subcommand_name.capitalize()} all apps except these")
-        subcommand.add_argument("--jobs", type=int, default=1, help="A number of simultaneous actions to perform")
         if subcommand_name == "deploy":
             deploy_when_group = subcommand.add_mutually_exclusive_group()
             deploy_when_group.add_argument(
@@ -171,9 +170,10 @@ def main(argv: list[str]):
 
     env_mode = args.mode
     if env_mode is None:
-        env_mode = os.environ["HOMELAB_ENV"]
+        env_mode = os.environ.get("HOMELAB_ENV")
     if env_mode is None:
         log.error("Mode is unset, either pass in: `--mode dev|prod` or set env variable: `HOMELAB_ENV=dev|prod`")
+        sys.exit(1)
     if env_mode not in ["dev", "prod"]:
         log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)
