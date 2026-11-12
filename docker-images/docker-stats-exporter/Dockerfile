@@ -42,7 +42,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM gcr.io/distroless/nodejs26-debian13:latest@sha256:e2a8b92ece0f4447203399a40bd1abc12547052b32e004cf0a28002c1cd12be3 AS final
+FROM gcr.io/distroless/nodejs26-debian13:latest@sha256:b7141f720ffac6df9069d40ca8bd82c51ab5cdb21f1456b119382883e2971f53 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
