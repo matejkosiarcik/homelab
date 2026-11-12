@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM louislam/uptime-kuma:2.5.9 AS final
+FROM louislam/uptime-kuma:2.5.10 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
