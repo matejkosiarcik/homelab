@@ -27,7 +27,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM dgtlmoon/sockpuppetbrowser:0.0.3 AS final
+FROM dgtlmoon/sockpuppetbrowser:0.0.4 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
