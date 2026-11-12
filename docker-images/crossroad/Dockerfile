@@ -114,7 +114,7 @@ USER root
 RUN mkdir /empty && \
     touch /empty.txt
 
-FROM ghcr.io/gethomepage/homepage:v2.7.0 AS entrypoint
+FROM ghcr.io/gethomepage/homepage:v2.8.0 AS entrypoint
 USER root
 COPY ./docker-images/crossroad/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -122,7 +122,7 @@ RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM ghcr.io/gethomepage/homepage:v2.7.0 AS runtime_dirs
+FROM ghcr.io/gethomepage/homepage:v2.8.0 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/app/.next/server/pages' && \
     cp -R '/app/.next/server/pages/.' '/homelab/original/app/.next/server/pages'
@@ -166,7 +166,7 @@ COPY --from=empty_dir /empty /app/config/logs
 
 ### Final ###
 
-FROM ghcr.io/gethomepage/homepage:v2.7.0 AS final
+FROM ghcr.io/gethomepage/homepage:v2.8.0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
