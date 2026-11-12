@@ -10,9 +10,10 @@ define_log_function = log_timestamp() { date_supports_milliseconds="$$(date '+%3
 
 DOCKER_APPS := $(shell find 'servers' -type f -name 'Taskfile.yml' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 DOCKER_IMAGES := $(shell find 'docker-images' -type f -name 'Dockerfile' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
-NPM_COMPONENTS_FOR_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/node_modules/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
 NPM_COMPONENTS_ALL := $(shell find '.' -type f -name 'package.json' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
-DOCKER_ARCHS := $(shell printf 'amd64 arm64/v8 ' | tr ' ' '\n' | base64)
+NPM_COMPONENTS_BUILD := $(shell find 'docker-images' -type f -name 'package.json' -not -path '*/app-data/*' -not -path '*/gitman-repositories/*' -not -path '*/node_modules/*' -not -path '*/venv/*' -exec dirname {} \; | base64)
+NPM_COMPONENTS_POSTINSTALL := $(shell printf '%s\n' '/docs/diagrams/node_modules/puppeteer' '/docs/diagrams/node_modules/zopflipng-bin' '/icons/node_modules/zopflipng-bin' '/tests' | base64)
+DOCKER_ARCHS := $(shell printf '%s\n' 'amd64' 'arm64/v8' | base64)
 PYTHON_COMPONENTS := $(shell find '.' -type f -name 'requirements.txt' -not \( -path '*/app-data/*' -or -path '*/gitman-repositories/*' -or -path '*/node_modules/*' -or -path '*/venv/*' \) -exec dirname {} \; | base64)
 
 # TODO: Remove explicit python version for ansible after ansible is compatible with python 3.15
@@ -39,18 +40,12 @@ bootstrap:
 	#
 
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline && \
+		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline </dev/null && \
 	true; done
 
-	# Must run postinstall script for zopfli-png, otherwise zopfli binaries are unavailable
-	npm run postinstall --prefix "$(PROJECT_DIR)/icons/node_modules/zopflipng-bin" --loglevel=error
-	npm run postinstall --prefix "$(PROJECT_DIR)/docs/diagrams/node_modules/zopflipng-bin" --loglevel=error
-
-	# Must run postinstall script for puppeteer, otherwise browsers are unavailable
-	npm run postinstall --prefix "$(PROJECT_DIR)/docs/diagrams/node_modules/puppeteer" --loglevel=error
-
-	# Must run postinstall script for tests, otherwise browsers are unavailable
-	npm run postinstall --prefix "$(PROJECT_DIR)/tests" --loglevel=error
+	printf '%s' "$(NPM_COMPONENTS_POSTINSTALL)" | tr -d ' ' | base64 -d | while read -r component; do \
+		npm run postinstall --prefix "$(PROJECT_DIR)/$${component}" --loglevel=error && \
+	true; done
 
 	#
 	## Python ##
@@ -63,13 +58,13 @@ bootstrap:
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK='1' \
 		PYTHONDONTWRITEBYTECODE='1' \
-			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' && \
+			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' </dev/null && \
 	true; done
 
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \
 	PIP_DISABLE_PIP_VERSION_CHECK='1' \
 	PYTHONDONTWRITEBYTECODE='1' \
-		gitman install --root icons
+		gitman install --root icons </dev/null
 	# --quiet --force
 
 	printf '\n\n'
@@ -77,9 +72,9 @@ bootstrap:
 .PHONY: build
 build:
 	$(define_log_function); \
-	printf '%s' "$(NPM_COMPONENTS_FOR_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
+	printf '%s' "$(NPM_COMPONENTS_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
-		npm run build --prefix "$(PROJECT_DIR)/$${component}" && \
+		npm run build --prefix "$(PROJECT_DIR)/$${component}" </dev/null && \
 		printf '\n\n' && \
 	true; done
 
@@ -88,14 +83,14 @@ docker-build:
 	$(define_log_function); \
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
-		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" && \
+		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" </dev/null && \
 		printf '\n\n' && \
 	true; done
 
 	# Disabled - It's complicated
 	# printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
 	# 	printf 'Building %s\n' "$${app}" && \
-	# 	docker compose --project-directory "$(PROJECT_DIR)/$${app}" build --with-dependencies && \
+	# 	docker compose --project-directory "$(PROJECT_DIR)/$${app}" build --with-dependencies </dev/null && \
 	# 	printf '\n\n' && \
 	# true; done
 
@@ -105,7 +100,7 @@ docker-build-multiarch:
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 			log INFO "Building $${component} for linux/$${arch}" && \
-			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" && \
+			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" </dev/null && \
 			printf '\n\n' && \
 		true; done && \
 	true; done
@@ -113,7 +108,7 @@ docker-build-multiarch:
 .PHONY: dryrun
 dryrun:
 	printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
-		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build && \
+		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build </dev/null && \
 		printf '\n\n' && \
 	true; done
 
@@ -127,14 +122,15 @@ clean:
 	fi
 
 	find "$(PROJECT_DIR)" -type d \( \
-		-name ".mypy_cache" -or \
-		-name "build" -or \
-		-name "dist" -or \
-		-name "gitman-repositories" -or \
-		-name "node_modules" -or \
-		-name "python-vendor" -or \
-		-name "target" -or \
-		-name "test-report" -or \
-		-name "vendor" -or \
-		-name "venv" \
+		-name '.bundle' -or \
+		-name '.mypy_cache' -or \
+		-name 'build' -or \
+		-name 'dist' -or \
+		-name 'gitman-repositories' -or \
+		-name 'node_modules' -or \
+		-name 'python-vendor' -or \
+		-name 'target' -or \
+		-name 'test-report' -or \
+		-name 'vendor' -or \
+		-name 'venv' \
 	\) -prune -exec rm -rf {} \;
