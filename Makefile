@@ -40,7 +40,7 @@ bootstrap:
 	#
 
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-progress --no-audit --no-fund --loglevel=error --prefer-offline </dev/null && \
+		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-audit --no-fund --no-progress --no-save --loglevel=error --prefer-offline </dev/null && \
 	true; done
 
 	printf '%s' "$(NPM_COMPONENTS_POSTINSTALL)" | tr -d ' ' | base64 -d | while read -r component; do \
