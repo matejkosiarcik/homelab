@@ -92,7 +92,7 @@ WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 COPY ./docker-images/healthchecks/setup/package-lock.json ./docker-images/healthchecks/setup/package.json /homelab/
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-audit --no-fund --no-progress --no-save --loglevel=error --prefer-offline
 COPY ./docker-images/healthchecks/setup/tsconfig.json /homelab/
 COPY ./docker-images/healthchecks/setup/src/ /homelab/src/
 RUN npm run build && \

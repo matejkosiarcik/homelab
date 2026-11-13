@@ -89,7 +89,7 @@ WORKDIR /homelab
 COPY ./docker-images/.shared/homepage-helpers/package-lock.json ./docker-images/.shared/homepage-helpers/package.json /homelab/
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
 RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-progress --no-audit --no-fund --loglevel=error --prefer-offline
+    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-audit --no-fund --no-progress --no-save --loglevel=error --prefer-offline
 COPY ./docker-images/.shared/homepage-helpers/terser.json ./docker-images/.shared/homepage-helpers/tsconfig.json ./docker-images/.shared/homepage-helpers/vite.config.ts /homelab/
 COPY ./docker-images/.shared/homepage-helpers/src/ /homelab/src/
 RUN npm run build && \
