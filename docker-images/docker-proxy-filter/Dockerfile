@@ -54,7 +54,7 @@ WORKDIR /homelab/gitman-repositories/docker-proxy-filter
 RUN git apply /homelab/proxy.rs.patch && \
     find '.' -type d -name '.git' -prune -exec rm -rf {} \;
 
-FROM rust:1.99.1-trixie AS docker_proxy_filter_build
+FROM rust:1.100.0-trixie AS docker_proxy_filter_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_docker_proxy_filter_build_aptcache \
