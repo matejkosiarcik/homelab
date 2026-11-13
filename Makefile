@@ -58,7 +58,7 @@ bootstrap:
 	printf '%s' "$(PYTHON_COMPONENTS)" | tr -d ' ' | base64 -d | while read -r component; do \
 		if [ "$${component}" = './ansible' ]; then python="$(ANSIBLE_PYTHON)"; else python='python3'; fi && \
 		cd "$(PROJECT_DIR)/$${component}" && \
-		if [ -e './venv' ]; then true; else "$${python}" -m venv ./venv; fi && \
+		if [ -e './venv' ]; then true; else "$${python}" -m venv './venv'; fi && \
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK='1' \
 		PYTHONDONTWRITEBYTECODE='1' \
