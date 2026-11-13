@@ -76,7 +76,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
             all_apps_list.append(item.name)
 
     def get_matching_apps(app_patterns: list[str]) -> list[str]:
-        return [app_name for app_pattern in app_patterns for app_name in all_apps_list if fnmatch.fnmatchcase(app_name, f"*{app_pattern}*")]
+        return list(dict.fromkeys([app_name for app_pattern in app_patterns for app_name in all_apps_list if fnmatch.fnmatchcase(app_name, f"*{app_pattern}*")]))
 
     # Add priority apps
     priority_file = path.join(server_dir, "docker-apps", "priority.txt")
