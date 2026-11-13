@@ -24,13 +24,13 @@
     "promise-socket": "^8.0.0",
     "sharp": "^0.35.5",
     "sharp-ico": "^0.1.5",
-    "tar": "^7.5.22",
+    "tar": "^7.5.23",
     "tslib": "^2.9.1",
-    "user-agents": "^2.1.241",
+    "user-agents": "^2.1.242",
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@tsconfig/strictest": "^2.0.8",
+    "@tsconfig/strictest": "^2.0.9",
     "@types/async": "^3.2.26",
     "@types/getos": "^3.0.4",
     "@types/har-format": "^1.2.16",
