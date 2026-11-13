@@ -44,11 +44,11 @@ bootstrap:
 	#
 
 	printf '%s' "$(NPM_COMPONENTS_ALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-audit --no-fund --no-progress --no-save --loglevel=error --prefer-offline </dev/null && \
+		npm ci --prefix "$(PROJECT_DIR)/$${component}" --no-audit --no-fund --no-progress --no-save --loglevel=error --prefer-offline <'/dev/null' && \
 	true; done
 
 	printf '%s' "$(NPM_COMPONENTS_POSTINSTALL)" | tr -d ' ' | base64 -d | while read -r component; do \
-		npm run postinstall --prefix "$(PROJECT_DIR)/$${component}" --loglevel=error && \
+		npm run postinstall --prefix "$(PROJECT_DIR)/$${component}" --loglevel=error <'/dev/null' && \
 	true; done
 
 	#
@@ -62,13 +62,13 @@ bootstrap:
 		PATH="$(PROJECT_DIR)/$${component}/venv/bin:$${PATH}" \
 		PIP_DISABLE_PIP_VERSION_CHECK='1' \
 		PYTHONDONTWRITEBYTECODE='1' \
-			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' </dev/null && \
+			python -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' <'/dev/null' && \
 	true; done
 
 	PATH="$(PROJECT_DIR)/icons/venv/bin:$${PATH}" \
 	PIP_DISABLE_PIP_VERSION_CHECK='1' \
 	PYTHONDONTWRITEBYTECODE='1' \
-		gitman install --root icons </dev/null
+		gitman install --root icons <'/dev/null'
 	# --quiet --force
 
 	$(define_log_function); log INFO 'Dependencies installed successfully'
@@ -81,7 +81,7 @@ build:
 	$(define_log_function); \
 	printf '%s' "$(NPM_COMPONENTS_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
-		npm run build --prefix "$(PROJECT_DIR)/$${component}" </dev/null && \
+		npm run build --prefix "$(PROJECT_DIR)/$${component}" <'/dev/null' && \
 		printf '\n\n' && \
 	true; done
 
@@ -95,14 +95,14 @@ docker-build:
 	$(define_log_function); \
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
-		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" </dev/null && \
+		docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab" <'/dev/null' && \
 		printf '\n\n' && \
 	true; done
 
 	# Disabled - It's complicated
 	# printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
 	# 	printf 'Building %s\n' "$${app}" && \
-	# 	docker compose --project-directory "$(PROJECT_DIR)/$${app}" build --with-dependencies </dev/null && \
+	# 	docker compose --project-directory "$(PROJECT_DIR)/$${app}" build --with-dependencies <'/dev/null' && \
 	# 	printf '\n\n' && \
 	# true; done
 
@@ -117,7 +117,7 @@ docker-build-multiarch:
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 			log INFO "Building $${component} for linux/$${arch}" && \
-			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" </dev/null && \
+			docker build "$(PROJECT_DIR)" --file "$(PROJECT_DIR)/$${component}/Dockerfile" --platform "linux/$${arch}" --tag "$$(printf '%s\n' "$${component}" | tr '/' '-' | tr -d '.'):homelab-$$(printf '%s\n' "$${arch}" | tr '/' '-')" <'/dev/null' && \
 			printf '\n\n' && \
 		true; done && \
 	true; done
@@ -132,7 +132,7 @@ dryrun:
 	$(define_log_function); \
 	printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
 		log INFO "Running Docker Compose dry run for $${app}" && \
-		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build </dev/null && \
+		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build <'/dev/null' && \
 		printf '\n\n' && \
 	true; done
 
