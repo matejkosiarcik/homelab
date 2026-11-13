@@ -178,7 +178,7 @@ COPY --from=busybox /fsroot/bin/ /fsroot/bin/
 
 ### Final ###
 
-FROM gcr.io/distroless/base-debian13:latest@sha256:ca90dc2333005edbc15bccbd7cd61c08ee0fd9dd1fa5ac68bc72778e6659ec5d AS final
+FROM gcr.io/distroless/base-debian13:latest@sha256:0e48b9bcd868bce9fa872cee10b52961d9e32677823da4bf68eefb44f38e7b9d AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
