@@ -95,7 +95,7 @@ RUN mkdir /empty
 
 ### Users ###
 
-FROM gcr.io/distroless/static-debian13:latest@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f AS user_setup_base
+FROM gcr.io/distroless/static-debian13:latest@sha256:1a64f46364620465ef9e9a8f5413757dfdf22695e050bbfd7303eeaf17a59383 AS user_setup_base
 
 FROM debian:13.7-slim AS user_setup
 USER root
