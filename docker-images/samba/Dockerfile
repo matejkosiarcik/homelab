@@ -42,9 +42,11 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     envsubst_version="$(grep "github.com/a8m/envsubst" <'/homelab/go.mod' | cut -d ' ' -f 3)" && \
     go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
-    strip --strip-all /go/bin/envsubst
+    strip --strip-all /go/bin/envsubst && \
+    mkdir -p /homelab/bin && \
+    mv /go/bin/envsubst /homelab/bin/
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
-RUN sh validate-executable.sh /go/bin/envsubst
+RUN sh validate-executable.sh /homelab/bin/envsubst
 
 FROM python:3.15.2-slim AS gitman
 USER root
@@ -141,7 +143,7 @@ WORKDIR /homelab
 COPY --from=app_config /homelab/smb.conf /homelab/
 COPY ./docker-images/samba/entrypoint.sh /homelab/
 COPY --from=samba_exporter_build /homelab/samba_exporter/bin /homelab/bin
-COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
+COPY --from=envsubst_build /homelab/bin/envsubst /homelab/bin/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=empty_dir /empty /homelab/logs/samba
 

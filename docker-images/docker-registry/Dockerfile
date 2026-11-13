@@ -22,9 +22,11 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     envsubst_version="$(grep "github.com/a8m/envsubst" <'/homelab/go.mod' | cut -d ' ' -f 3)" && \
     go install -ldflags='-s -w -buildid=' -buildvcs=false "github.com/a8m/envsubst/cmd/envsubst@${envsubst_version}" && \
-    strip --strip-all /go/bin/envsubst
+    strip --strip-all /go/bin/envsubst && \
+    mkdir -p /homelab/bin && \
+    mv /go/bin/envsubst /homelab/bin/
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
-RUN sh validate-executable.sh /go/bin/envsubst
+RUN sh validate-executable.sh /homelab/bin/envsubst
 
 ### Healthcheck ###
 
@@ -63,7 +65,7 @@ FROM scratch AS homelab_dir
 WORKDIR /homelab
 COPY ./docker-images/docker-registry/config.yml ./docker-images/docker-registry/entrypoint.sh /homelab/
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
-COPY --from=envsubst_build /go/bin/envsubst /homelab/bin/
+COPY --from=envsubst_build /homelab/bin/envsubst /homelab/bin/
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
