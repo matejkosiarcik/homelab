@@ -30,7 +30,7 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 # hadolint ignore=DL3029
-FROM postgres:18.6 AS final
+FROM postgres:18.7 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
