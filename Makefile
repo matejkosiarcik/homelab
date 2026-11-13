@@ -25,6 +25,8 @@ ANSIBLE_PYTHON ?= $(shell command -v python3.14 2>/dev/null || command -v python
 .DEFAULT: all
 .PHONY: all
 all: clean bootstrap build docker-build docker-build-multiarch
+	$(define_log_function); log INFO 'All development tasks completed successfully'
+	printf '\n'
 
 .PHONY: bootstrap
 bootstrap:
@@ -34,6 +36,8 @@ bootstrap:
 		log ERROR 'There is an active python virtualenv. Run "deactivate" and try again.'; \
 		exit 1; \
 	fi
+
+	$(define_log_function); log INFO 'Installing dependencies'
 
 	#
 	## NodeJS ##
@@ -67,10 +71,13 @@ bootstrap:
 		gitman install --root icons </dev/null
 	# --quiet --force
 
-	printf '\n\n'
+	$(define_log_function); log INFO 'Dependencies installed successfully'
+	printf '\n'
 
 .PHONY: build
 build:
+	$(define_log_function); log INFO 'Building repository components'
+
 	$(define_log_function); \
 	printf '%s' "$(NPM_COMPONENTS_BUILD)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
@@ -78,8 +85,13 @@ build:
 		printf '\n\n' && \
 	true; done
 
+	$(define_log_function); log INFO 'Build was successful'
+	printf '\n'
+
 .PHONY: docker-build
 docker-build:
+	$(define_log_function); log INFO 'Building Docker images'
+
 	$(define_log_function); \
 	printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
 		log INFO "Building $${component}" && \
@@ -94,8 +106,13 @@ docker-build:
 	# 	printf '\n\n' && \
 	# true; done
 
+	$(define_log_function); log INFO 'Docker images built successfully'
+	printf '\n'
+
 .PHONY: docker-build-multiarch
 docker-build-multiarch:
+	$(define_log_function); log INFO 'Building multi-architecture Docker images'
+
 	$(define_log_function); \
 	printf '%s' "$(DOCKER_ARCHS)" | tr -d ' ' | base64 -d | while read -r arch; do \
 		printf '%s' "$(DOCKER_IMAGES)" | tr -d ' ' | base64 -d | while read -r component; do \
@@ -105,12 +122,22 @@ docker-build-multiarch:
 		true; done && \
 	true; done
 
+	$(define_log_function); log INFO 'Multi-architecture Docker images built successfully'
+	printf '\n'
+
 .PHONY: dryrun
 dryrun:
+	$(define_log_function); log INFO 'Running Docker Compose dry runs'
+
+	$(define_log_function); \
 	printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
+		log INFO "Running Docker Compose dry run for $${app}" && \
 		docker compose --project-directory "$(PROJECT_DIR)/$${app}" --dry-run up --force-recreate --always-recreate-deps --remove-orphans --build </dev/null && \
 		printf '\n\n' && \
 	true; done
+
+	$(define_log_function); log INFO 'Docker Compose dry runs completed successfully'
+	printf '\n'
 
 .PHONY: clean
 clean:
@@ -120,6 +147,8 @@ clean:
 		log ERROR 'There is an active python virtualenv. Run "deactivate" and try again.'; \
 		exit 1; \
 	fi
+
+	$(define_log_function); log INFO 'Cleaning repository'
 
 	find "$(PROJECT_DIR)" -type d \( \
 		-name '.bundle' -or \
@@ -134,3 +163,6 @@ clean:
 		-name 'vendor' -or \
 		-name 'venv' \
 	\) -prune -exec rm -rf {} \;
+
+	$(define_log_function); log INFO 'Repository cleaned'
+	printf '\n'
