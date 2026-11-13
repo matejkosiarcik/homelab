@@ -28,7 +28,7 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@tsconfig/strictest": "^2.0.8",
+    "@tsconfig/strictest": "^2.0.9",
     "@types/async": "^3.2.26",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
