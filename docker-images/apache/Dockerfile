@@ -116,7 +116,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
         rolldown_version="$(node --print 'require("./node_modules/rolldown/package.json").version')" && \
         printf '%s\n' "Detected an x86_64 CPU without AVX2; using Rolldown ${rolldown_version}'s WASM binding." && \
         tmpdir="$(mktemp -d)" && \
-        npm install --prefix "${tmpdir}" --no-save --package-lock=false --ignore-scripts --no-audit --no-fund --loglevel=error --cpu=wasm32 --os=wasip1-threads "@rolldown/binding-wasm32-wasi@${rolldown_version}" && \
+        npm install --prefix "${tmpdir}" --no-save --package-lock=false --ignore-scripts --no-audit --no-fund --loglevel=error --force "@rolldown/binding-wasm32-wasi@${rolldown_version}" && \
         copy_missing() { \
             source_dir="$1"; \
             relative_dir="${source_dir#"${tmpdir}/node_modules/"}"; \
