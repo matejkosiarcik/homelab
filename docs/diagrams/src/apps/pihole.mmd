@@ -22,18 +22,19 @@ flowchart LR
         class app strong_border;
         app_setup("<div class='custom-node'><img src='../../../../icons/bash.png' /><p>Setup<br/>script</p></div>")
         app_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/pihole-prometheus-exporter.png' /><p>PiHole<br/>Prometheus<br/>Exporter</p></div>")
-        docker_sockguard("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Sockguard</p></div>")
-        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Socket<br/>proxy</p></div>")
+        docker_sockguard("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Sockguard</p></div>")
+        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Socket<br/>proxy</p></div>")
         docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
         apache_proxy -.-|fs| certificator
-        apache_proxy -->|/metrics:9617| app_prometheus_exporter -.->|use| app
+        apache_proxy -->|/metrics| app_prometheus_exporter -.->|use| app
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         inbound_interface -->|:53| app
         app ~~~ docker_sockguard ~~~ docker_socket_proxy ~~~ docker ~~~ app_setup
-        app_setup -.->|Docker API| docker_sockguard -.->|docker tcp| docker_socket_proxy
+        app_setup -.->|Docker TCP:2375| docker_sockguard -.->|Docker TCP:2375| docker_socket_proxy
+        apache_proxy -->|/docker-sockguard/metrics| docker_sockguard
         app_setup -.->|use| app
         docker_socket_proxy -.->|docker sock| docker
     end
