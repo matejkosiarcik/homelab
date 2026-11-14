@@ -104,7 +104,7 @@ test.describe(app.title, () => {
 
                 await test.step('Validate response', async () => {
                     const content = response.data as string;
-                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
                     const lines = content.split('\n');
                     const metrics = [
                         'dockerstats_blockio_read_bytes',
