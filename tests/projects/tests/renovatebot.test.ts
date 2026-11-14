@@ -145,7 +145,7 @@ test.describe(app.title, () => {
                             'runwisp_task_active_runs',
                         ];
                         for (const metric of metrics) {
-                            expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                            expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                         }
                     });
                 });

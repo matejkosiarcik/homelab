@@ -168,7 +168,7 @@ test.describe(app.title, () => {
                         'minio_usage_last_activity_nano_seconds',
                     ];
                     for (const metric of metrics) {
-                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                     }
                 });
             });

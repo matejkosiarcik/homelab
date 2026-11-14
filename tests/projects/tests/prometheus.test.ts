@@ -356,7 +356,7 @@ test.describe(app.title, () => {
                         'promhttp_metric_handler_requests_total',
                     ];
                     for (const metric of metrics) {
-                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                     }
                 });
             });
