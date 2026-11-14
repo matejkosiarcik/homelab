@@ -42,9 +42,9 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: docker-app-setup
+    # Override:
     environment:
-      # The Pi-hole CLI intentionally requires root for admin actions
-      HOMELAB_SETUP_TARGET_USER: "0"
+      HOMELAB_SETUP_TARGET_USER: "0" # The PiHole CLI intentionally requires root for admin actions
 
   app-prometheus-exporter:
     extends:
