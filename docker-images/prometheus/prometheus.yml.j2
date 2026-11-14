@@ -8,8 +8,17 @@ scrape_configs:
 
 {%- if endpoint.path == "/.apache/metrics" %}
   {%- set endpoint_name_suffix = "proxy" %}
-{%- else %}
+{%- elif endpoint.path.startswith("/") and endpoint.path.endswith("/metrics") and endpoint.path.count("/") >= 2 %}
+  {%- set endpoint_name_suffix = endpoint.path.split("/")[1] %} # This extract name from "/<name>/metrics" or "/<name>/api/metrics"
+{%- elif endpoint.path == "/metrics" %}
   {%- set endpoint_name_suffix = "app" %}
+{%- elif endpoint.path == "/api/prometheus" and app.app_type == "homeassistant" %}
+  {%- set endpoint_name_suffix = "app" %}
+{%- elif endpoint.path == "/minio/v2/metrics/cluster" and app.app_type == "minio" %}
+  {%- set endpoint_name_suffix = "app" %}
+{%- else %}
+  {%- set endpoint_name_suffix = "UNKNOWN" %}
+  # ERROR: Unknown path: {{ endpoint.path -}}
 {%- endif %}
 
   - job_name: {{ app.full_name_machine }}-{{ endpoint_name_suffix }}
