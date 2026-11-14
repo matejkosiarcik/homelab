@@ -174,6 +174,40 @@ test.describe(app.title, () => {
                 });
             });
 
+            test('API: Docker Sockguard Prometheus metrics content', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/docker-sockguard/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
+                        },
+                        timeout: 15_000,
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    const metrics = [
+                        'sockguard_build_info',
+                        'sockguard_http_request_duration_seconds_bucket',
+                        'sockguard_http_request_duration_seconds_count',
+                        'sockguard_http_request_duration_seconds_sum',
+                        'sockguard_http_requests_active',
+                        'sockguard_http_requests_total',
+                        'sockguard_listener_up',
+                        'sockguard_policy_version',
+                        'sockguard_start_time_seconds',
+                    ];
+                    for (const metric of metrics) {
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
+                    }
+                });
+            });
+
             test('UI: Successful login', async ({ page }) => {
                 await test.step('Open login', async () => {
                     await page.goto(instance.url);

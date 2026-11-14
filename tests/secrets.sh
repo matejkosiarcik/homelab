@@ -320,21 +320,25 @@ rm -f './.secrets.env'
     printf 'PIHOLE_1__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.app.prometheus_user')"
     printf 'PIHOLE_1__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.apache.status_user')"
     printf 'PIHOLE_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.apache.prometheus_user')"
+    printf 'PIHOLE_1__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.docker_sockguard.prometheus_user')"
 
     printf 'PIHOLE_2__PASSWORD=%s\n' "$(load_secret '.pihole_2.app.admin_user')"
     printf 'PIHOLE_2__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.app.prometheus_user')"
     printf 'PIHOLE_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.apache.status_user')"
     printf 'PIHOLE_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.apache.prometheus_user')"
+    printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user')"
 
     printf 'PIHOLE_3__PASSWORD=%s\n' "$(load_secret '.pihole_3.app.admin_user')"
     printf 'PIHOLE_3__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.app.prometheus_user')"
     printf 'PIHOLE_3__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.apache.status_user')"
     printf 'PIHOLE_3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.apache.prometheus_user')"
+    printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user')"
 
     printf 'PIHOLE_4__PASSWORD=%s\n' "$(load_secret '.pihole_4.app.admin_user')"
     printf 'PIHOLE_4__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.app.prometheus_user')"
     printf 'PIHOLE_4__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.apache.status_user')"
     printf 'PIHOLE_4__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.apache.prometheus_user')"
+    printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user')"
 
     printf 'PLANKA__MATEJ_PASSWORD=%s\n' "$(load_secret '.planka.app.matej_user')"
     printf 'PLANKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.status_user')"
