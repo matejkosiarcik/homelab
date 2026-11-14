@@ -52,6 +52,13 @@ sql() {
     done
 }
 
+chown_dir() {
+    # Make sure all subdirectories are owned by homelab user
+    chown -R homelab:homelab '/etc/pihole'
+}
+
+chown_dir
+
 # Detect or create database
 if [ -e '/etc/pihole/gravity.db' ]; then
     log INFO 'Database found'
@@ -60,6 +67,8 @@ else
     pihole updateGravity
     log INFO 'Database created'
 fi
+
+chown_dir
 
 # Wait for database tables to be ready
 while true; do
@@ -160,5 +169,4 @@ pihole reloaddns
 # Update and resolve current version
 pihole updatechecker
 
-# Make sure all subdirectories are owned by homelab user
-chown -R homelab:homelab '/etc/pihole'
+chown_dir
