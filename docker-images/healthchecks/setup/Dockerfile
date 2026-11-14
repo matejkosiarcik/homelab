@@ -76,7 +76,12 @@ USER root
 WORKDIR /homelab
 COPY --from=config_1 /homelab/apps.json /homelab/
 COPY ./docker-images/healthchecks/setup/config.yml.j2 /homelab/
-RUN jinja2 --strict './config.yml.j2' './apps.json' --format json -o './healthchecks.yml'
+RUN jinja2 --strict './config.yml.j2' './apps.json' --format json -o './healthchecks.yml' && \
+    if grep --quiet --fixed-strings 'ERROR:' './healthchecks.yml' >/dev/null 2>&1; then \
+        printf 'Healthchecks config is not valid:\n' >&2 && \
+        cat './healthchecks.yml' >&2 && \
+        exit 1; \
+    fi
 
 FROM yq AS config_3
 USER root

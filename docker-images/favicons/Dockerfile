@@ -217,7 +217,12 @@ USER root
 WORKDIR /homelab
 COPY --from=urls_config_1 /homelab/apps.json /homelab/
 COPY ./docker-images/favicons/urls.yml.j2 /homelab/
-RUN jinja2 --strict './urls.yml.j2' './apps.json' --format json -o './urls.yml'
+RUN jinja2 --strict './urls.yml.j2' './apps.json' --format json -o './urls.yml' && \
+    if grep --quiet --fixed-strings 'ERROR:' './urls.yml' >/dev/null 2>&1; then \
+        printf 'URLs config is not valid:\n' >&2 && \
+        cat './urls.yml' >&2 && \
+        exit 1; \
+    fi
 
 FROM yq AS urls_config_3
 USER root

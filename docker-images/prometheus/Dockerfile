@@ -77,7 +77,12 @@ USER root
 WORKDIR /homelab
 COPY --from=monitoring_entries /homelab/apps.json /homelab/
 COPY ./docker-images/prometheus/prometheus.yml.j2 /homelab/
-RUN jinja2 --strict './prometheus.yml.j2' './apps.json' --format json -o './prometheus.yml'
+RUN jinja2 --strict './prometheus.yml.j2' './apps.json' --format json -o './prometheus.yml' && \
+    if grep --quiet --fixed-strings 'ERROR:' './prometheus.yml' >/dev/null 2>&1; then \
+        printf 'Prometheus config is not valid:\n' >&2 && \
+        cat './prometheus.yml' >&2 && \
+        exit 1; \
+    fi
 
 ### Healthcheck ###
 
