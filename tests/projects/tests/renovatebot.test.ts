@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { getEnv } from '#/utils/utils.ts';
 import { createRunWispSession } from '../../utils/app-helpers/runwisp';
 
@@ -24,6 +24,7 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
             createHttpsRootRedirectTest(instance.url, '/runwisp');
+            createPrometheusTests(instance.url, { path: '/runwisp/metrics', token: getEnv(instance.url, 'RUNWISP_PROMETHEUS_PASSWORD') });
 
             test('API: Get file-server health', async () => {
                 const response = await axios.get(`${instance.url}/.health`);
@@ -36,7 +37,7 @@ test.describe(app.title, () => {
                 expect(response.status, 'Response status').toStrictEqual(404);
             });
 
-            test.describe('Runwisp', () => {
+            test.describe('RunWisp', () => {
                 test('API: Get runwisp health', async () => {
                     const response = await test.step('Request endpoint', async () => {
                         const response = await axios.get(`${runWispUrl}/health`);

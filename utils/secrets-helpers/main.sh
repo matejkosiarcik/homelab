@@ -631,7 +631,7 @@ gatus)
     printf 'UPTIMEKUMA_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
     printf 'VIKUNJA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
-    # Runwisp metrics credentials #
+    # RunWisp metrics credentials #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
 
     # Other apps proxy metrics credentials #
@@ -1505,7 +1505,7 @@ prometheus)
     printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
-    # Runwisp #
+    # RunWisp #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
 
     # Other apps proxy metrics credentials #
@@ -1626,7 +1626,7 @@ renovatebot)
     printf 'renovate-token,%s\n' "${renovate_token}" >>"${initial_output}/.secrets.csv"
     printf 'github-token,%s\n' "${github_token}" >>"${initial_output}/.secrets.csv"
 
-    write_http_auth_user prometheus "${runwisp_prometheus_password}" prometheus
+    write_http_auth_user prometheus "${runwisp_prometheus_password}" runwisp-prometheus
     printf 'app-prometheus,%s\n' "${runwisp_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
