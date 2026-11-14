@@ -21,7 +21,7 @@ flowchart LR
         app("<div class='custom-node'><img src='../../../../icons/ntfy.png' /><p>Ntfy</p></div>")
         class app strong_border;
         app_setup("<div class='custom-node'><img src='../../../../icons/bash.png' /><p>Setup<br/>script</p></div>")
-        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Socket<br/>proxy</p></div>")
+        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Socket<br/>proxy</p></div>")
         docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
 
         inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
