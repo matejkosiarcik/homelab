@@ -13,9 +13,11 @@ rules:
     action: allow
   - match: { method: GET, path: "/containers/json" }
     action: allow
-  - match: { method: GET, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/json" }
+  - match:
+      { method: GET, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/json" }
     action: allow
-  - match: { method: POST, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/exec" }
+  - match:
+      { method: POST, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/exec" }
     action: allow
   - match: { method: GET, path: "/exec/*/json" }
     action: allow
