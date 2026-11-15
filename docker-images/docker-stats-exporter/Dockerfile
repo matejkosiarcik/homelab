@@ -50,8 +50,8 @@ COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab/app
-ENV DOCKER_HOST="tcp://docker-proxy-filter:2375" \
-    DOCKERSTATS_HOSTIP="docker-proxy-filter" \
+ENV DOCKER_HOST="tcp://docker-sockguard:2375" \
+    DOCKERSTATS_HOSTIP="docker-sockguard" \
     DOCKERSTATS_HOSTPORT="2375" \
     DOCKERSTATS_INTERVAL="60" \
     HOMELAB_CONTAINER_NAME="docker-stats-exporter" \

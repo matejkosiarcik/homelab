@@ -11,6 +11,9 @@ services:
   app-setup:
     <<: *common-service-options
 
+  docker-sockguard:
+    <<: *common-service-options
+
   certificator:
     <<: *common-service-options
 

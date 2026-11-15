@@ -1,0 +1,17 @@
+insecure_allow_read_exfiltration: true # Required for container log streaming
+
+rules:
+  - match: { method: "HEAD,GET", path: "/_ping" }
+    action: allow
+  - match: { method: GET, path: "/containers/json" }
+    action: allow
+  - match: { method: GET, path: "/containers/*/json" }
+    action: allow
+  - match: { method: GET, path: "/containers/*/logs" }
+    action: allow
+  - match: { method: GET, path: "/events" }
+    action: allow
+  - match: { method: GET, path: "/info" }
+    action: allow
+  - match: { method: "*", path: "/**" }
+    action: deny

@@ -1,0 +1,25 @@
+request_body:
+  exec:
+    allow_root_user: true # The PiHole CLI intentionally requires root for admin actions
+    allowed_commands:
+      - [sh, /homelab/setup.sh]
+
+response:
+  name_patterns:
+    - "${HOMELAB_APP_SHORTNAME}-app"
+
+rules:
+  - match: { method: "HEAD,GET", path: "/_ping" }
+    action: allow
+  - match: { method: GET, path: "/containers/json" }
+    action: allow
+  - match: { method: GET, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/json" }
+    action: allow
+  - match: { method: POST, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/exec" }
+    action: allow
+  - match: { method: GET, path: "/exec/*/json" }
+    action: allow
+  - match: { method: POST, path: "/exec/*/start" }
+    action: allow
+  - match: { method: "*", path: "/**" }
+    action: deny

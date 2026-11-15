@@ -9,21 +9,15 @@ services:
     build:
       dockerfile: ./docker-images/docker-stats-exporter/Dockerfile
     depends_on:
-      docker-proxy-filter:
-        condition: service_healthy
-      docker-socket-proxy:
+      docker-sockguard:
         condition: service_healthy
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
 
-  docker-proxy-filter:
+  docker-sockguard:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: docker-proxy-filter
-    # Override:
-    environment:
-      CONTAINER_LABELS: "" # Allow all containers
-      CONTAINER_NAMES: "" # Allow all containers
+      service: docker-sockguard
 
   docker-socket-proxy:
     extends:
@@ -44,6 +38,7 @@ services:
       service: apache
     # Override:
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/docker-sockguard-prometheus.htpasswd:/homelab/users/docker-sockguard-prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro

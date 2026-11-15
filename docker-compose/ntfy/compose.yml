@@ -24,6 +24,11 @@ services:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: docker-app-setup
 
+  docker-sockguard:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: docker-sockguard
+
   docker-socket-proxy:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
@@ -44,6 +49,9 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: apache
+    # Override:
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/docker-sockguard-prometheus.htpasswd:/homelab/users/docker-sockguard-prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

@@ -3,6 +3,8 @@ app:
 
 apache:
   upstream-url:
+    - path: /docker-sockguard/metrics
+      target: http://docker-sockguard:2375/metrics
     - path: /
       target: http://app:80
 
@@ -17,6 +19,9 @@ gatus:
     tcp:
       - 25
   endpoints:
+    - path: /docker-sockguard/metrics
+      authentication:
+        basic: prometheus
     - path: /v1/health
 
 healthchecks:
@@ -26,5 +31,8 @@ prometheus:
   enabled: true
   endpoints:
     - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /docker-sockguard/metrics
       auth:
         type: basic

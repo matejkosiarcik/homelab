@@ -15,6 +15,9 @@ services:
   app-prometheus-exporter:
     <<: *common-service-options
 
+  docker-sockguard:
+    <<: *common-service-options
+
   docker-socket-proxy:
     <<: *common-service-options
 
