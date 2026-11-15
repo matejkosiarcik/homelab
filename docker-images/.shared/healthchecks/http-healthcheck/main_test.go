@@ -50,6 +50,28 @@ func TestCheckHTTP(t *testing.T) {
 	}
 }
 
+func TestCheckHTTPLiteralBody(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
+		if _, err := writer.Write([]byte("healthy")); err != nil {
+			t.Errorf("writer.Write() error = %v", err)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	body := "healthy"
+	if err := checkHTTP(healthcheckArgs{URL: server.URL, Body: &body}); err != nil {
+		t.Errorf("checkHTTP() error = %v", err)
+	}
+}
+
+func TestCheckHTTPOnlyAllowsOneBodyValidation(t *testing.T) {
+	body := "healthy"
+	err := checkHTTP(healthcheckArgs{URL: "http://localhost", Body: &body, BodyRegex: "healthy"})
+	if err == nil || !strings.Contains(err.Error(), "use only one of --body, --body-regex, and --body-json") {
+		t.Errorf("checkHTTP() error = %v, want mutually-exclusive body-validation error", err)
+	}
+}
+
 func TestCheckFile(t *testing.T) {
 	filePath := filepath.Join(t.TempDir(), "status.txt")
 	if err := os.WriteFile(filePath, []byte("ready"), 0o600); err != nil {

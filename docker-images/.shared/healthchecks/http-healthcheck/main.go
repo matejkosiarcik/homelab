@@ -29,19 +29,20 @@ var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 const checkTimeout = 2 * time.Second
 
 type healthcheckArgs struct {
-	URL                  string `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
-	Method               string `arg:"--method" default:"GET" help:"HTTP method"`
-	BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
-	BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
-	Status               string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
-	Insecure             bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
-	TLSServerCACert      string `arg:"--tls-server-ca-cert" help:"PEM CA certificate file that signed the TLS server certificate, used to verify that server (optional)"`
-	TLSClientCert        string `arg:"--tls-client-cert" help:"PEM client certificate file for mutual TLS (optional)"`
-	TLSClientKey         string `arg:"--tls-client-key" help:"PEM client private key file for mutual TLS (optional)"`
-	BasicAuthUsername    string `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
-	BasicAuthPassword    string `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
-	BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
-	BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
+	URL                  string  `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
+	Method               string  `arg:"--method" default:"GET" help:"HTTP method"`
+	Body                 *string `arg:"--body" help:"Literal response body to validate (optional)"`
+	BodyRegex            string  `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
+	BodyJSON             string  `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
+	Status               string  `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
+	Insecure             bool    `arg:"--insecure" help:"Skip TLS certificate validation"`
+	TLSServerCACert      string  `arg:"--tls-server-ca-cert" help:"PEM CA certificate file that signed the TLS server certificate, used to verify that server (optional)"`
+	TLSClientCert        string  `arg:"--tls-client-cert" help:"PEM client certificate file for mutual TLS (optional)"`
+	TLSClientKey         string  `arg:"--tls-client-key" help:"PEM client private key file for mutual TLS (optional)"`
+	BasicAuthUsername    string  `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
+	BasicAuthPassword    string  `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
+	BasicAuthUsernameEnv string  `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
+	BasicAuthPasswordEnv string  `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
 }
 
 func checkTCP(args healthcheckArgs) error {
@@ -256,8 +257,18 @@ func checkHTTP(args healthcheckArgs) error {
 	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
 		return errors.New("use only one of --basic-auth-password and --basic-auth-password-env")
 	}
-	if args.BodyRegex != "" && args.BodyJSON != "" {
-		return errors.New("use only one of --body-regex and --body-json")
+	bodyValidationCount := 0
+	if args.Body != nil {
+		bodyValidationCount++
+	}
+	if args.BodyRegex != "" {
+		bodyValidationCount++
+	}
+	if args.BodyJSON != "" {
+		bodyValidationCount++
+	}
+	if bodyValidationCount > 1 {
+		return errors.New("use only one of --body, --body-regex, and --body-json")
 	}
 
 	basicAuthUsername := args.BasicAuthUsername
@@ -364,13 +375,16 @@ func checkHTTP(args healthcheckArgs) error {
 	}
 
 	// Validate response body
-	if bodyRegex != nil || bodyJSONQuery != nil {
+	if args.Body != nil || bodyRegex != nil || bodyJSONQuery != nil {
 		// Read response body for validation.
 		bodyBytes, err := io.ReadAll(response.Body)
 		if err != nil {
 			return fmt.Errorf("reading response body: %w", err)
 		}
 
+		if args.Body != nil && !bytes.Equal(bodyBytes, []byte(*args.Body)) {
+			return fmt.Errorf("response body does not match literal: %s", bodyBytes)
+		}
 		if bodyRegex != nil && !bodyRegex.Match(bodyBytes) {
 			return fmt.Errorf("response body does not match: %s", bodyBytes)
 		}
