@@ -9,19 +9,31 @@ response:
     - "${HOMELAB_APP_SHORTNAME}-app"
 
 rules:
-  - match: { method: "HEAD,GET", path: "/_ping" }
-    action: allow
-  - match: { method: GET, path: "/containers/json" }
-    action: allow
-  - match:
-      { method: GET, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/json" }
-    action: allow
-  - match:
-      { method: POST, path: "/containers/${HOMELAB_APP_SHORTNAME}-app/exec" }
-    action: allow
-  - match: { method: GET, path: "/exec/*/json" }
-    action: allow
-  - match: { method: POST, path: "/exec/*/start" }
-    action: allow
-  - match: { method: "*", path: "/**" }
-    action: deny
+  - action: allow
+    match:
+      method: "HEAD,GET"
+      path: "/_ping"
+  - action: allow
+    match:
+      method: GET
+      path: "/containers/json"
+  - action: allow
+    match:
+      method: GET
+      path: "/containers/${HOMELAB_APP_SHORTNAME}-app/json"
+  - action: allow
+    match:
+      method: POST
+      path: "/containers/${HOMELAB_APP_SHORTNAME}-app/exec"
+  - action: allow
+    match:
+      method: GET
+      path: "/exec/*/json"
+  - action: allow
+    match:
+      method: POST
+      path: "/exec/*/start"
+  - action: deny
+    match:
+      method: "*"
+      path: "/**"
