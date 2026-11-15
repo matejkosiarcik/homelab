@@ -125,6 +125,9 @@ services:
     build:
       dockerfile: ./docker-images/docker-proxy-filter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-proxy-filter
+    depends_on:
+      docker-socket-proxy:
+        condition: service_healthy
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-proxy-filter:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-proxy-filter/healthcheck:/homelab/logs/healthcheck:rw
