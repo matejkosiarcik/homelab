@@ -84,6 +84,39 @@ func TestCheckFile(t *testing.T) {
 	}
 }
 
+func TestCheckFileBodyValidation(t *testing.T) {
+	filePath := filepath.Join(t.TempDir(), "status.json")
+	if err := os.WriteFile(filePath, []byte(`{"healthy":true}`), 0o600); err != nil {
+		t.Fatalf("os.WriteFile() error = %v", err)
+	}
+
+	fileURL := (&url.URL{Scheme: "file", Path: filePath}).String()
+	literalBody := `{"healthy":true}`
+	for _, test := range []struct {
+		name string
+		args healthcheckArgs
+	}{
+		{
+			name: "literal",
+			args: healthcheckArgs{URL: fileURL, Body: &literalBody},
+		},
+		{
+			name: "regex",
+			args: healthcheckArgs{URL: fileURL, BodyRegex: `"healthy":true`},
+		},
+		{
+			name: "JSON",
+			args: healthcheckArgs{URL: fileURL, BodyJSON: ".healthy == true"},
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if err := checkFile(test.args); err != nil {
+				t.Errorf("checkFile() error = %v", err)
+			}
+		})
+	}
+}
+
 func TestCheckTCP(t *testing.T) {
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {

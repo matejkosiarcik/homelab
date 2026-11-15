@@ -160,6 +160,22 @@ func checkFile(args healthcheckArgs) error {
 		return fmt.Errorf("file path is a directory: %q", endpoint.Path)
 	}
 
+	bodyValidator, err := newBodyValidator(args)
+	if err != nil {
+		return err
+	}
+	if !bodyValidator.enabled() {
+		return nil
+	}
+
+	body, err := os.ReadFile(endpoint.Path)
+	if err != nil {
+		return fmt.Errorf("reading file %q: %w", endpoint.Path, err)
+	}
+	if err := bodyValidator.validate(body); err != nil {
+		return fmt.Errorf("file body validation failed: %w", err)
+	}
+
 	return nil
 }
 
@@ -249,16 +265,16 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 	return nil
 }
 
-// nolint:gocyclo
-func checkHTTP(args healthcheckArgs) error {
-	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
-		return errors.New("use only one of --basic-auth-username and --basic-auth-username-env")
-	}
-	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
-		return errors.New("use only one of --basic-auth-password and --basic-auth-password-env")
-	}
+type bodyValidator struct {
+	literal *string
+	regex   *regexp.Regexp
+	json    *gojq.Query
+}
+
+func newBodyValidator(args healthcheckArgs) (bodyValidator, error) {
+	validator := bodyValidator{literal: args.Body}
 	bodyValidationCount := 0
-	if args.Body != nil {
+	if validator.literal != nil {
 		bodyValidationCount++
 	}
 	if args.BodyRegex != "" {
@@ -268,7 +284,58 @@ func checkHTTP(args healthcheckArgs) error {
 		bodyValidationCount++
 	}
 	if bodyValidationCount > 1 {
-		return errors.New("use only one of --body, --body-regex, and --body-json")
+		return bodyValidator{}, errors.New("use only one of --body, --body-regex, and --body-json")
+	}
+
+	if args.BodyRegex != "" {
+		regex, err := regexp.Compile(args.BodyRegex)
+		if err != nil {
+			return bodyValidator{}, fmt.Errorf("invalid regex for --body-regex: %w", err)
+		}
+		validator.regex = regex
+	}
+	if args.BodyJSON != "" {
+		query, err := gojq.Parse(args.BodyJSON)
+		if err != nil {
+			return bodyValidator{}, fmt.Errorf("invalid jq query for --body-json: %w", err)
+		}
+		validator.json = query
+	}
+
+	return validator, nil
+}
+
+func (validator bodyValidator) enabled() bool {
+	return validator.literal != nil || validator.regex != nil || validator.json != nil
+}
+
+func (validator bodyValidator) validate(body []byte) error {
+	if validator.literal != nil && !bytes.Equal(body, []byte(*validator.literal)) {
+		return fmt.Errorf("does not match literal: %s", body)
+	}
+	if validator.regex != nil && !validator.regex.Match(body) {
+		return fmt.Errorf("does not match regex: %s", body)
+	}
+	if validator.json != nil {
+		if err := validateJSONBody(validator.json, body); err != nil {
+			return fmt.Errorf("does not match JSON query: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// nolint:gocyclo
+func checkHTTP(args healthcheckArgs) error {
+	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
+		return errors.New("use only one of --basic-auth-username and --basic-auth-username-env")
+	}
+	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
+		return errors.New("use only one of --basic-auth-password and --basic-auth-password-env")
+	}
+	bodyValidator, err := newBodyValidator(args)
+	if err != nil {
+		return err
 	}
 
 	basicAuthUsername := args.BasicAuthUsername
@@ -329,24 +396,6 @@ func checkHTTP(args healthcheckArgs) error {
 		}
 	}
 
-	var bodyRegex *regexp.Regexp
-	if args.BodyRegex != "" {
-		var err error
-		bodyRegex, err = regexp.Compile(args.BodyRegex)
-		if err != nil {
-			return fmt.Errorf("invalid regex for --body-regex: %w", err)
-		}
-	}
-
-	var bodyJSONQuery *gojq.Query
-	if args.BodyJSON != "" {
-		var err error
-		bodyJSONQuery, err = gojq.Parse(args.BodyJSON)
-		if err != nil {
-			return fmt.Errorf("invalid jq query for --body-json: %w", err)
-		}
-	}
-
 	tlsConfig, err := tlsClientConfig(args)
 	if err != nil {
 		return fmt.Errorf("configuring TLS: %w", err)
@@ -375,23 +424,15 @@ func checkHTTP(args healthcheckArgs) error {
 	}
 
 	// Validate response body
-	if args.Body != nil || bodyRegex != nil || bodyJSONQuery != nil {
+	if bodyValidator.enabled() {
 		// Read response body for validation.
 		bodyBytes, err := io.ReadAll(response.Body)
 		if err != nil {
 			return fmt.Errorf("reading response body: %w", err)
 		}
 
-		if args.Body != nil && !bytes.Equal(bodyBytes, []byte(*args.Body)) {
-			return fmt.Errorf("response body does not match literal: %s", bodyBytes)
-		}
-		if bodyRegex != nil && !bodyRegex.Match(bodyBytes) {
-			return fmt.Errorf("response body does not match: %s", bodyBytes)
-		}
-		if bodyJSONQuery != nil {
-			if err := validateJSONBody(bodyJSONQuery, bodyBytes); err != nil {
-				return fmt.Errorf("response body does not match JSON query: %w", err)
-			}
+		if err := bodyValidator.validate(bodyBytes); err != nil {
+			return fmt.Errorf("response body validation failed: %w", err)
 		}
 	}
 
