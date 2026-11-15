@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
 import { getEnv } from '#/utils/utils.ts';
 import { createRunWispSession } from '../../utils/app-helpers/runwisp';
 
@@ -136,16 +136,7 @@ test.describe(app.title, () => {
                         const content = response.data as string;
                         await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
                         const lines = content.split('\n');
-                        const metrics = [
-                            'runwisp_build_info',
-                            'runwisp_daemon_cpu_percent',
-                            'runwisp_daemon_memory_total_bytes',
-                            'runwisp_daemon_memory_used_bytes',
-                            'runwisp_daemon_uptime_seconds',
-                            'runwisp_runs_total',
-                            'runwisp_task_active_runs',
-                        ];
-                        for (const metric of metrics) {
+                        for (const metric of sharedMetrics.runWisp) {
                             expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                         }
                     });

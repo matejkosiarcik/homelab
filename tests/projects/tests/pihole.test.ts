@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
 import { dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 
 const app = apps.pihole;
@@ -191,18 +191,7 @@ test.describe(app.title, () => {
                     const content = response.data as string;
                     await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
                     const lines = content.split('\n');
-                    const metrics = [
-                        'sockguard_build_info',
-                        'sockguard_http_request_duration_seconds_bucket',
-                        'sockguard_http_request_duration_seconds_count',
-                        'sockguard_http_request_duration_seconds_sum',
-                        'sockguard_http_requests_active',
-                        'sockguard_http_requests_total',
-                        'sockguard_listener_up',
-                        'sockguard_policy_version',
-                        'sockguard_start_time_seconds',
-                    ];
-                    for (const metric of metrics) {
+                    for (const metric of sharedMetrics.dockerSockguard) {
                         expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                     }
                 });

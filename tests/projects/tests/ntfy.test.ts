@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
 import { delay, getEnv, waitForHidden } from '#/utils/utils.ts';
 
 const app = apps.ntfy;
@@ -31,6 +31,29 @@ test.describe(app.title, () => {
                 await test.step('Validate response', async () => {
                     const body = response.data as { healthy: boolean, role: string };
                     expect(body, 'Response healthy').toStrictEqual({ healthy: true, role: 'active' });
+                });
+            });
+
+            test('API: Docker Sockguard Prometheus metrics content', async () => {
+                const response = await test.step('Request server', async () => {
+                    const response = await axios.get(`${instance.url}/docker-sockguard/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
+                        },
+                        timeout: 15_000,
+                    });
+                    expect(response.status, 'Response Status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('docker-sockguard-metrics.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    for (const metric of sharedMetrics.dockerSockguard) {
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
+                    }
                 });
             });
 
