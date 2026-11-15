@@ -213,7 +213,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect RunWisp metrics endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/runwisp/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:renovatebot)$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/runwisp/metrics$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
