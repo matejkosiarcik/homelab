@@ -420,6 +420,7 @@ dockerstats)
     homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
     app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
 
     # App #
     write_http_auth_user matej "${matej_password}" prometheus
@@ -440,6 +441,10 @@ dockerstats)
 
     write_http_auth_user prometheus "${app_prometheus_password}" prometheus
     printf 'app-prometheus,%s\n' "${app_prometheus_password}" >>"${initial_output}/.secrets.csv"
+
+    # Docker Sockguard #
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -1206,6 +1211,7 @@ ntfy)
     homelab_publisher_password="$(load_secret ".${app_full_name_key}.app.homelab_publisher_user" dev=default)"
     homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
@@ -1219,6 +1225,10 @@ ntfy)
 
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
     printf 'NTFY_PASSWORD_HOMELAB_TEST="%s"\n' "${homelab_test_password}" >>"${initial_output}/app.env"
+
+    # Docker Sockguard #
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -1500,6 +1510,11 @@ prometheus)
     printf 'VIKUNJA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
     # Docker Sockguard #
+    printf 'DOCKERSTATS_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NTFY__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_1__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
