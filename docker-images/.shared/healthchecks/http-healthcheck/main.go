@@ -387,8 +387,8 @@ func checkHTTP(args healthcheckArgs) error {
 				expectedStatuses = append(expectedStatuses, code)
 			}
 		} else {
-			code, err := strconv.Atoi(status)
-			if err != nil || code < 100 || code > 599 {
+			code, parseErr := strconv.Atoi(status)
+			if parseErr != nil || code < 100 || code > 599 {
 				return fmt.Errorf("invalid HTTP status code for --status: %q", status)
 			}
 

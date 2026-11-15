@@ -262,8 +262,8 @@ func newMutualTLSCredentials(t *testing.T) mutualTLSCredentials {
 
 	directory := t.TempDir()
 	caCertificatePath := filepath.Join(directory, "ca.pem")
-	if err := os.WriteFile(caCertificatePath, certificateAuthorityPEM, 0o600); err != nil {
-		t.Fatalf("os.WriteFile() for CA error = %v", err)
+	if writeErr := os.WriteFile(caCertificatePath, certificateAuthorityPEM, 0o600); writeErr != nil {
+		t.Fatalf("os.WriteFile() for CA error = %v", writeErr)
 	}
 
 	serverCertificatePEM, serverKeyPEM := newSignedCertificate(t, certificateAuthority, certificateAuthorityKey, 2, []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}, []string{"localhost"}, []net.IP{net.ParseIP("127.0.0.1")})
@@ -275,11 +275,11 @@ func newMutualTLSCredentials(t *testing.T) mutualTLSCredentials {
 	clientCertificatePEM, clientKeyPEM := newSignedCertificate(t, certificateAuthority, certificateAuthorityKey, 3, []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth}, nil, nil)
 	clientCertificatePath := filepath.Join(directory, "cert.pem")
 	clientKeyPath := filepath.Join(directory, "key.pem")
-	if err := os.WriteFile(clientCertificatePath, clientCertificatePEM, 0o600); err != nil {
-		t.Fatalf("os.WriteFile() for client certificate error = %v", err)
+	if writeErr := os.WriteFile(clientCertificatePath, clientCertificatePEM, 0o600); writeErr != nil {
+		t.Fatalf("os.WriteFile() for client certificate error = %v", writeErr)
 	}
-	if err := os.WriteFile(clientKeyPath, clientKeyPEM, 0o600); err != nil {
-		t.Fatalf("os.WriteFile() for client key error = %v", err)
+	if writeErr := os.WriteFile(clientKeyPath, clientKeyPEM, 0o600); writeErr != nil {
+		t.Fatalf("os.WriteFile() for client key error = %v", writeErr)
 	}
 
 	clientCAs := x509.NewCertPool()
