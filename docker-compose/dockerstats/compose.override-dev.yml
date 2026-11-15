@@ -6,7 +6,7 @@ services:
   app:
     <<: *common-service-options
 
-  docker-proxy-filter:
+  docker-sockguard:
     <<: *common-service-options
 
   docker-socket-proxy:

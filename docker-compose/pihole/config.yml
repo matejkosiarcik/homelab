@@ -5,6 +5,8 @@ apache:
   upstream-url:
     - path: /metrics
       target: http://app-prometheus-exporter:9617/metrics
+    - path: /docker-sockguard/metrics
+      target: http://docker-sockguard:2375/metrics
     - path: /
       target: http://app:80
 
@@ -29,6 +31,9 @@ prometheus:
   enabled: true
   endpoints:
     - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /docker-sockguard/metrics
       auth:
         type: basic
     - path: /metrics

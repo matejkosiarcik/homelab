@@ -49,6 +49,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="docker-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    HOMELAB_SETUP_TARGET_USER="homelab" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]

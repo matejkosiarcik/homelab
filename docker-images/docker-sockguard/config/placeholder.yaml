@@ -1,0 +1,11 @@
+request_body:
+  exec:
+    allow_root_user: false
+    allowed_commands: []
+
+response:
+  name_patterns: []
+
+rules:
+  - match: { method: "*", path: "/**" }
+    action: deny

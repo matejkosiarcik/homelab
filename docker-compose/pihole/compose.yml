@@ -42,9 +42,9 @@ services:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
       service: docker-app-setup
+    # Override:
     environment:
-      # The Pi-hole CLI intentionally requires root for admin actions
-      HOMELAB_SETUP_TARGET_USER: "0"
+      HOMELAB_SETUP_TARGET_USER: root # The PiHole CLI intentionally requires root for admin actions
 
   app-prometheus-exporter:
     extends:
@@ -59,6 +59,11 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
+
+  docker-sockguard:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: docker-sockguard
 
   docker-socket-proxy:
     extends:
@@ -83,6 +88,7 @@ services:
     # Override:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/prometheus.htpasswd:/homelab/users/prometheus.htpasswd:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/docker-sockguard-prometheus.htpasswd:/homelab/users/docker-sockguard-prometheus.htpasswd:ro
 
   apache-prometheus-exporter:
     extends:

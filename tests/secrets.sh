@@ -122,6 +122,7 @@ rm -f './.secrets.env'
     printf 'DOCKERSTATS_ODROID_H3__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.app.homelab_viewer_user')"
     printf 'DOCKERSTATS_ODROID_H3__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.app.homelab_test_user')"
     printf 'DOCKERSTATS_ODROID_H3__PROMETHEUS_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.app.prometheus_user')"
+    printf 'DOCKERSTATS_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h3.docker_sockguard.prometheus_user')"
     printf 'DOCKERSTATS_ODROID_H3__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.apache.status_user')"
     printf 'DOCKERSTATS_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.apache.prometheus_user')"
 
@@ -129,6 +130,7 @@ rm -f './.secrets.env'
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.homelab_viewer_user')"
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.homelab_test_user')"
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.prometheus_user')"
+    printf 'DOCKERSTATS_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h4_ultra.docker_sockguard.prometheus_user')"
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h4_ultra.apache.status_user')"
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_odroid_h4_ultra.apache.prometheus_user')"
 
@@ -136,6 +138,7 @@ rm -f './.secrets.env'
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.homelab_viewer_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.homelab_test_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.prometheus_user')"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.docker_sockguard.prometheus_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.apache.status_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.apache.prometheus_user')"
 
@@ -143,8 +146,25 @@ rm -f './.secrets.env'
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.homelab_viewer_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.homelab_test_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.prometheus_user')"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.docker_sockguard.prometheus_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.apache.status_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.apache.prometheus_user')"
+
+    printf 'DOZZLEAGENT_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h3.docker_sockguard.prometheus_user')"
+    printf 'DOZZLEAGENT_ODROID_H3__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h3.apache.status_user')"
+    printf 'DOZZLEAGENT_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h3.apache.prometheus_user')"
+
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.docker_sockguard.prometheus_user')"
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.apache.status_user')"
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.apache.prometheus_user')"
+
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.docker_sockguard.prometheus_user')"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.apache.status_user')"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.apache.prometheus_user')"
+
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.docker_sockguard.prometheus_user')"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.apache.status_user')"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.apache.prometheus_user')"
 
     printf 'DONETICK__MATEJ_PASSWORD=%s\n' "$(load_secret '.donetick.app.matej_user')"
     printf 'DONETICK__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.donetick.apache.status_user')"
@@ -274,6 +294,7 @@ rm -f './.secrets.env'
     printf 'NTFY__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.ntfy.app.homelab_test_user')"
     printf 'NTFY__HOMELAB_PUBLISHER_PASSWORD=%s\n' "$(load_secret '.ntfy.app.homelab_publisher_user')"
     printf 'NTFY__HOMELAB_PUBLISHER_TOKEN=%s\n' "$(load_secret '.ntfy.app.homelab_publisher_token')"
+    printf 'NTFY__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.ntfy.docker_sockguard.prometheus_user')"
     printf 'NTFY__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.status_user')"
     printf 'NTFY__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.ntfy.apache.prometheus_user')"
 
@@ -320,21 +341,25 @@ rm -f './.secrets.env'
     printf 'PIHOLE_1__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.app.prometheus_user')"
     printf 'PIHOLE_1__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.apache.status_user')"
     printf 'PIHOLE_1__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.apache.prometheus_user')"
+    printf 'PIHOLE_1__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.docker_sockguard.prometheus_user')"
 
     printf 'PIHOLE_2__PASSWORD=%s\n' "$(load_secret '.pihole_2.app.admin_user')"
     printf 'PIHOLE_2__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.app.prometheus_user')"
     printf 'PIHOLE_2__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.apache.status_user')"
     printf 'PIHOLE_2__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.apache.prometheus_user')"
+    printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user')"
 
     printf 'PIHOLE_3__PASSWORD=%s\n' "$(load_secret '.pihole_3.app.admin_user')"
     printf 'PIHOLE_3__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.app.prometheus_user')"
     printf 'PIHOLE_3__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.apache.status_user')"
     printf 'PIHOLE_3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.apache.prometheus_user')"
+    printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user')"
 
     printf 'PIHOLE_4__PASSWORD=%s\n' "$(load_secret '.pihole_4.app.admin_user')"
     printf 'PIHOLE_4__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.app.prometheus_user')"
     printf 'PIHOLE_4__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.apache.status_user')"
     printf 'PIHOLE_4__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.apache.prometheus_user')"
+    printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user')"
 
     printf 'PLANKA__MATEJ_PASSWORD=%s\n' "$(load_secret '.planka.app.matej_user')"
     printf 'PLANKA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.planka.apache.status_user')"

@@ -145,7 +145,7 @@ test.describe(app.title, () => {
 
                 await test.step('Validate response', async () => {
                     const content = response.data as string;
-                    await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                    await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
                     const lines = content.split('\n');
                     const metrics = [
                         'gatus_results_certificate_expiration_seconds',
@@ -158,7 +158,7 @@ test.describe(app.title, () => {
                         'promhttp_metric_handler_requests_total',
                     ];
                     for (const metric of metrics) {
-                        expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                     }
                 });
             });

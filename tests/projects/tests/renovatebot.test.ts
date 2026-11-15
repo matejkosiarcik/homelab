@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
 import { getEnv } from '#/utils/utils.ts';
 import { createRunWispSession } from '../../utils/app-helpers/runwisp';
 
@@ -24,6 +24,7 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
             createHttpsRootRedirectTest(instance.url, '/runwisp');
+            createPrometheusTests(instance.url, { path: '/runwisp/metrics', token: getEnv(instance.url, 'RUNWISP_PROMETHEUS_PASSWORD') });
 
             test('API: Get file-server health', async () => {
                 const response = await axios.get(`${instance.url}/.health`);
@@ -36,7 +37,7 @@ test.describe(app.title, () => {
                 expect(response.status, 'Response status').toStrictEqual(404);
             });
 
-            test.describe('Runwisp', () => {
+            test.describe('RunWisp', () => {
                 test('API: Get runwisp health', async () => {
                     const response = await test.step('Request endpoint', async () => {
                         const response = await axios.get(`${runWispUrl}/health`);
@@ -133,19 +134,10 @@ test.describe(app.title, () => {
 
                     await test.step('Validate response', async () => {
                         const content = response.data as string;
-                        await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                        await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
                         const lines = content.split('\n');
-                        const metrics = [
-                            'runwisp_build_info',
-                            'runwisp_daemon_cpu_percent',
-                            'runwisp_daemon_memory_total_bytes',
-                            'runwisp_daemon_memory_used_bytes',
-                            'runwisp_daemon_uptime_seconds',
-                            'runwisp_runs_total',
-                            'runwisp_task_active_runs',
-                        ];
-                        for (const metric of metrics) {
-                            expect(lines.find((el) => el.startsWith(metric)), `Metric ${metric}`).toBeDefined();
+                        for (const metric of sharedMetrics.runWisp) {
+                            expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                         }
                     });
                 });

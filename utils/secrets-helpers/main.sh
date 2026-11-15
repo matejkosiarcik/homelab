@@ -420,6 +420,7 @@ dockerstats)
     homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
     app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
 
     # App #
     write_http_auth_user matej "${matej_password}" prometheus
@@ -440,6 +441,10 @@ dockerstats)
 
     write_http_auth_user prometheus "${app_prometheus_password}" prometheus
     printf 'app-prometheus,%s\n' "${app_prometheus_password}" >>"${initial_output}/.secrets.csv"
+
+    # Docker Sockguard #
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -590,48 +595,63 @@ gatus)
     printf 'UNBOUND_MONIKA_2__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"
 
     # Other apps metrics credentials #
-    printf 'DAWARICH__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dawarich.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_ODROID_H3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'GATUS_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'GATUS_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DAWARICH__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dawarich.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H3__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H4_ULTRA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'GATUS_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'GATUS_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HEALTHCHECKS__PROMETHEUS_PROJECT="%s"\n' "$(load_secret '.healthchecks.app.project_id' dev=real)" >>"${initial_output}/app.env"
-    printf 'HEALTHCHECKS__PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEASSISTANT__PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'JELLYFIN__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.jellyfin.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'LIBRETRANSLATE__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.libretranslate.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'MINIO__PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.minio.app.prometheus_token' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_ODROID_H3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_4__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PROMETHEUS__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'SAMBA_DATA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.samba_data.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_BLACKHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_DEFAULT_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_GUESTS_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_INTERNAL_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_IOT_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MATEJ_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MONIKA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_BLACKHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_DEFAULT_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_GUESTS_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_INTERNAL_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_IOT_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MATEJ_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MONIKA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'VIKUNJA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HEALTHCHECKS__APP_PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEASSISTANT__APP_PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'JELLYFIN__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.jellyfin.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'LIBRETRANSLATE__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.libretranslate.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'MINIO__APP_PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.minio.app.prometheus_token' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_ODROID_H3__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_ODROID_H4_ULTRA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_3__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_4__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PROMETHEUS__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'SAMBA_DATA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.samba_data.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_BLACKHOLE_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_DEFAULT_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_GUESTS_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_INTERNAL_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_IOT_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MATEJ_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MONIKA_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_BLACKHOLE_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_DEFAULT_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_GUESTS_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_INTERNAL_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_IOT_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MATEJ_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MONIKA_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'VIKUNJA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
-    # Runwisp metrics credentials #
+    # Docker Sockguard #
+    printf 'DOCKERSTATS_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NTFY__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_1__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+
+    # RunWisp metrics credentials #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
 
     # Other apps proxy metrics credentials #
@@ -654,6 +674,10 @@ gatus)
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H3__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h3.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.donetick.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzle.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -1206,6 +1230,7 @@ ntfy)
     homelab_publisher_password="$(load_secret ".${app_full_name_key}.app.homelab_publisher_user" dev=default)"
     homelab_viewer_password="$(load_secret ".${app_full_name_key}.app.homelab_viewer_user" dev=default)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
 
     # App #
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
@@ -1219,6 +1244,10 @@ ntfy)
 
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
     printf 'NTFY_PASSWORD_HOMELAB_TEST="%s"\n' "${homelab_test_password}" >>"${initial_output}/app.env"
+
+    # Docker Sockguard #
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"
@@ -1338,6 +1367,7 @@ pihole)
     # Preload #
     admin_password="$(load_secret ".${app_full_name_key}.app.admin_user" dev=default)"
     app_prometheus_password="$(load_secret ".${app_full_name_key}.app.prometheus_user" dev=default)"
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
 
     # App #
     printf 'admin,%s\n' "${admin_password}" >>"${initial_output}/.secrets.csv"
@@ -1351,6 +1381,9 @@ pihole)
 
     write_http_auth_user prometheus "${app_prometheus_password}" prometheus
     printf 'app-prometheus,%s\n' "${app_prometheus_password}" >>"${initial_output}/.secrets.csv"
+
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Certificator #
     write_certificator_users
@@ -1454,48 +1487,63 @@ prometheus)
     write_http_auth_user prometheus "${matej_password}" prometheus
 
     # Other apps metrics credentials #
-    printf 'DAWARICH__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dawarich.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_ODROID_H3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'GATUS_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'GATUS_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DAWARICH__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dawarich.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H3__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H4_ULTRA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'GATUS_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'GATUS_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'HEALTHCHECKS__PROMETHEUS_PROJECT="%s"\n' "$(load_secret '.healthchecks.app.project_id' dev=real)" >>"${initial_output}/app.env"
-    printf 'HEALTHCHECKS__PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
-    printf 'HOMEASSISTANT__PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'JELLYFIN__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.jellyfin.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'LIBRETRANSLATE__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.libretranslate.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'MINIO__PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.minio.app.prometheus_token' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_ODROID_H3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_ODROID_H4_ULTRA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_3__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PIHOLE_4__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'PROMETHEUS__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'SAMBA_DATA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.samba_data.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_BLACKHOLE_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_DEFAULT_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_GUESTS_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_INTERNAL_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_IOT_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MATEJ_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MONIKA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_BLACKHOLE_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_DEFAULT_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_GUESTS_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_INTERNAL_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_IOT_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MATEJ_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UNBOUND_MONIKA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_1__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'UPTIMEKUMA_2__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
-    printf 'VIKUNJA__PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'HEALTHCHECKS__APP_PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.healthchecks.app.api_key_readonly' dev=real)" >>"${initial_output}/app.env"
+    printf 'HOMEASSISTANT__APP_PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.homeassistant.app.homelab_viewer_api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'JELLYFIN__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.jellyfin.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'LIBRETRANSLATE__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.libretranslate.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'MINIO__APP_PROMETHEUS_TOKEN="%s"\n' "$(load_secret '.minio.app.prometheus_token' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_ODROID_H3__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_ODROID_H4_ULTRA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_odroid_h4_ultra.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_4B_2G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_2g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NODEEXPORTER_RASPBERRY_PI_4B_4G__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.nodeexporter_raspberry_pi_4b_4g.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_3__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_4__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PROMETHEUS__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.prometheus.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'SAMBA_DATA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.samba_data.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_BLACKHOLE_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_DEFAULT_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_GUESTS_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_INTERNAL_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_IOT_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MATEJ_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MONIKA_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_1.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_BLACKHOLE_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_blackhole_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_DEFAULT_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_default_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_GUESTS_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_guests_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_INTERNAL_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_internal_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_IOT_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_iot_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MATEJ_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_matej_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UNBOUND_MONIKA_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.unbound_monika_2.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_1__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_1.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'UPTIMEKUMA_2__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.uptimekuma_2.app.api_key' dev=real)" >>"${initial_output}/app.env"
+    printf 'VIKUNJA__APP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.vikunja.app.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
-    # Runwisp #
+    # Docker Sockguard #
+    printf 'DOCKERSTATS_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'NTFY__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.ntfy.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_1__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_1.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+
+    # RunWisp #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
 
     # Other apps proxy metrics credentials #
@@ -1518,6 +1566,10 @@ prometheus)
     printf 'DOCKERSTATS_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H3__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h3.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_ODROID_H4_ULTRA__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_odroid_h4_ultra.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_2G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_2g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'DOZZLEAGENT_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzleagent_raspberry_pi_4b_4g.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DONETICK__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.donetick.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.dozzle.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'GATUS_1__PROXY_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.gatus_1.apache.prometheus_user' dev=real)" >>"${initial_output}/app.env"
@@ -1616,7 +1668,7 @@ renovatebot)
     printf 'renovate-token,%s\n' "${renovate_token}" >>"${initial_output}/.secrets.csv"
     printf 'github-token,%s\n' "${github_token}" >>"${initial_output}/.secrets.csv"
 
-    write_http_auth_user prometheus "${runwisp_prometheus_password}" prometheus
+    write_http_auth_user prometheus "${runwisp_prometheus_password}" runwisp-prometheus
     printf 'app-prometheus,%s\n' "${runwisp_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #

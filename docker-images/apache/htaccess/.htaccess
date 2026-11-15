@@ -131,7 +131,7 @@ RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} !true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
 RewriteRule ^ /files [L,R=307]
 
-# Specific redirect for apps with primary Runwisp: "/" -> "/runwisp"
+# Specific redirect for apps with primary RunWisp: "/" -> "/runwisp"
 RewriteCond %{ENV:HOMELAB_APP_TYPE} ^renovatebot$ [NC]
 RewriteCond %{ENV:_REDIRECT_STATUS_SAFE_GET} true [NC]
 RewriteCond %{REQUEST_URI} ^/?$
@@ -197,7 +197,7 @@ RewriteRule ^ /ui/ [L,R=307]
 </If>
 
 # Protect prometheus /metrics endpoint
-<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|dockerstats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|renovatebot|samba|unbound|unbound-blackhole)$#">
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/metrics$# && %{ENV:HOMELAB_APP_TYPE} =~ m#^(?:dawarich|dockerstats|glances|gatus|jellyfin|libretranslate|nodeexporter|pihole|renovatebot|samba|unbound|unbound\-blackhole)$#">
     AuthType Basic
     AuthName Protected
     AuthBasicProvider file
@@ -205,6 +205,38 @@ RewriteRule ^ /ui/ [L,R=307]
     <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$#">
         # Allow readonly methods
         AuthUserFile /homelab/users/prometheus.htpasswd
+    </If>
+    <Else>
+        # Deny non-readonly methods
+        AuthUserFile /homelab/users/empty.htpasswd
+    </Else>
+</If>
+
+# Protect RunWisp metrics endpoint
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/runwisp/metrics$#">
+    AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    Require valid-user
+    <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$#">
+        # Allow readonly methods
+        AuthUserFile /homelab/users/runwisp-prometheus.htpasswd
+    </If>
+    <Else>
+        # Deny non-readonly methods
+        AuthUserFile /homelab/users/empty.htpasswd
+    </Else>
+</If>
+
+# Protect docker-sockguard merics endpoint
+<If "%{HTTPS} == 'on' && %{REQUEST_URI} =~ m#^/docker\-sockguard/metrics$#">
+        AuthType Basic
+    AuthName Protected
+    AuthBasicProvider file
+    Require valid-user
+    <If "%{REQUEST_METHOD} =~ m#^(GET|HEAD|OPTIONS)$#">
+        # Allow readonly methods
+        AuthUserFile /homelab/users/docker-sockguard-prometheus.htpasswd
     </If>
     <Else>
         # Deny non-readonly methods

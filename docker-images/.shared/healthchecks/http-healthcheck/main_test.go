@@ -2,6 +2,14 @@ package main
 
 import (
 	"bytes"
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
+	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
+	"math/big"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -42,6 +50,28 @@ func TestCheckHTTP(t *testing.T) {
 	}
 }
 
+func TestCheckHTTPLiteralBody(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
+		if _, err := writer.Write([]byte("healthy")); err != nil {
+			t.Errorf("writer.Write() error = %v", err)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	body := "healthy"
+	if err := checkHTTP(healthcheckArgs{URL: server.URL, Body: &body}); err != nil {
+		t.Errorf("checkHTTP() error = %v", err)
+	}
+}
+
+func TestCheckHTTPOnlyAllowsOneBodyValidation(t *testing.T) {
+	body := "healthy"
+	err := checkHTTP(healthcheckArgs{URL: "http://localhost", Body: &body, BodyRegex: "healthy"})
+	if err == nil || !strings.Contains(err.Error(), "use only one of --body, --body-regex, and --body-json") {
+		t.Errorf("checkHTTP() error = %v, want mutually-exclusive body-validation error", err)
+	}
+}
+
 func TestCheckFile(t *testing.T) {
 	filePath := filepath.Join(t.TempDir(), "status.txt")
 	if err := os.WriteFile(filePath, []byte("ready"), 0o600); err != nil {
@@ -51,6 +81,39 @@ func TestCheckFile(t *testing.T) {
 	fileURL := (&url.URL{Scheme: "file", Path: filePath}).String()
 	if err := checkFile(healthcheckArgs{URL: fileURL}); err != nil {
 		t.Errorf("checkFile() error = %v", err)
+	}
+}
+
+func TestCheckFileBodyValidation(t *testing.T) {
+	filePath := filepath.Join(t.TempDir(), "status.json")
+	if err := os.WriteFile(filePath, []byte(`{"healthy":true}`), 0o600); err != nil {
+		t.Fatalf("os.WriteFile() error = %v", err)
+	}
+
+	fileURL := (&url.URL{Scheme: "file", Path: filePath}).String()
+	literalBody := `{"healthy":true}`
+	for _, test := range []struct {
+		name string
+		args healthcheckArgs
+	}{
+		{
+			name: "literal",
+			args: healthcheckArgs{URL: fileURL, Body: &literalBody},
+		},
+		{
+			name: "regex",
+			args: healthcheckArgs{URL: fileURL, BodyRegex: `"healthy":true`},
+		},
+		{
+			name: "JSON",
+			args: healthcheckArgs{URL: fileURL, BodyJSON: ".healthy == true"},
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if err := checkFile(test.args); err != nil {
+				t.Errorf("checkFile() error = %v", err)
+			}
+		})
 	}
 }
 
@@ -80,6 +143,186 @@ func TestCheckTCP(t *testing.T) {
 	case <-time.After(time.Second):
 		t.Error("TCP listener did not accept the health check connection")
 	}
+}
+
+func TestCheckHTTPMutualTLS(t *testing.T) {
+	credentials := newMutualTLSCredentials(t)
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
+		writer.WriteHeader(http.StatusNoContent)
+	}))
+	server.TLS = &tls.Config{
+		Certificates: []tls.Certificate{credentials.serverCertificate},
+		ClientAuth:   tls.RequireAndVerifyClientCert,
+		ClientCAs:    credentials.clientCAs,
+	}
+	server.StartTLS()
+	t.Cleanup(server.Close)
+
+	err := checkHTTP(healthcheckArgs{
+		URL:             server.URL,
+		TLSServerCACert: credentials.caCertificatePath,
+		TLSClientCert:   credentials.clientCertificatePath,
+		TLSClientKey:    credentials.clientKeyPath,
+		Status:          "204",
+	})
+	if err != nil {
+		t.Errorf("checkHTTP() error = %v", err)
+	}
+}
+
+func TestCheckTCPMutualTLS(t *testing.T) {
+	credentials := newMutualTLSCredentials(t)
+	listener, err := tls.Listen("tcp", "127.0.0.1:0", &tls.Config{
+		Certificates: []tls.Certificate{credentials.serverCertificate},
+		ClientAuth:   tls.RequireAndVerifyClientCert,
+		ClientCAs:    credentials.clientCAs,
+	})
+	if err != nil {
+		t.Fatalf("tls.Listen() error = %v", err)
+	}
+	t.Cleanup(func() { _ = listener.Close() })
+
+	accepted := make(chan error, 1)
+	go func() {
+		connection, acceptErr := listener.Accept()
+		if acceptErr != nil {
+			accepted <- acceptErr
+			return
+		}
+		defer func() { _ = connection.Close() }()
+
+		accepted <- connection.(*tls.Conn).Handshake()
+	}()
+
+	err = checkTCP(healthcheckArgs{
+		URL:             "tcp://" + listener.Addr().String(),
+		TLSServerCACert: credentials.caCertificatePath,
+		TLSClientCert:   credentials.clientCertificatePath,
+		TLSClientKey:    credentials.clientKeyPath,
+	})
+	if err != nil {
+		t.Errorf("checkTCP() error = %v", err)
+	}
+
+	select {
+	case acceptErr := <-accepted:
+		if acceptErr != nil {
+			t.Errorf("mutual TLS handshake error = %v", acceptErr)
+		}
+	case <-time.After(time.Second):
+		t.Error("TCP listener did not accept the mutual TLS health check connection")
+	}
+}
+
+func TestTLSClientConfigRequiresCertificateAndKey(t *testing.T) {
+	for _, args := range []healthcheckArgs{
+		{TLSClientCert: "cert.pem"},
+		{TLSClientKey: "key.pem"},
+	} {
+		if _, err := tlsClientConfig(args); err == nil || !strings.Contains(err.Error(), "both --tls-client-cert and --tls-client-key") {
+			t.Errorf("tlsClientConfig(%+v) error = %v, want incomplete client-certificate error", args, err)
+		}
+	}
+}
+
+type mutualTLSCredentials struct {
+	caCertificatePath     string
+	clientCertificatePath string
+	clientKeyPath         string
+	clientCAs             *x509.CertPool
+	serverCertificate     tls.Certificate
+}
+
+func newMutualTLSCredentials(t *testing.T) mutualTLSCredentials {
+	t.Helper()
+
+	certificateAuthorityKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("ecdsa.GenerateKey() error = %v", err)
+	}
+	now := time.Now()
+	certificateAuthorityTemplate := &x509.Certificate{
+		SerialNumber:          big.NewInt(1),
+		Subject:               pkix.Name{CommonName: "healthcheck test CA"},
+		NotBefore:             now.Add(-time.Hour),
+		NotAfter:              now.Add(time.Hour),
+		IsCA:                  true,
+		BasicConstraintsValid: true,
+		KeyUsage:              x509.KeyUsageCertSign | x509.KeyUsageDigitalSignature,
+	}
+	certificateAuthorityDER, err := x509.CreateCertificate(rand.Reader, certificateAuthorityTemplate, certificateAuthorityTemplate, &certificateAuthorityKey.PublicKey, certificateAuthorityKey)
+	if err != nil {
+		t.Fatalf("x509.CreateCertificate() for CA error = %v", err)
+	}
+	certificateAuthority, err := x509.ParseCertificate(certificateAuthorityDER)
+	if err != nil {
+		t.Fatalf("x509.ParseCertificate() for CA error = %v", err)
+	}
+	certificateAuthorityPEM := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: certificateAuthorityDER})
+
+	directory := t.TempDir()
+	caCertificatePath := filepath.Join(directory, "ca.pem")
+	if writeErr := os.WriteFile(caCertificatePath, certificateAuthorityPEM, 0o600); writeErr != nil {
+		t.Fatalf("os.WriteFile() for CA error = %v", writeErr)
+	}
+
+	serverCertificatePEM, serverKeyPEM := newSignedCertificate(t, certificateAuthority, certificateAuthorityKey, 2, []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}, []string{"localhost"}, []net.IP{net.ParseIP("127.0.0.1")})
+	serverCertificate, err := tls.X509KeyPair(serverCertificatePEM, serverKeyPEM)
+	if err != nil {
+		t.Fatalf("tls.X509KeyPair() for server error = %v", err)
+	}
+
+	clientCertificatePEM, clientKeyPEM := newSignedCertificate(t, certificateAuthority, certificateAuthorityKey, 3, []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth}, nil, nil)
+	clientCertificatePath := filepath.Join(directory, "cert.pem")
+	clientKeyPath := filepath.Join(directory, "key.pem")
+	if writeErr := os.WriteFile(clientCertificatePath, clientCertificatePEM, 0o600); writeErr != nil {
+		t.Fatalf("os.WriteFile() for client certificate error = %v", writeErr)
+	}
+	if writeErr := os.WriteFile(clientKeyPath, clientKeyPEM, 0o600); writeErr != nil {
+		t.Fatalf("os.WriteFile() for client key error = %v", writeErr)
+	}
+
+	clientCAs := x509.NewCertPool()
+	if !clientCAs.AppendCertsFromPEM(certificateAuthorityPEM) {
+		t.Fatal("client CA pool did not accept the test CA certificate")
+	}
+
+	return mutualTLSCredentials{
+		caCertificatePath:     caCertificatePath,
+		clientCertificatePath: clientCertificatePath,
+		clientKeyPath:         clientKeyPath,
+		clientCAs:             clientCAs,
+		serverCertificate:     serverCertificate,
+	}
+}
+
+func newSignedCertificate(t *testing.T, certificateAuthority *x509.Certificate, certificateAuthorityKey *ecdsa.PrivateKey, serialNumber int64, usages []x509.ExtKeyUsage, dnsNames []string, ipAddresses []net.IP) ([]byte, []byte) {
+	t.Helper()
+
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("ecdsa.GenerateKey() error = %v", err)
+	}
+	certificateTemplate := &x509.Certificate{
+		SerialNumber: big.NewInt(serialNumber),
+		Subject:      pkix.Name{CommonName: "healthcheck test certificate"},
+		NotBefore:    time.Now().Add(-time.Hour),
+		NotAfter:     time.Now().Add(time.Hour),
+		KeyUsage:     x509.KeyUsageDigitalSignature | x509.KeyUsageKeyEncipherment,
+		ExtKeyUsage:  usages,
+		DNSNames:     dnsNames,
+		IPAddresses:  ipAddresses,
+	}
+	certificateDER, err := x509.CreateCertificate(rand.Reader, certificateTemplate, certificateAuthority, &privateKey.PublicKey, certificateAuthorityKey)
+	if err != nil {
+		t.Fatalf("x509.CreateCertificate() error = %v", err)
+	}
+	privateKeyDER, err := x509.MarshalPKCS8PrivateKey(privateKey)
+	if err != nil {
+		t.Fatalf("x509.MarshalPKCS8PrivateKey() error = %v", err)
+	}
+
+	return pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: certificateDER}), pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: privateKeyDER})
 }
 
 func TestTCPAddress(t *testing.T) {

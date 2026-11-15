@@ -60,7 +60,12 @@ USER root
 WORKDIR /homelab
 COPY --from=monitoring_entries /homelab/apps.json /homelab/
 COPY ./docker-images/crossroad/config/app/services.yaml.j2 /homelab/
-RUN jinja2 --strict './services.yaml.j2' './apps.json' --format json -o './services.yaml'
+RUN jinja2 --strict './services.yaml.j2' './apps.json' --format json -o './services.yaml' && \
+    if grep --quiet --fixed-strings 'ERROR:' './services.yaml' >/dev/null 2>&1; then \
+        printf 'Homepage services config is not valid:\n' >&2 && \
+        cat './services.yaml' >&2 && \
+        exit 1; \
+    fi
 
 ### Build config ###
 

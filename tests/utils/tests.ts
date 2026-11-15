@@ -7,6 +7,29 @@ import { expect, test } from '#/playwright/test.ts';
 import { axios } from '#/utils/axios.ts';
 import { getEnv } from '#/utils/utils.ts';
 
+export const sharedMetrics = {
+    dockerSockguard: [
+        'sockguard_build_info',
+        'sockguard_http_request_duration_seconds_bucket',
+        'sockguard_http_request_duration_seconds_count',
+        'sockguard_http_request_duration_seconds_sum',
+        'sockguard_http_requests_active',
+        'sockguard_http_requests_total',
+        'sockguard_listener_up',
+        'sockguard_policy_version',
+        'sockguard_start_time_seconds',
+    ] as const,
+    runWisp: [
+        'runwisp_build_info',
+        'runwisp_daemon_cpu_percent',
+        'runwisp_daemon_memory_total_bytes',
+        'runwisp_daemon_memory_used_bytes',
+        'runwisp_daemon_uptime_seconds',
+        'runwisp_runs_total',
+        'runwisp_task_active_runs',
+    ] as const,
+};
+
 export function createTcpTests(url: string, _ports: number | number[], _options?: { title?: string | undefined } | undefined) {
     const options = {
         title: _options?.title ?? '',
@@ -335,7 +358,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
 
             await test.step('Validate response', async () => {
                 const content = response.data as string;
-                await test.info().attach('prometheus.txt', { contentType: 'text/plain', body: content });
+                await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
                 const lines = content.split('\n');
                 const metrics = [
                     'apache_accesses_total',

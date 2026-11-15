@@ -10,13 +10,13 @@ services:
       dockerfile: ./docker-images/dozzle/Dockerfile
     command: agent
     depends_on:
-      docker-proxy-filter:
+      docker-sockguard:
         condition: service_healthy
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
     environment:
-      DOCKER_HOST: tcp://docker-proxy-filter:2375
+      DOCKER_HOST: tcp://docker-sockguard:2375
       DOZZLE_HOSTNAME: ${DOCKER_COMPOSE_SERVER_NAME-Unknown}
     networks:
       - external-network
@@ -25,19 +25,15 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-cert.pem:/certs/dozzle-cert.pem:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/dozzle-key.pem:/certs/dozzle-key.pem:ro
-      # Docker socket intentionally left out, as we are using docker-proxy-filter and docker-socket-proxy
+      # Docker socket intentionally left out, as we are using docker-sockguard and docker-socket-proxy
 
-  docker-proxy-filter:
+  docker-sockguard:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: docker-proxy-filter
+      service: docker-sockguard
     # Override:
-    depends_on:
-      docker-socket-proxy:
-        condition: service_healthy
     environment:
-      CONTAINER_LABELS: "" # Allow all containers
-      CONTAINER_NAMES: "" # Allow all containers
+      SOCKGUARD_INSECURE_ALLOW_READ_EXFILTRATION: "true" # Required for container log streaming
 
   docker-socket-proxy:
     extends:

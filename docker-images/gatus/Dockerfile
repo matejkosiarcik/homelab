@@ -65,7 +65,12 @@ USER root
 WORKDIR /homelab
 COPY --from=monitoring_entries /homelab/apps.json /homelab/
 COPY ./docker-images/gatus/config.yml.j2 /homelab/
-RUN jinja2 --strict './config.yml.j2' './apps.json' --format json -o './config.yml'
+RUN jinja2 --strict './config.yml.j2' './apps.json' --format json -o './config.yml' && \
+    if grep --quiet --fixed-strings 'ERROR:' './config.yml' >/dev/null 2>&1; then \
+        printf 'Gatus config is not valid:\n' >&2 && \
+        cat './config.yml' >&2 && \
+        exit 1; \
+    fi
 
 ### Healthcheck ###
 

@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -27,16 +29,20 @@ var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 const checkTimeout = 2 * time.Second
 
 type healthcheckArgs struct {
-	URL                  string `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
-	Method               string `arg:"--method" default:"GET" help:"HTTP method"`
-	BodyRegex            string `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
-	BodyJSON             string `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
-	Status               string `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
-	Insecure             bool   `arg:"--insecure" help:"Skip TLS certificate validation"`
-	BasicAuthUsername    string `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
-	BasicAuthPassword    string `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
-	BasicAuthUsernameEnv string `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
-	BasicAuthPasswordEnv string `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
+	URL                  string  `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
+	Method               string  `arg:"--method" default:"GET" help:"HTTP method"`
+	Body                 *string `arg:"--body" help:"Literal response body to validate (optional)"`
+	BodyRegex            string  `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
+	BodyJSON             string  `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
+	Status               string  `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
+	Insecure             bool    `arg:"--insecure" help:"Skip TLS certificate validation"`
+	TLSServerCACert      string  `arg:"--tls-server-ca-cert" help:"PEM CA certificate file that signed the TLS server certificate, used to verify that server (optional)"`
+	TLSClientCert        string  `arg:"--tls-client-cert" help:"PEM client certificate file for mutual TLS (optional)"`
+	TLSClientKey         string  `arg:"--tls-client-key" help:"PEM client private key file for mutual TLS (optional)"`
+	BasicAuthUsername    string  `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
+	BasicAuthPassword    string  `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
+	BasicAuthUsernameEnv string  `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
+	BasicAuthPasswordEnv string  `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
 }
 
 func checkTCP(args healthcheckArgs) error {
@@ -50,12 +56,69 @@ func checkTCP(args healthcheckArgs) error {
 		return err
 	}
 
-	connection, err := net.DialTimeout("tcp", address, checkTimeout)
+	tlsConfig, err := tlsClientConfig(args)
+	if err != nil {
+		return fmt.Errorf("configuring TLS: %w", err)
+	}
+
+	var connection net.Conn
+	if tlsConfig == nil {
+		connection, err = net.DialTimeout("tcp", address, checkTimeout)
+	} else {
+		contextWithTimeout, cancel := context.WithTimeout(context.Background(), checkTimeout)
+		defer cancel()
+
+		connection, err = (&tls.Dialer{
+			NetDialer: &net.Dialer{Timeout: checkTimeout},
+			Config:    tlsConfig,
+		}).DialContext(contextWithTimeout, "tcp", address)
+	}
 	if err != nil {
 		return fmt.Errorf("connecting to TCP address %q: %w", address, err)
 	}
 
 	return connection.Close()
+}
+
+func tlsClientConfig(args healthcheckArgs) (*tls.Config, error) {
+	if (args.TLSClientCert == "") != (args.TLSClientKey == "") {
+		return nil, errors.New("mutual TLS requires both --tls-client-cert and --tls-client-key")
+	}
+
+	if args.TLSServerCACert == "" && args.TLSClientCert == "" && !args.Insecure {
+		return nil, nil
+	}
+
+	config := &tls.Config{}
+	if args.Insecure {
+		config.InsecureSkipVerify = true // #nosec G402 -- explicit health-check opt-in for an internal endpoint
+	}
+
+	if args.TLSServerCACert != "" {
+		certificateAuthorityPEM, err := os.ReadFile(args.TLSServerCACert)
+		if err != nil {
+			return nil, fmt.Errorf("reading TLS server CA certificate %q: %w", args.TLSServerCACert, err)
+		}
+
+		certificateAuthorities, err := x509.SystemCertPool()
+		if err != nil || certificateAuthorities == nil {
+			certificateAuthorities = x509.NewCertPool()
+		}
+		if !certificateAuthorities.AppendCertsFromPEM(certificateAuthorityPEM) {
+			return nil, fmt.Errorf("parsing TLS server CA certificate %q: no PEM certificates found", args.TLSServerCACert)
+		}
+		config.RootCAs = certificateAuthorities
+	}
+
+	if args.TLSClientCert != "" {
+		certificate, err := tls.LoadX509KeyPair(args.TLSClientCert, args.TLSClientKey)
+		if err != nil {
+			return nil, fmt.Errorf("loading TLS client certificate and key: %w", err)
+		}
+		config.Certificates = []tls.Certificate{certificate}
+	}
+
+	return config, nil
 }
 
 func tcpAddress(endpoint *url.URL) (string, error) {
@@ -95,6 +158,22 @@ func checkFile(args healthcheckArgs) error {
 	}
 	if fileInfo.IsDir() {
 		return fmt.Errorf("file path is a directory: %q", endpoint.Path)
+	}
+
+	bodyValidator, err := newBodyValidator(args)
+	if err != nil {
+		return err
+	}
+	if !bodyValidator.enabled() {
+		return nil
+	}
+
+	body, err := os.ReadFile(endpoint.Path)
+	if err != nil {
+		return fmt.Errorf("reading file %q: %w", endpoint.Path, err)
+	}
+	if err := bodyValidator.validate(body); err != nil {
+		return fmt.Errorf("file body validation failed: %w", err)
 	}
 
 	return nil
@@ -186,6 +265,66 @@ func validateJSONBody(query *gojq.Query, bodyBytes []byte) error {
 	return nil
 }
 
+type bodyValidator struct {
+	literal *string
+	regex   *regexp.Regexp
+	json    *gojq.Query
+}
+
+func newBodyValidator(args healthcheckArgs) (bodyValidator, error) {
+	validator := bodyValidator{literal: args.Body}
+	bodyValidationCount := 0
+	if validator.literal != nil {
+		bodyValidationCount++
+	}
+	if args.BodyRegex != "" {
+		bodyValidationCount++
+	}
+	if args.BodyJSON != "" {
+		bodyValidationCount++
+	}
+	if bodyValidationCount > 1 {
+		return bodyValidator{}, errors.New("use only one of --body, --body-regex, and --body-json")
+	}
+
+	if args.BodyRegex != "" {
+		regex, err := regexp.Compile(args.BodyRegex)
+		if err != nil {
+			return bodyValidator{}, fmt.Errorf("invalid regex for --body-regex: %w", err)
+		}
+		validator.regex = regex
+	}
+	if args.BodyJSON != "" {
+		query, err := gojq.Parse(args.BodyJSON)
+		if err != nil {
+			return bodyValidator{}, fmt.Errorf("invalid jq query for --body-json: %w", err)
+		}
+		validator.json = query
+	}
+
+	return validator, nil
+}
+
+func (validator bodyValidator) enabled() bool {
+	return validator.literal != nil || validator.regex != nil || validator.json != nil
+}
+
+func (validator bodyValidator) validate(body []byte) error {
+	if validator.literal != nil && !bytes.Equal(body, []byte(*validator.literal)) {
+		return fmt.Errorf("does not match literal: %s", body)
+	}
+	if validator.regex != nil && !validator.regex.Match(body) {
+		return fmt.Errorf("does not match regex: %s", body)
+	}
+	if validator.json != nil {
+		if err := validateJSONBody(validator.json, body); err != nil {
+			return fmt.Errorf("does not match JSON query: %w", err)
+		}
+	}
+
+	return nil
+}
+
 // nolint:gocyclo
 func checkHTTP(args healthcheckArgs) error {
 	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
@@ -194,8 +333,9 @@ func checkHTTP(args healthcheckArgs) error {
 	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
 		return errors.New("use only one of --basic-auth-password and --basic-auth-password-env")
 	}
-	if args.BodyRegex != "" && args.BodyJSON != "" {
-		return errors.New("use only one of --body-regex and --body-json")
+	bodyValidator, err := newBodyValidator(args)
+	if err != nil {
+		return err
 	}
 
 	basicAuthUsername := args.BasicAuthUsername
@@ -247,8 +387,8 @@ func checkHTTP(args healthcheckArgs) error {
 				expectedStatuses = append(expectedStatuses, code)
 			}
 		} else {
-			code, err := strconv.Atoi(status)
-			if err != nil || code < 100 || code > 599 {
+			code, parseErr := strconv.Atoi(status)
+			if parseErr != nil || code < 100 || code > 599 {
 				return fmt.Errorf("invalid HTTP status code for --status: %q", status)
 			}
 
@@ -256,31 +396,14 @@ func checkHTTP(args healthcheckArgs) error {
 		}
 	}
 
-	var bodyRegex *regexp.Regexp
-	if args.BodyRegex != "" {
-		var err error
-		bodyRegex, err = regexp.Compile(args.BodyRegex)
-		if err != nil {
-			return fmt.Errorf("invalid regex for --body-regex: %w", err)
-		}
-	}
-
-	var bodyJSONQuery *gojq.Query
-	if args.BodyJSON != "" {
-		var err error
-		bodyJSONQuery, err = gojq.Parse(args.BodyJSON)
-		if err != nil {
-			return fmt.Errorf("invalid jq query for --body-json: %w", err)
-		}
-	}
-
-	// Preconfigure transport layer to optionally skip TLS verification when requested
-	transport := &http.Transport{}
-	if args.Insecure {
-		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} // #nosec G402 -- health check against internal endpoint with self-signed cert
+	tlsConfig, err := tlsClientConfig(args)
+	if err != nil {
+		return fmt.Errorf("configuring TLS: %w", err)
 	}
 
 	// Perform HTTP request
+	transport := &http.Transport{TLSClientConfig: tlsConfig}
+	defer transport.CloseIdleConnections()
 	client := &http.Client{Timeout: checkTimeout, Transport: transport}
 	request, err := http.NewRequest(args.Method, args.URL, nil)
 	if err != nil {
@@ -301,20 +424,15 @@ func checkHTTP(args healthcheckArgs) error {
 	}
 
 	// Validate response body
-	if bodyRegex != nil || bodyJSONQuery != nil {
+	if bodyValidator.enabled() {
 		// Read response body for validation.
 		bodyBytes, err := io.ReadAll(response.Body)
 		if err != nil {
 			return fmt.Errorf("reading response body: %w", err)
 		}
 
-		if bodyRegex != nil && !bodyRegex.Match(bodyBytes) {
-			return fmt.Errorf("response body does not match: %s", bodyBytes)
-		}
-		if bodyJSONQuery != nil {
-			if err := validateJSONBody(bodyJSONQuery, bodyBytes); err != nil {
-				return fmt.Errorf("response body does not match JSON query: %w", err)
-			}
+		if err := bodyValidator.validate(bodyBytes); err != nil {
+			return fmt.Errorf("response body validation failed: %w", err)
 		}
 	}
 

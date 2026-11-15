@@ -73,7 +73,12 @@ USER root
 WORKDIR /homelab
 COPY --from=apache_htaccess_config_1 /homelab/config.json /homelab/
 COPY ./docker-images/apache/htaccess/.htaccess-extra.j2 /homelab/
-RUN jinja2 --strict ./.htaccess-extra.j2 ./config.json --format json -o ./.htaccess-extra
+RUN jinja2 --strict './.htaccess-extra.j2' './config.json' --format json -o './.htaccess-extra' && \
+    if grep --quiet --fixed-strings 'ERROR:' './.htaccess-extra' >/dev/null 2>&1; then \
+        printf 'Apache htaccess is not valid:\n' >&2 && \
+        cat './.htaccess-extra' >&2 && \
+        exit 1; \
+    fi
 
 FROM debian:13.7-slim AS htaccess_config_3
 USER root
@@ -88,7 +93,12 @@ USER root
 WORKDIR /homelab
 COPY --from=apache_htaccess_config_1 /homelab/config.json /homelab/
 COPY ./docker-images/apache/apache.conf-extra.j2 /homelab/
-RUN jinja2 --strict ./apache.conf-extra.j2 ./config.json --format json -o ./apache.conf-extra
+RUN jinja2 --strict './apache.conf-extra.j2' './config.json' --format json -o './apache.conf-extra' && \
+    if grep --quiet --fixed-strings 'ERROR:' './apache.conf-extra' >/dev/null 2>&1; then \
+        printf 'Apache config is not valid:\n' >&2 && \
+        cat './apache.conf-extra' >&2 && \
+        exit 1; \
+    fi
 
 FROM debian:13.7-slim AS apache_config_3
 USER root

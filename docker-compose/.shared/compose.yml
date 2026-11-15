@@ -118,16 +118,19 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
 
-  docker-proxy-filter:
+  docker-sockguard:
     extends:
       service: template
     # Override:
     build:
-      dockerfile: ./docker-images/docker-proxy-filter/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-proxy-filter
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-proxy-filter:1.0.0
+      dockerfile: ./docker-images/docker-sockguard/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-sockguard
+    depends_on:
+      docker-socket-proxy:
+        condition: service_healthy
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-sockguard:1.0.0
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-proxy-filter/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-sockguard/healthcheck:/homelab/logs/healthcheck:rw
 
   docker-socket-proxy:
     extends:
@@ -153,7 +156,7 @@ services:
       dockerfile: ./docker-images/docker-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     environment:
-      DOCKER_HOST: tcp://docker-socket-proxy:2375
+      DOCKER_HOST: tcp://docker-sockguard:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
     tmpfs:
