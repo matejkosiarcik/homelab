@@ -41,11 +41,11 @@ flowchart LR
         postgres & rabbitmq & opensearch ~~~ app_analyzer & app_migrations
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/:8080| app_index
-        apache_proxy -->|/ui:8080| app_ui
-        apache_proxy -->|/api:8585| app_api
-        apache_proxy -->|/uat:9999| app_uat
-        apache_proxy -->|/jobs:8686| app_jobs
+        apache_proxy -->|/| app_index
+        apache_proxy -->|/ui| app_ui
+        apache_proxy -->|/api| app_api
+        apache_proxy -->|/uat| app_uat
+        apache_proxy -->|/jobs| app_jobs
         app_migrations -->|use| postgres
         app_api -->|use| postgres & rabbitmq
         app_uat -->|use| postgres & rabbitmq

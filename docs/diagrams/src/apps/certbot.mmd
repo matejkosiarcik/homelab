@@ -21,7 +21,7 @@ flowchart LR
         file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/:8080| file_server
+        inbound_interface -->|:80,443| apache_proxy -->|/| file_server
         app -.-|fs| file_server
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons

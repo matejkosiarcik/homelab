@@ -26,8 +26,8 @@ flowchart LR
         class app strong_border;
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/metrics:9487| app
-        apache_proxy -->|/:8080| file_server
+        apache_proxy -->|/metrics| app
+        apache_proxy -->|/| file_server
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons

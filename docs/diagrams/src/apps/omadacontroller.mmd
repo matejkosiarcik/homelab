@@ -22,7 +22,7 @@ flowchart LR
         class app strong_border;
         script_backup("<div class='custom-node'><img src='../../../../icons/backup-script.png' /><p>Backup<br/>script<br/>(unused)</p></div>")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:443| app
+        inbound_interface -->|:80,443| apache_proxy -->|/| app
         inbound_interface -->|:8080,8443,27001,29810-29816| app
         apache_proxy -->|/.apache/metrics| apache_prometheus_exporter -.->|/.apache/status| apache_proxy
         apache_proxy -.-|fs| certificator

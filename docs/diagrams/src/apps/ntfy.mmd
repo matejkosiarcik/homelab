@@ -25,7 +25,7 @@ flowchart LR
         docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Socket<br/>proxy</p></div>")
         docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
+        inbound_interface -->|:80,443| apache_proxy -->|/| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app

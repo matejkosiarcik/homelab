@@ -22,7 +22,7 @@ flowchart LR
         app_setup("<div class='custom-node'><img src='../../../../icons/bash.png' /><p>Setup<br/>script</p></div>")
         class app strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:80| app
+        inbound_interface -->|:80,443| apache_proxy -->|/| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app

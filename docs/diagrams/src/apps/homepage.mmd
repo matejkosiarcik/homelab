@@ -22,7 +22,7 @@ flowchart LR
         class app strong_border;
         widgets("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Custom<br/>widgets</p></div>")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:3000| app
+        inbound_interface -->|:80,443| apache_proxy -->|/| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
 

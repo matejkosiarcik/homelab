@@ -23,7 +23,7 @@ flowchart LR
         db_sync("<div class='custom-node'><img src='../../../../icons/litestream.png' /><p>Litestream</p></div>")
         app_setup("<div class='custom-node'><img src='../../../../icons/bash.png' /><p>Setup<br/>script</p></div>")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/*:443| app
+        inbound_interface -->|:80,443| apache_proxy -->|/| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
