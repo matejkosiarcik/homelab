@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM freikin/dawarich:1.22.0 AS app
+FROM freikin/dawarich:1.23.0 AS app
 USER root
 WORKDIR /homelab
 # hadolint ignore=DL3003
@@ -62,7 +62,7 @@ COPY --from=app /var/app /var/app
 
 ### Final ###
 
-FROM freikin/dawarich:1.22.0 AS final
+FROM freikin/dawarich:1.23.0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
