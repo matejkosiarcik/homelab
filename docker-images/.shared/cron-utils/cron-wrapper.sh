@@ -91,7 +91,7 @@ if [ "${HOMELAB_HEALTHCHECK_URL-}" != '' ]; then
     fi
 fi
 
-# Fail with error in case this is initial (or on-demand) run
-if [ "${CRON}" = '0' ] && [ "${status}" != '0' ]; then
+# Fail with the main script's error
+if [ "${status}" != '0' ]; then
     exit "${status}"
 fi
