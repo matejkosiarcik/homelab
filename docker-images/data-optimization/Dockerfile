@@ -104,26 +104,12 @@ RUN npm run build && \
     npx node-prune && \
     npm prune --production
 
-FROM node:26.13.1-slim AS nodejs_backend_build
-USER root
-WORKDIR /homelab
-COPY ./docker-images/.shared/cron-utils/on-demand/backend/package-lock.json ./docker-images/.shared/cron-utils/on-demand/backend/package.json /homelab/
-COPY --from=npmconfig /root/.npmrc /root/.npmrc
-RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcache \
-    NODE_OPTIONS=--dns-result-order=ipv4first npm ci --no-audit --no-fund --no-progress --no-save --loglevel=error --prefer-offline
-COPY ./docker-images/.shared/cron-utils/on-demand/backend/tsconfig.json /homelab/
-COPY ./docker-images/.shared/cron-utils/on-demand/backend/src/ /homelab/src/
-RUN npm run build && \
-    npx modclean --patterns default:safe --run --error-halt && \
-    npx node-prune && \
-    npm prune --production
-
 ### Healthcheck ###
 
 FROM golang:1.27.4-alpine AS healthcheck_build
 USER root
 WORKDIR /homelab
-COPY ./docker-images/.shared/healthchecks/filecmp-healthcheck/main.go ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.mod ./docker-images/.shared/healthchecks/filecmp-healthcheck/go.sum /homelab/
+COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
 RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcache \
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
@@ -161,9 +147,6 @@ COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY --from=nodejs_main_build /homelab/package.json /homelab/
 COPY --from=nodejs_main_build /homelab/node_modules /homelab/node_modules
 COPY --from=nodejs_main_build /homelab/dist /homelab/dist
-COPY --from=nodejs_backend_build /homelab/package.json /homelab/server/
-COPY --from=nodejs_backend_build /homelab/node_modules /homelab/server/node_modules
-COPY --from=nodejs_backend_build /homelab/dist /homelab/server/dist
 
 FROM scratch AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
@@ -191,5 +174,5 @@ ENV HOMELAB_CONTAINER_NAME="homepage-widgets" \
     HOMELAB_CRON_SKIP_INITIAL="1" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=10m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--file", "/homelab/tmpfs/status.txt", "--content", "started" ]
+HEALTHCHECK --interval=10s --start-period=10m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

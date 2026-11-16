@@ -46,6 +46,8 @@ configuration, integrations, or generated assets.
 - Apply least privilege to capabilities, mounts, and networks. Add external network access only when the application
   needs the internet or another local service. Use blackhole DNS for an application that needs IP access but no domain
   resolution; use internal DNS for local-only access without internet.
+- When a container needs Docker API access, route it through SockGuard and the LinuxServer Socket Proxy; never mount
+  the host Docker socket directly into the container.
 - Add the appropriate Gatus and Prometheus endpoints, following the patterns used by comparable Compose applications.
   Add applicable Healthchecks integration too.
 - Keep the default network disabled (`driver: none`), expose web applications through the shared Apache service instead

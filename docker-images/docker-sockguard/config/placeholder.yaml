@@ -7,5 +7,7 @@ response:
   name_patterns: []
 
 rules:
-  - match: { method: "*", path: "/**" }
-    action: deny
+  - action: deny
+    match:
+      method: "*"
+      path: "/**"

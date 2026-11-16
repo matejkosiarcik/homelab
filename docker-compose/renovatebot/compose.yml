@@ -17,10 +17,41 @@ services:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /tmp/renovate:rw,exec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/runwisp/data:/runwisp:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/cron:/homelab/logs/cron:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
+
+  runwisp:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: template
+    # Override:
+    build:
+      dockerfile: ./docker-images/runwisp/Dockerfile
+    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-runwisp
+    env_file:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/runwisp.env
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-runwisp:1.0.0
+    tmpfs:
+      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-data/runwisp/data:/data:rw
+
+  docker-sockguard:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: docker-sockguard
+
+  docker-socket-proxy:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: docker-socket-proxy
+    # Override:
+    environment:
+      CONTAINERS: 1
+      EXEC: 1
+      PING: 1
+      POST: 1
 
   file-server:
     extends:
@@ -43,6 +74,7 @@ services:
       service: apache
     # Override:
     volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/docker-sockguard-prometheus.htpasswd:/homelab/users/docker-sockguard-prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/runwisp-prometheus.htpasswd:/homelab/users/runwisp-prometheus.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-admins.htpasswd:/homelab/users/users-admins.htpasswd:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/users-viewers.htpasswd:/homelab/users/users-viewers.htpasswd:ro

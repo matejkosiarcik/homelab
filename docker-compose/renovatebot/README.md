@@ -21,10 +21,6 @@
       For more see subsection <https://github.com/renovatebot/renovate/blob/main/docs/usage/getting-started/running.md#githubcom-token-for-changelogs>.
       This should be a readonly token with access to public repositories and packages.
 
-## RunWisp
-
-RunWisp is the scheduler and provides the application dashboard at the main Renovatebot URL.
-
 ## After initial installation
 
 N/A

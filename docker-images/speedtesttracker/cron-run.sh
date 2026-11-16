@@ -11,4 +11,4 @@ exec \
     -split-logs \
     '/homelab/crontabs/abc'
 
-sleep infinity
+exec sleep infinity

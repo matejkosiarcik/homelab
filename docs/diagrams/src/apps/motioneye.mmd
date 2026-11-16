@@ -23,8 +23,8 @@ flowchart LR
         webcamera("<div class='custom-node'><img src='../../../../icons/webcamera.png' /><p>USB<br/>webcam</p></div>")
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/:8765| app
-        apache_proxy -->|/stream:9081| app
+        apache_proxy -->|/*| app
+        apache_proxy -->|/stream| app
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app

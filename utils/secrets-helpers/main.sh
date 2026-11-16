@@ -650,6 +650,7 @@ gatus)
     printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'RENOVATEBOT__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.renovatebot.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
     # RunWisp metrics credentials #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
@@ -1542,6 +1543,7 @@ prometheus)
     printf 'PIHOLE_2__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_2.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_3.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
     printf 'PIHOLE_4__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.pihole_4.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
+    printf 'RENOVATEBOT__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret '.renovatebot.docker_sockguard.prometheus_user' dev=real)" >>"${initial_output}/app.env"
 
     # RunWisp #
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD="%s"\n' "$(load_secret ".renovatebot.runwisp.prometheus_user" dev=real)" >>"${initial_output}/app.env"
@@ -1656,20 +1658,25 @@ renovatebot)
         runwisp_viewer_password="${runwisp_viewer_password}!"
     fi
     runwisp_prometheus_password="$(load_secret ".${app_full_name_key}.runwisp.prometheus_user" dev=default)"
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
 
     # App #
     write_healthcheck_url "${app_full_name_machine}" app
     printf 'RENOVATE_TOKEN="%s"\n' "${renovate_token}" >>"${initial_output}/app.env"
     printf 'GITHUB_COM_TOKEN="%s"\n' "${github_token}" >>"${initial_output}/app.env"
-    printf 'RUNWISP_PASSWORD="%s"\n' "${runwisp_admin_password}" >>"${initial_output}/app.env"
+
+    # RunWisp #
+    printf 'RUNWISP_PASSWORD="%s"\n' "${runwisp_admin_password}" >>"${initial_output}/runwisp.env"
     printf 'runwisp-admin,%s\n' "${runwisp_admin_password}" >>"${initial_output}/.secrets.csv"
-    printf 'RUNWISP_VIEWER_PASSWORD="%s"\n' "${runwisp_viewer_password}" >>"${initial_output}/app.env"
+    printf 'RUNWISP_VIEWER_PASSWORD="%s"\n' "${runwisp_viewer_password}" >>"${initial_output}/runwisp.env"
     printf 'runwisp-viewer,%s\n' "${runwisp_viewer_password}" >>"${initial_output}/.secrets.csv"
     printf 'renovate-token,%s\n' "${renovate_token}" >>"${initial_output}/.secrets.csv"
     printf 'github-token,%s\n' "${github_token}" >>"${initial_output}/.secrets.csv"
 
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
     write_http_auth_user prometheus "${runwisp_prometheus_password}" runwisp-prometheus
-    printf 'app-prometheus,%s\n' "${runwisp_prometheus_password}" >>"${initial_output}/.secrets.csv"
+    printf 'runwisp-prometheus,%s\n' "${runwisp_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Apache #
     write_default_proxy_users "${app_full_name_key}"

@@ -53,20 +53,6 @@ fi
 # Prepare Graceful shutdown
 trap 'exit 0' TERM
 
-# Start HTTP server
-if [ -e '/homelab/server/dist/main.js' ]; then
-    log INFO 'Starting on-demand cron server'
-    node '/homelab/server/dist/main.js' &
-    node_pid="$!"
-fi
-
 # Start cron
-log INFO "Starting cron schedule from ${cronfile}"
-supercronic "${cronfile}" &
-supercronic_pid="$!"
-
-# Wait for subprocesses
-wait "${supercronic_pid}"
-if [ "${node_pid-x}" != x ]; then
-    wait "${node_pid}"
-fi
+log INFO "Starting supercronic"
+exec supercronic "${cronfile}"

@@ -37,6 +37,28 @@ test.describe(app.title, () => {
                 expect(response.status, 'Response status').toStrictEqual(404);
             });
 
+            test('API: Docker Sockguard Prometheus metrics content', async () => {
+                const response = await test.step('Request metrics', async () => {
+                    const response = await axios.get(`${instance.url}/docker-sockguard/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(instance.url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate response', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('docker-sockguard-metrics.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    for (const metric of sharedMetrics.dockerSockguard) {
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
+                    }
+                });
+            });
+
             test.describe('RunWisp', () => {
                 test('API: Get runwisp health', async () => {
                     const response = await test.step('Request endpoint', async () => {

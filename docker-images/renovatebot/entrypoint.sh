@@ -22,22 +22,18 @@ log() {
     done >&2
 }
 
+printf 'starting\n' >'/homelab/tmpfs/status.txt'
+
 log INFO 'Validating Renovate config'
-# LOG_LEVEL='debug'
 RENOVATE_CONFIG_FILE='/usr/src/app/test-config.js' renovate --dry-run=full --print-config
 log INFO 'Renovate config is valid'
 
-runwisp_config_input_file='/homelab/runwisp.toml'
-runwisp_config_output_file='/homelab/tmpfs/runwisp.toml'
+# Setup Environment variables
+CRON='0'
+export CRON
 
-envsubst -no-digit -no-unset -no-empty -i "${runwisp_config_input_file}" -o "${runwisp_config_output_file}" || {
-    log ERROR "$(printf 'An error happened during processing of %s to %s' "${runwisp_config_input_file}" "${runwisp_config_output_file}")"
-    exit 1
-}
-
-log INFO 'Validating RunWisp config'
-runwisp validate
-log INFO 'RunWisp config is valid'
-
-log INFO 'Starting RunWisp daemon'
-exec runwisp daemon
+# Sleep indefinitely
+CRON=1
+printf 'started\n' >'/homelab/tmpfs/status.txt'
+log INFO 'Renovatebot is sleeping now'
+exec sleep infinity

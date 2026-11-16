@@ -23,7 +23,7 @@ flowchart LR
         antenna("<div class='custom-node'><img src='../../../../icons/antenna.png' /><p>Antenna</p></div>")
         class antenna dashed_border;
 
-        inbound_interface -->|:80,443,9981| apache_proxy -->|/*:9981| app
+        inbound_interface -->|:80,443,9981| apache_proxy -->|/*| app
         inbound_interface -->|:9982| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter

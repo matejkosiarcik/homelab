@@ -21,14 +21,20 @@ flowchart LR
         file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
         runwisp("<div class='custom-node'><img src='../../../../icons/runwisp.png' /><p>RunWisp</p></div>")
         app("<div class='custom-node'><img src='../../../../icons/renovatebot.png' /><p>RenovateBot</p></div>")
+        docker_sockguard("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Sockguard</p></div>")
+        docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Socket<br/>proxy</p></div>")
+        docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
         class app strong_border;
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/:8080| file_server
-        apache_proxy -->|/runwisp/:8080| runwisp -->|schedule| app
+        apache_proxy -->|/*| file_server
+        apache_proxy -->|/runwisp/| runwisp
+        runwisp -.->|Docker TCP| docker_sockguard -.->|Docker TCP| docker_socket_proxy -.->|docker sock| docker
+        runwisp -.->|docker exec| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| file_server
+        apache_proxy -->|/docker-sockguard/metrics| docker_sockguard
     end
 
     subgraph others_1["Others"]

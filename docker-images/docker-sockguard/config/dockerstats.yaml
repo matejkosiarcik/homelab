@@ -1,9 +1,17 @@
 rules:
-  - match: { method: "HEAD,GET", path: "/_ping" }
-    action: allow
-  - match: { method: GET, path: "/containers/json" }
-    action: allow
-  - match: { method: GET, path: "/containers/*/stats" }
-    action: allow
-  - match: { method: "*", path: "/**" }
-    action: deny
+  - action: allow
+    match:
+      method: "HEAD,GET"
+      path: "/_ping"
+  - action: allow
+    match:
+      method: GET
+      path: "/containers/json"
+  - action: allow
+    match:
+      method: GET
+      path: "/containers/*/stats"
+  - action: deny
+    match:
+      method: "*"
+      path: "/**"

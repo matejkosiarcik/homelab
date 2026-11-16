@@ -6,6 +6,15 @@ services:
   app:
     <<: *common-service-options
 
+  runwisp:
+    <<: *common-service-options
+
+  docker-sockguard:
+    <<: *common-service-options
+
+  docker-socket-proxy:
+    <<: *common-service-options
+
   file-server:
     <<: *common-service-options
 

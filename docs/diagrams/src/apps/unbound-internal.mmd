@@ -24,8 +24,8 @@ flowchart LR
         file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/metrics:9167| app_prometheus_exporter
-        apache_proxy -->|/:8080| file_server
+        apache_proxy -->|/metrics| app_prometheus_exporter
+        apache_proxy -->|/*| file_server
         inbound_interface -->|:53| app
         app_prometheus_exporter -.->|use| app
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
