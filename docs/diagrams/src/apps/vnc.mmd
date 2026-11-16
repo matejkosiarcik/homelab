@@ -23,7 +23,7 @@ flowchart LR
         class app strong_border;
         class wayvnc strong_border;
 
-        inbound_interface -->|:80,443| apache_proxy -->|/| novnc -->|:5900| wayvnc
+        inbound_interface -->|:80,443| apache_proxy -->|/*| novnc -->|:5900| wayvnc
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_prometheus_exporter & novnc & wayvnc & favicons

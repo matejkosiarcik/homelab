@@ -25,7 +25,7 @@ flowchart LR
 
         inbound_interface -->|:80,443| apache_proxy
         apache_proxy -->|/metrics| app_prometheus_exporter
-        apache_proxy -->|/| file_server
+        apache_proxy -->|/*| file_server
         inbound_interface -->|:53| app
         app_prometheus_exporter -.->|use| app
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter

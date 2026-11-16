@@ -21,7 +21,7 @@ flowchart LR
         docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
 
         inbound_interface -->|:7007|app
-        app -.->|Docker TCP:2375| docker_sockguard -.->|Docker TCP:2375| docker_socket_proxy -.->|docker sock| docker
+        app -.->|Docker TCP| docker_sockguard -.->|Docker TCP| docker_socket_proxy -.->|docker sock| docker
     end
 
     subgraph others_1["Others"]

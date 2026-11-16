@@ -26,14 +26,14 @@ flowchart LR
         docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Socket<br/>proxy</p></div>")
         docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*| app
         apache_proxy -.-|fs| certificator
         apache_proxy -->|/metrics| app_prometheus_exporter -.->|use| app
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app
         inbound_interface -->|:53| app
         app ~~~ docker_sockguard ~~~ docker_socket_proxy ~~~ docker ~~~ app_setup
-        app_setup -.->|Docker TCP:2375| docker_sockguard -.->|Docker TCP:2375| docker_socket_proxy
+        app_setup -.->|Docker TCP| docker_sockguard -.->|Docker TCP| docker_socket_proxy
         apache_proxy -->|/docker-sockguard/metrics| docker_sockguard
         app_setup -.->|use| app
         docker_socket_proxy -.->|docker sock| docker

@@ -22,7 +22,7 @@ flowchart LR
         class app strong_border;
         kiwix_archives("<div class='custom-node'><img src='../../../../icons/files.png' /><p>Kiwix<br/>archives</p></div>")
 
-        inbound_interface -->|:80,443| apache_proxy -->|/| app
+        inbound_interface -->|:80,443| apache_proxy -->|/*| app
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app

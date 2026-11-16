@@ -25,7 +25,7 @@ flowchart LR
         class app_backend strong_border;
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/| app_frontend
+        apache_proxy -->|/*| app_frontend
         apache_proxy -->|/api/| app_backend
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
         apache_proxy -.-|fs| certificator
