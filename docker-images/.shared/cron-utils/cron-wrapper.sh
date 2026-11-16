@@ -13,6 +13,10 @@ datetime_format="+%Y-%m-%dT%H:%M:%S.${milliseconds_format}Z"
 # It calls healthchecks both before and after the main script is run, and reports it status and output to healthchecks
 
 # Setup
+if [ "${CRON-x}" = 'x' ] || ([ "${CRON}" != '0' ] && [ "${CRON}" != '1' ]); then
+    printf 'CRON must be set to 0 or 1, got: %s\n' "${CRON-nothing}" >&2
+    exit 1
+fi
 taskid="$(date "+%Y-%m-%d_%H-%M-%S.${milliseconds_format}")"
 taskdir="/homelab/logs/cron/${taskid}"
 mkdir -p "${taskdir}"
