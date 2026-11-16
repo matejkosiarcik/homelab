@@ -379,6 +379,7 @@ rm -f './.secrets.env'
     printf 'RENOVATEBOT__RUNWISP_ADMIN_PASSWORD=%s\n' "$(load_secret '.renovatebot.runwisp.admin_user')"
     printf 'RENOVATEBOT__RUNWISP_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.runwisp.prometheus_user')"
     printf 'RENOVATEBOT__RUNWISP_VIEWER_PASSWORD=%s\n' "$(load_secret '.renovatebot.runwisp.viewer_user')"
+    printf 'RENOVATEBOT__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.docker_sockguard.prometheus_user')"
     printf 'RENOVATEBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.apache.status_user')"
     printf 'RENOVATEBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.renovatebot.apache.prometheus_user')"
 

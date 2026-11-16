@@ -3,8 +3,10 @@ app:
 
 apache:
   upstream-url:
+    - path: /docker-sockguard/metrics
+      target: http://docker-sockguard:2375/metrics
     - path: /runwisp/
-      target: http://app:8080/runwisp
+      target: http://runwisp:8080/runwisp
     - path: /
       target: http://file-server:8080
 
@@ -25,6 +27,9 @@ prometheus:
   enabled: true
   endpoints:
     - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /docker-sockguard/metrics
       auth:
         type: basic
     - path: /runwisp/metrics
