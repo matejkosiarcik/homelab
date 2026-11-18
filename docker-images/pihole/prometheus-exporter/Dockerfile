@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM ekofr/pihole-exporter:v1.3.1 AS pihole_exporter_app
+FROM ekofr/pihole-exporter:v1.4.0 AS pihole_exporter_app
 USER root
 
 ### Healthcheck ###
