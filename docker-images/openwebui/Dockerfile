@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM openwebui/open-webui:0.13.3 AS entrypoint
+FROM openwebui/open-webui:0.13.4 AS entrypoint
 USER root
 COPY ./docker-images/openwebui/entrypoint-extra.sh /homelab/
 RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -20,7 +20,7 @@ RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && 
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM openwebui/open-webui:0.13.3 AS runtime_dirs
+FROM openwebui/open-webui:0.13.4 AS runtime_dirs
 USER root
 WORKDIR /homelab
 RUN mkdir -p '/homelab/original/app/backend/open_webui/static' && \
@@ -56,7 +56,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/start.sh
 
 ### Final ###
 
-FROM openwebui/open-webui:0.13.3 AS final
+FROM openwebui/open-webui:0.13.4 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
