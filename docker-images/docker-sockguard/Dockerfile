@@ -48,7 +48,7 @@ RUN mkdir -p /homelab/config && \
 
 ### App ###
 
-FROM codeswhat/sockguard:2.4.6 AS sockguard_app
+FROM codeswhat/sockguard:2.4.7 AS sockguard_app
 
 ### Other ###
 
