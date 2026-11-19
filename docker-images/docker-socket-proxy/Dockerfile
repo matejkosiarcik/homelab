@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM linuxserver/socket-proxy:3.4.7 AS final
+FROM linuxserver/socket-proxy:3.4.8 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
