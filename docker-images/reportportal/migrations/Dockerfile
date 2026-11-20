@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM reportportal/migrations:5.15.6 AS entrypoint
+FROM reportportal/migrations:6.0.0 AS entrypoint
 USER nonroot
 WORKDIR /homelab
 COPY ./docker-images/reportportal/migrations/entrypoint-extra-end.sh ./docker-images/reportportal/migrations/entrypoint-extra-start.sh /homelab/
@@ -50,7 +50,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 
 ### Final ###
 
-FROM reportportal/migrations:5.15.6 AS final
+FROM reportportal/migrations:6.0.0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
