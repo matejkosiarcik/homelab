@@ -454,19 +454,23 @@ def run_main_command(command: str):
         "--parallel",
         str(int(max(cpu_count // 2, 1))),
     ]
-    docker_buildx_bake_args = [
-        f"--allow=fs.read={git_dir}",
-        "--file",
-        "compose.yml",
-        "--file",
-        f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
-        "--progress",
-        "plain",
-        "--jobs",
-        str(max(cpu_count // 2, 1)),
-        "--load",
-        "--provenance=false",
-    ] + (["--print"] if is_dryrun else []) + (["--pull"] if is_pull else [])
+    docker_buildx_bake_args = (
+        [
+            f"--allow=fs.read={git_dir}",
+            "--file",
+            "compose.yml",
+            "--file",
+            f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
+            "--progress",
+            "plain",
+            "--jobs",
+            str(max(cpu_count // 2, 1)),
+            "--load",
+            "--provenance=false",
+        ]
+        + (["--print"] if is_dryrun else [])
+        + (["--pull"] if is_pull else [])
+    )
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
     # Check if docker-compose stack exists
