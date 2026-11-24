@@ -14,22 +14,31 @@ flowchart LR
 
     subgraph app_wrapper["App"]
         inbound_interface(" ")
+        apache_proxy("<div class='custom-node'><img src='../../../../icons/apache.png' /><p>Apache<br/>proxy</p></div>")
+        apache_prometheus_exporter("<div class='custom-node'><img src='../../../../icons/apache-prometheus-exporter.png' /><p>Apache<br/>prometheus<br/>exporter</p></div>")
         app("<div class='custom-node'><img src='../../../../icons/dozzleagent.png' /><p>Dozzle<br/>agent</p></div>")
         class app strong_border;
         docker_sockguard("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Sockguard</p></div>")
         docker_socket_proxy("<div class='custom-node'><img src='../../../../icons/placeholder.png' /><p>Docker<br/>Socket<br/>proxy</p></div>")
+        file_server("<div class='custom-node'><img src='../../../../icons/files.png' /><p>File<br/>server</p></div>")
         docker("<div class='custom-node'><img src='../../../../icons/docker.png' /><p>Docker<br/>host</p></div>")
 
-        inbound_interface -->|:7007|app
+        inbound_interface -->|:80,443| apache_proxy
+        inbound_interface -->|:7007| app
+        apache_proxy -->|/*| file_server
+        apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
+        apache_proxy -->|/docker-sockguard/metrics| docker_sockguard
         app -.->|Docker TCP| docker_sockguard -.->|Docker TCP| docker_socket_proxy -.->|docker sock| docker
     end
 
     subgraph others_1["Others"]
         home_network("<div class='custom-node'><img src='../../../../icons/network.png' /><p>Home<br/>Network</p></div>")
         dozzle_server("<div class='custom-node'><img src='../../../../icons/dozzle.png' /><p>Dozzle<br/>Server</p></div>")
+        prometheus("<div class='custom-node'><img src='../../../../icons/prometheus.png' /><p>Prometheus</p></div>")
         gatus("<div class='custom-node'><img src='../../../../icons/gatus.png' /><p>Gatus</p></div>")
 
         home_network <--> inbound_interface
         dozzle_server -->|collect logs| inbound_interface
+        prometheus -->|collect metrics| inbound_interface
         gatus -->|monitor| inbound_interface
     end
