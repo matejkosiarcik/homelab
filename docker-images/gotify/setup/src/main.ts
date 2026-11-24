@@ -199,7 +199,7 @@ async function syncUsers() {
     await syncUsers();
 
     Log.info('Setup successful');
-    await fsx.writeFile(statusFile, 'started', 'utf8');
+    await fsx.writeFile(statusFile, 'started\n', 'utf8');
 
     // Sleep forever
     while (true) {
