@@ -33,7 +33,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-runwisp
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/runwisp.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-runwisp:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-runwisp:latest
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:

@@ -62,7 +62,7 @@ services:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
-  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
+  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:latest
   #   networks:
   #     - external-network
   #     - internal-network

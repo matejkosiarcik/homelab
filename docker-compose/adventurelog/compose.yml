@@ -13,7 +13,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend
     environment:
       ORIGIN: ${DOCKER_COMPOSE_NETWORK_URL}
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-frontend:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-frontend/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -33,7 +33,7 @@ services:
       DJANGO_ADMIN_EMAIL: django-admin@${DOCKER_COMPOSE_NETWORK_DOMAIN}
       FRONTEND_URL: ${DOCKER_COMPOSE_NETWORK_URL}
       PUBLIC_URL: ${DOCKER_COMPOSE_NETWORK_URL}
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-backend:latest
     networks: # Internet access necessary for downloading data from raw.githubusercontent.com
       - external-network
       - internal-network

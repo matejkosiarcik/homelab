@@ -58,7 +58,7 @@ services:
       - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/widgets.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-widgets:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-widgets:latest
     networks: # Network access is necessary for accessing other services via HTTPS
       - external-network
       - internal-network

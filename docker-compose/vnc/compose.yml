@@ -15,7 +15,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/novnc.env
     environment:
       VNC_SERVER: wayvnc:5900
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-novnc:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-novnc:latest
     networks:
       - external-network
       - internal-network
@@ -32,7 +32,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-wayvnc
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/wayvnc.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-wayvnc:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-wayvnc:latest
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:

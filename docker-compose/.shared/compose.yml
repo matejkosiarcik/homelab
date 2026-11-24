@@ -30,7 +30,7 @@ services:
       HOMELAB_APP_SHORTNAME: ${DOCKER_COMPOSE_APP_SHORTNAME}
       HOMELAB_APP_TYPE: ${DOCKER_COMPOSE_APP_TYPE}
       HOMELAB_ENV: ${DOCKER_COMPOSE_ENV}
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-PLACEHOLDER:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-PLACEHOLDER:latest
     init: true
     read_only: true
     security_opt:
@@ -55,7 +55,7 @@ services:
       service: template
     # Override:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:latest
 
   certificator:
     extends:
@@ -69,7 +69,7 @@ services:
       - 10.1.10.6
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/certificator.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-certificator:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-certificator:latest
     networks:
       - external-network
       - internal-network
@@ -90,7 +90,7 @@ services:
     dns: # Use blackhole DNS
       - 10.1.12.7
       - 10.1.10.7
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache:latest
     networks:
       - external-network # TODO: Connect to external world via socat instead
       - internal-network
@@ -114,7 +114,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/apache-prometheus-exporter.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-apache-prometheus-exporter:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -128,7 +128,7 @@ services:
     depends_on:
       docker-socket-proxy:
         condition: service_healthy
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-sockguard:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-sockguard:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-sockguard/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -141,7 +141,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy
     group_add:
       - "${DOCKER_COMPOSE_DOCKER_GID}"
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:latest
     tmpfs:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -158,7 +158,7 @@ services:
     environment:
       DOCKER_HOST: tcp://docker-sockguard:2375
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:latest
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -173,7 +173,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/favicons.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-favicons:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/favicons/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/favicons/healthcheck:/homelab/logs/healthcheck:rw
@@ -185,7 +185,7 @@ services:
     build:
       dockerfile: ./docker-images/file-server/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-file-server:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/file-server/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/file-server/healthcheck:/homelab/logs/healthcheck:rw
@@ -197,7 +197,7 @@ services:
     build:
       dockerfile: ./docker-images/script-setup/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:latest
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -212,7 +212,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis:latest
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -229,7 +229,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgres.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres:latest
     shm_size: 1G
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -248,7 +248,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/postgis.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis:latest
     shm_size: 1G
     tmpfs:
       - /var/run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}

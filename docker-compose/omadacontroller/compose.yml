@@ -56,7 +56,7 @@ services:
   #     file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
   #     service: template
   #   container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup
-  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
+  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:latest
   #   build:
   #     dockerfile: ./docker-images/web-automation/Dockerfile
   #   depends_on:

@@ -16,7 +16,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-migrations.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations:latest
     tmpfs:
       - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
@@ -30,7 +30,7 @@ services:
     build:
       dockerfile: ./docker-images/reportportal/index/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-index/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -42,7 +42,7 @@ services:
     build:
       dockerfile: ./docker-images/reportportal/ui/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui:latest
     tmpfs:
       - /etc/nginx/conf.d:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/cache/nginx:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -66,7 +66,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-api.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/default:/var/log/reportportal:rw
@@ -85,7 +85,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-uat.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-uat/healthcheck:/homelab/logs/healthcheck:rw
@@ -105,7 +105,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-jobs.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-jobs/healthcheck:/homelab/logs/healthcheck:rw
@@ -125,7 +125,7 @@ services:
         condition: service_healthy
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-analyzer.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-analyzer:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-analyzer/healthcheck:/homelab/logs/healthcheck:rw
@@ -145,7 +145,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rabbitmq.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq:latest
     tmpfs:
       - /opt/bitnami/rabbitmq/.rabbitmq:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /opt/bitnami/rabbitmq/.rabbitmq/mnesia:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -162,7 +162,7 @@ services:
     build:
       dockerfile: ./docker-images/reportportal/opensearch/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch:latest
     tmpfs:
       - /usr/share/opensearch/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     ulimits:

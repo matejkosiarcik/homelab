@@ -14,7 +14,7 @@ services:
       # TODO: It may be possible to remove this after not using host networking
       - NET_BIND_SERVICE # Necessary to bind to low port in host network mode
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app:latest
     security_opt:
       - no-new-privileges:false # Necessary to bind to low port in host network mode
     tmpfs:
@@ -32,7 +32,7 @@ services:
     build:
       dockerfile: ./docker-images/unbound/prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw
