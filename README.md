@@ -16,4 +16,8 @@ General structure for this repository:
 
 What does your homelab do? TL;DR:
 
-![diagram](./docs/diagrams/out/homelab.png)
+Apps:
+![diagram](./docs/diagrams/out/homelab-apps.png)
+
+Network:
+![diagram](./docs/diagrams/out/apartment-network.png)

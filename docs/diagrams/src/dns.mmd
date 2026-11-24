@@ -1,0 +1,19 @@
+---
+title: DNS
+config:
+    theme: dark
+    flowchart:
+        diagramPadding: 50
+---
+
+flowchart LR
+    classDef role fill:#ffffff00,stroke:#71869bff,stroke-width:2px,rx:8px,ry:8px;
+    classDef no_border fill:transparent,stroke:transparent,stroke-width:0px;
+    classDef planned fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,stroke-dasharray:8 5,rx:5px,ry:5px;
+
+    devices("<div class='custom-node'><img src='../../../../icons/personal-devices.png' /><p>Devices</p></div>")
+    unbound("<div class='custom-node'><img src='../../../../icons/unbound.png' /><p>Unbound</p></div>")
+    pihole("<div class='custom-node'><img src='../../../../icons/pihole.png' /><p>PiHole</p></div>")
+    internet_dns("<div class='custom-node'><img src='../../../../icons/public-dns.png' /><p>Public DNS servers</p></div>")
+
+    devices ---> unbound ---> pihole ---> internet_dns

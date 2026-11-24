@@ -14,7 +14,7 @@ flowchart LR
     subgraph living_room["Living Room"]
         direction TB
 
-        subgraph living_room__matej_desk["Living Room - Matej's Desk"]
+        subgraph living_room__matej_desk["Matej's Desk"]
             direction TB
 
             switch__unifi_usw_flex_25g_8port__living_room("<div class='custom-node'><img src='../../../../icons/switch.png' /><p>Switch<br>UniFi USW flex 2.5G 8-port</p></div>")
@@ -23,10 +23,11 @@ flowchart LR
             notebook__matej_personal("<div class='custom-node'><img src='../../../../icons/notebook.png' /><p>Matej's Personal Notebook</p></div>")
             notebook__matej_work("<div class='custom-node'><img src='../../../../icons/notebook.png' /><p>Matej's Work Notebook</p></div>")
 
+            server__raspberry_pi_4b_2gb & server__raspberry_pi_4b_4gb ~~~ notebook__matej_personal & notebook__matej_work
             switch__unifi_usw_flex_25g_8port__living_room --- server__raspberry_pi_4b_2gb & server__raspberry_pi_4b_4gb & notebook__matej_personal & notebook__matej_work
         end
 
-        subgraph living_room__tv_closet["Living Room - Media Closet"]
+        subgraph living_room__tv_closet["Media Closet"]
             direction TB
 
             switch__unifi_usw_flex_25g_5port__living_room("<div class='custom-node'><img src='../../../../icons/switch.png' /><p>Switch<br>UniFi USW flex 2.5G 5-port</p></div>")
@@ -36,14 +37,21 @@ flowchart LR
             switch__unifi_usw_flex_25g_5port__living_room --- xiaomi_tv_box & tcl_tv
         end
 
-        living_room__matej_desk ~~~ living_room__tv_closet
+        subgraph living_room__kitchen_drawer["Kitchen drawer"]
+            direction TB
+
+            living_room__kitchen_drawer__placeholder(" ")
+        end
+
+        living_room__matej_desk ~~~ living_room__tv_closet ~~~ living_room__kitchen_drawer
         switch__unifi_usw_flex_25g_8port__living_room --- switch__unifi_usw_flex_25g_5port__living_room
+        switch__unifi_usw_flex_25g_8port__living_room x-.-|"[unused]"| living_room__kitchen_drawer__placeholder
     end
 
     subgraph hallway["Hallway"]
         direction TB
 
-        subgraph hallway__closet["Hallway - Closet"]
+        subgraph hallway__closet["Main Closet"]
             direction TB
 
             isp_router("<div class='custom-node'><img src='../../../../icons/router.png' /><p>ISP Router</p></div>")
@@ -64,19 +72,19 @@ flowchart LR
     subgraph bedroom["Bedroom"]
         direction TB
 
-        subgraph bedroom__matej_nightstand["Bedroom - Matej's Nightstand"]
+        subgraph bedroom__matej_nightstand["Matej's Nightstand"]
             direction TB
 
-            placeholder_1(" ")
+            bedroom__matej_nightstand__placeholder(" ")
         end
 
-        subgraph bedroom__monika_nightstand["Bedroom - Monika's Nightstand"]
+        subgraph bedroom__monika_nightstand["Monika's Nightstand"]
             direction TB
 
-            placeholder_2(" ")
+            bedroom__monika_nightstand__placeholder(" ")
         end
 
-        subgraph bedroom__monika_desk["Bedroom - Monika's Desk"]
+        subgraph bedroom__monika_desk["Monika's Desk"]
             direction TB
 
             switch__unifi_usw_flex_25g_5port__bedroom("<div class='custom-node'><img src='../../../../icons/switch.png' /><p>Switch<br>UniFi USW flex 2.5G 5-port</p></div>")
@@ -87,7 +95,7 @@ flowchart LR
 
         bedroom__matej_nightstand ~~~ bedroom__monika_nightstand ~~~ bedroom__monika_desk
 
-        switch__unifi_usw_flex_25g_5port__bedroom --- placeholder_1 & placeholder_2
+        switch__unifi_usw_flex_25g_5port__bedroom --- bedroom__matej_nightstand__placeholder & bedroom__monika_nightstand__placeholder
     end
 
     living_room ~~~ hallway ~~~ internet & bedroom
