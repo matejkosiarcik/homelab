@@ -75,33 +75,6 @@ rm -f './.secrets.env'
     printf 'CERTBOT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.certbot.apache.status_user')"
     printf 'CERTBOT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.certbot.apache.prometheus_user')"
 
-    printf 'DOCKERSTATS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dockerstats.apache.status_user')"
-    printf 'DOCKERSTATS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dockerstats.apache.prometheus_user')"
-
-    printf 'DOZZLEAGENT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dozzleagent.apache.status_user')"
-    printf 'DOZZLEAGENT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dozzleagent.apache.prometheus_user')"
-
-    printf 'GATUS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_gatus.apache.status_user')"
-    printf 'GATUS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_gatus.apache.prometheus_user')"
-
-    printf 'KIWIX__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_kiwix.apache.status_user')"
-    printf 'KIWIX__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_kiwix.apache.prometheus_user')"
-
-    printf 'NODEEXPORTER__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_nodeexporter.apache.status_user')"
-    printf 'NODEEXPORTER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_nodeexporter.apache.prometheus_user')"
-
-    printf 'PIHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_pihole.apache.status_user')"
-    printf 'PIHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_pihole.apache.prometheus_user')"
-
-    printf 'UNBOUND__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_unbound.apache.status_user')"
-    printf 'UNBOUND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_unbound.apache.prometheus_user')"
-
-    printf 'UPTIMEKUMA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_uptimekuma.apache.status_user')"
-    printf 'UPTIMEKUMA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_uptimekuma.apache.prometheus_user')"
-
-    printf 'VNC__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_vnc.apache.status_user')"
-    printf 'VNC__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_vnc.apache.prometheus_user')"
-
     printf 'CHANGEDETECTION__ADMIN_PASSWORD=%s\n' "$(load_secret '.changedetection.app.admin_user')"
     printf 'CHANGEDETECTION__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.status_user')"
     printf 'CHANGEDETECTION__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.changedetection.apache.prometheus_user')"
@@ -117,6 +90,9 @@ rm -f './.secrets.env'
 
     printf 'DOCKERCACHE_DOCKERHUB__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dockercache_dockerhub.apache.status_user')"
     printf 'DOCKERCACHE_DOCKERHUB__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockercache_dockerhub.apache.prometheus_user')"
+
+    printf 'DOCKERSTATS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dockerstats.apache.status_user')"
+    printf 'DOCKERSTATS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dockerstats.apache.prometheus_user')"
 
     printf 'DOCKERSTATS_ODROID_H3__MATEJ_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.app.matej_user')"
     printf 'DOCKERSTATS_ODROID_H3__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret .'dockerstats_odroid_h3.app.homelab_viewer_user')"
@@ -150,6 +126,9 @@ rm -f './.secrets.env'
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.apache.status_user')"
     printf 'DOCKERSTATS_RASPBERRY_PI_4B_4G__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dockerstats_raspberry_pi_4b_4g.apache.prometheus_user')"
 
+    printf 'DOZZLEAGENT__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dozzleagent.apache.status_user')"
+    printf 'DOZZLEAGENT__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_dozzleagent.apache.prometheus_user')"
+
     printf 'DOZZLEAGENT_ODROID_H3__DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h3.docker_sockguard.prometheus_user')"
     printf 'DOZZLEAGENT_ODROID_H3__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h3.apache.status_user')"
     printf 'DOZZLEAGENT_ODROID_H3__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzleagent_odroid_h3.apache.prometheus_user')"
@@ -174,6 +153,9 @@ rm -f './.secrets.env'
     printf 'DOZZLE__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dozzle.app.homelab_test_user')"
     printf 'DOZZLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dozzle.apache.status_user')"
     printf 'DOZZLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dozzle.apache.prometheus_user')"
+
+    printf 'GATUS__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_gatus.apache.status_user')"
+    printf 'GATUS__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_gatus.apache.prometheus_user')"
 
     printf 'GATUS_1__MATEJ_PASSWORD=%s\n' "$(load_secret '.gatus_1.app.matej_user')"
     printf 'GATUS_1__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.gatus_1.app.homelab_viewer_user')"
@@ -232,6 +214,9 @@ rm -f './.secrets.env'
     printf 'JELLYFIN__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.jellyfin.apache.status_user')"
     printf 'JELLYFIN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.jellyfin.apache.prometheus_user')"
 
+    printf 'KIWIX__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_kiwix.apache.status_user')"
+    printf 'KIWIX__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_kiwix.apache.prometheus_user')"
+
     printf 'KOFFAN__APP_PASSWORD=%s\n' "$(load_secret '.koffan.app.admin_user')"
     printf 'KOFFAN__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.koffan.apache.status_user')"
     printf 'KOFFAN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.koffan.apache.prometheus_user')"
@@ -258,6 +243,9 @@ rm -f './.secrets.env'
     printf 'MOTIONEYE_KITCHEN__STREAM_PASSWORD=%s\n' "$(load_secret '.motioneye_kitchen.app.stream_user')"
     printf 'MOTIONEYE_KITCHEN__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.motioneye_kitchen.apache.status_user')"
     printf 'MOTIONEYE_KITCHEN__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.motioneye_kitchen.apache.prometheus_user')"
+
+    printf 'NODEEXPORTER__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_nodeexporter.apache.status_user')"
+    printf 'NODEEXPORTER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_nodeexporter.apache.prometheus_user')"
 
     printf 'NODEEXPORTER_ODROID_H3__MATEJ_PASSWORD=%s\n' "$(load_secret '.nodeexporter_odroid_h3.app.matej_user')"
     printf 'NODEEXPORTER_ODROID_H3__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.nodeexporter_odroid_h3.app.homelab_viewer_user')"
@@ -337,6 +325,9 @@ rm -f './.secrets.env'
     printf 'OPENSPEEDTEST__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.openspeedtest.apache.status_user')"
     printf 'OPENSPEEDTEST__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.openspeedtest.apache.prometheus_user')"
 
+    printf 'PIHOLE__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_pihole.apache.status_user')"
+    printf 'PIHOLE__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_pihole.apache.prometheus_user')"
+
     printf 'PIHOLE_1__PASSWORD=%s\n' "$(load_secret '.pihole_1.app.admin_user')"
     printf 'PIHOLE_1__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.app.prometheus_user')"
     printf 'PIHOLE_1__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.pihole_1.apache.status_user')"
@@ -406,6 +397,9 @@ rm -f './.secrets.env'
     printf 'TVHEADEND__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.tvheadend.app.homelab_viewer_user')"
     printf 'TVHEADEND__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.tvheadend.apache.status_user')"
     printf 'TVHEADEND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.tvheadend.apache.prometheus_user')"
+
+    printf 'UNBOUND__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_unbound.apache.status_user')"
+    printf 'UNBOUND__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_unbound.apache.prometheus_user')"
 
     printf 'UNBOUND_DEFAULT_1__MATEJ_PASSWORD=%s\n' "$(load_secret '.unbound_default_1.app.matej_user')"
     printf 'UNBOUND_DEFAULT_1__HOMELAB_VIEWER_PASSWORD=%s\n' "$(load_secret '.unbound_default_1.app.homelab_viewer_user')"
@@ -511,6 +505,9 @@ rm -f './.secrets.env'
     printf 'UNIFICONTROLLER__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.unificontroller.apache.status_user')"
     printf 'UNIFICONTROLLER__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.unificontroller.apache.prometheus_user')"
 
+    printf 'UPTIMEKUMA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_uptimekuma.apache.status_user')"
+    printf 'UPTIMEKUMA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_uptimekuma.apache.prometheus_user')"
+
     printf 'UPTIMEKUMA_1__MATEJ_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.app.matej_user')"
     printf 'UPTIMEKUMA_1__API_KEY=%s\n' "$(load_secret '.uptimekuma_1.app.api_key')"
     printf 'UPTIMEKUMA_1__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.uptimekuma_1.apache.status_user')"
@@ -530,6 +527,9 @@ rm -f './.secrets.env'
     printf 'VIKUNJA__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.app.prometheus_user')"
     printf 'VIKUNJA__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.status_user')"
     printf 'VIKUNJA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.vikunja.apache.prometheus_user')"
+
+    printf 'VNC__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.crossroad_vnc.apache.status_user')"
+    printf 'VNC__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.crossroad_vnc.apache.prometheus_user')"
 
     printf 'VNC_RASPBERRY_PI_4B_4G__NOVNC_MATEJ_PASSWORD=%s\n' "$(load_secret '.vnc_raspberry_pi_4b_4g.novnc.matej_user')"
     printf 'VNC_RASPBERRY_PI_4B_4G__WAYVNC_HOMELAB_PASSWORD=%s\n' "$(load_secret '.vnc_raspberry_pi_4b_4g.wayvnc.homelab_user')"
