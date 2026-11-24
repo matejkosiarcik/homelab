@@ -40,6 +40,16 @@
   ],
   "packageRules": [
     {
+      "description": "TODO: Remove this temporary rule after upstream issue is fixed - https://github.com/linuxserver/docker-socket-proxy/issues/57",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "linuxserver/socket-proxy"
+      ],
+      "allowedVersions": "!/^3\\.4\\.8($|-)/"
+    },
+    {
       "description": "Keep mutable upstream image tags reproducible while Renovate tracks new manifests",
       "matchDatasources": [
         "docker"
