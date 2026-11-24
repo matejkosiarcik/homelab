@@ -1,5 +1,7 @@
 x-definitions: {}
 
+name: ${DOCKER_COMPOSE_APP_SHORTNAME}
+
 services:
   app-main:
     extends:
