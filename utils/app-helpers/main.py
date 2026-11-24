@@ -62,6 +62,7 @@ when_mode = ""
 include_secrets = False
 
 docker_compose_args = []
+docker_buildx_bake_args = []
 docker_command_args = []
 
 
@@ -176,6 +177,7 @@ def load_full_env():
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
     default_env_values = {
+        "COMPOSE_PROJECT_NAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
         "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
@@ -368,10 +370,7 @@ def run_with_spinner(
 
 
 def docker_build():
-    cpu_cores = os.cpu_count()
-    if cpu_cores is None:
-        cpu_cores = 1
-    commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
+    commands = ["docker", "buildx", "bake"] + docker_buildx_bake_args
     docker_log_file = path.join(log_dir, "docker-build.log")
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
@@ -442,7 +441,7 @@ def create_secrets():
 
 
 def run_main_command(command: str):
-    global docker_compose_args, docker_command_args  # pylint: disable=global-statement
+    global docker_compose_args, docker_buildx_bake_args, docker_command_args  # pylint: disable=global-statement
     docker_compose_args = [
         "--file",
         "compose.yml",
@@ -455,6 +454,19 @@ def run_main_command(command: str):
         "--parallel",
         str(int(max(cpu_count // 2, 1))),
     ]
+    docker_buildx_bake_args = [
+        f"--allow=fs.read={git_dir}",
+        "--file",
+        "compose.yml",
+        "--file",
+        f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
+        "--progress",
+        "plain",
+        "--jobs",
+        str(max(cpu_count // 2, 1)),
+        "--load",
+        "--provenance=false",
+    ] + (["--print"] if is_dryrun else []) + (["--pull"] if is_pull else [])
     docker_command_args = ["--dry-run"] if is_dryrun else []
 
     # Check if docker-compose stack exists
