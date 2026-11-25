@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.7-slim AS user_setup
+FROM debian:13.8-slim AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -27,12 +27,12 @@ RUN sh '/homelab/create-user.sh' && \
 
 ### Prefinal ###
 
-FROM debian:13.7-slim AS homelab_dir
+FROM debian:13.8-slim AS homelab_dir
 WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 COPY ./docker-images/novnc/entrypoint.sh /homelab/
 
-FROM debian:13.7-slim AS prefinal
+FROM debian:13.8-slim AS prefinal
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab/
@@ -40,7 +40,7 @@ COPY --from=homelab_dir /homelab /homelab/
 ### Final ###
 
 # hadolint ignore=DL3029
-FROM debian:13.7-slim AS final
+FROM debian:13.8-slim AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

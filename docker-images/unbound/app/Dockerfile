@@ -2,7 +2,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.7-slim AS yq
+FROM debian:13.8-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM debian:13.7-slim AS jinja
+FROM debian:13.8-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
@@ -40,7 +40,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 
 ### App config ###
 
-FROM debian:13.7-slim AS config_1
+FROM debian:13.8-slim AS config_1
 USER root
 WORKDIR /homelab
 ARG HOMELAB_APP_EXTERNAL_DOMAIN=placeholder.example.com
@@ -78,7 +78,7 @@ RUN jinja2 --strict './unbound.conf.j2' './config-data.json' --format json -o '.
         exit 1; \
     fi
 
-FROM debian:13.7-slim AS config_4
+FROM debian:13.8-slim AS config_4
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_unbound_config_aptcache \
@@ -94,7 +94,7 @@ RUN cat -s './unbound.conf' | sponge './unbound.conf'
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.7-slim AS user_setup
+FROM debian:13.8-slim AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -119,7 +119,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM debian:13.7-slim AS final
+FROM debian:13.8-slim AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

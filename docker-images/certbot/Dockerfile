@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM debian:13.7-slim AS gitconfig
+FROM debian:13.8-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -83,7 +83,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.7-slim AS package_ca_certificates
+FROM debian:13.8-slim AS package_ca_certificates
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_package_ca_certificates_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_package_ca_certificates_aptlibcache \
@@ -113,7 +113,7 @@ WORKDIR /homelab/gitman-repositories/static-curl
 RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_gitcache \
     git describe --tags --abbrev=0 --first-parent HEAD >'/homelab/curl-tag.txt'
 
-FROM debian:13.7-slim AS package_curl_final
+FROM debian:13.8-slim AS package_curl_final
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_script_setup_package_curl_final_aptcache \
@@ -140,7 +140,7 @@ RUN tag="$(cat '/homelab/curl-tag.txt')" && \
     cp "${tmpdir}/curl.d/curl" '/homelab/bin/' && \
     rm -rf "${tmpdir}"
 
-FROM debian:13.7-slim AS empty_dir
+FROM debian:13.8-slim AS empty_dir
 USER root
 RUN mkdir /empty
 
@@ -148,7 +148,7 @@ RUN mkdir /empty
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.7-slim AS user_setup
+FROM debian:13.8-slim AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -179,7 +179,7 @@ COPY --from=package_curl_final /homelab/bin/curl /fsroot/usr/bin/
 
 ### Final ###
 
-FROM debian:13.7-slim AS final
+FROM debian:13.8-slim AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
