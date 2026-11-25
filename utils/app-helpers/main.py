@@ -18,7 +18,6 @@ import time
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import cast
 
 
 def get_app_and_git_dirs() -> tuple[Path, Path]:
@@ -95,7 +94,7 @@ class MainConfig:  # pylint: disable=too-many-instance-attributes
     docker_compose_command_args: list[str] = field(default_factory=list)
 
 
-main_config: MainConfig = cast(None, MainConfig)
+main_config: MainConfig = MainConfig()
 
 
 class LogFormatter(logging.Formatter):

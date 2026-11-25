@@ -11,7 +11,6 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import cast
 
 
 def get_server_and_git_dirs() -> tuple[Path, Path]:
@@ -71,7 +70,7 @@ class MainConfig:
     include_secrets: bool = False
 
 
-main_config: MainConfig = cast(None, MainConfig)
+main_config: MainConfig = MainConfig()
 
 
 class LogFormatter(logging.Formatter):
