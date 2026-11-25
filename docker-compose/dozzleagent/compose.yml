@@ -79,7 +79,7 @@ services:
     # Override:
     build:
       args:
-        HOMELAB_COPY_PATH_1_SRC: "./docker-images/dozzleagent/icons/"
+        HOMELAB_COPY_PATH_1_SRC: "./docker-images/dozzle/agent/icons/"
         HOMELAB_COPY_PATH_1_DEST: ""
 
 networks:
