@@ -54,22 +54,21 @@ type commandArgs struct {
 
 func (commandArgs) Epilogue() string {
 	return `Endpoint JSON fields:
-  url                    Required file, http, https, or tcp URL; expands ${NAME} and ${NAME:-default}
-  method                 HTTP method (default: GET)
-  body                   Exact response or file body
-  bodyRegex              Regular expression for the response or file body
-  bodyJSON               jq query that must return a truthy result
-  status                 HTTP status codes and ranges, e.g. "200,400-404" (default: "200-299")
-  insecure               Skip TLS certificate verification (default: false)
-  tlsServerCACert        PEM server CA certificate path
-  tlsClientCert          PEM client certificate path
-  tlsClientKey           PEM client private key path
-  basicAuthUsername      HTTP Basic Auth username
-  basicAuthPassword      HTTP Basic Auth password
-  basicAuthUsernameEnv   Environment variable containing the username
-  basicAuthPasswordEnv   Environment variable containing the password
-
-Use at most one of body, bodyRegex, and bodyJSON per endpoint.`
+		url                    Required file, http, https, or tcp URL; expands ${NAME} and ${NAME:-default}
+		method                 HTTP method (default: GET)
+		body                   Exact response or file body
+		bodyRegex              Regular expression for the response or file body
+		bodyJSON               jq query that must return a truthy result
+		status                 HTTP status codes and ranges, e.g. "200,400-404" (default: "200-299")
+		insecure               Skip TLS certificate verification (default: false)
+		tlsServerCACert        PEM server CA certificate path
+		tlsClientCert          PEM client certificate path
+		tlsClientKey           PEM client private key path
+		basicAuthUsername      HTTP Basic Auth username
+		basicAuthPassword      HTTP Basic Auth password
+		basicAuthUsernameEnv   Environment variable containing the username
+		basicAuthPasswordEnv   Environment variable containing the password
+	Use at most one of body, bodyRegex, and bodyJSON per endpoint.`
 }
 
 func (args *healthcheckArgs) UnmarshalText(data []byte) error {
