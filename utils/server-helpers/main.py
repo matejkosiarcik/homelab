@@ -35,7 +35,7 @@ class MainConfig:
     include_secrets: bool = False
 
 
-main_config: MainConfig = None
+main_config: MainConfig | None = None
 
 
 class LogFormatter(logging.Formatter):

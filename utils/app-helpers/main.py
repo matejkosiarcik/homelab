@@ -46,7 +46,7 @@ class AppConfig:
 
 
 @dataclass
-class MainConfig:
+class MainConfig:  # pylint: disable=too-many-instance-attributes
     env_mode: str
     when_mode: str = ""
     is_dryrun: bool = False
@@ -58,7 +58,7 @@ class MainConfig:
     docker_compose_command_args: list[str] = field(default_factory=list)
 
 
-main_config: MainConfig = None
+main_config: MainConfig | None = None
 
 
 class LogFormatter(logging.Formatter):
