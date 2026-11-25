@@ -10,6 +10,7 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
 local_tz = datetime.now().astimezone().tzinfo
 start_datetime = datetime.now(local_tz)
@@ -35,7 +36,7 @@ class MainConfig:
     include_secrets: bool = False
 
 
-main_config: MainConfig | None = None
+main_config: MainConfig = cast(None, MainConfig)
 
 
 class LogFormatter(logging.Formatter):

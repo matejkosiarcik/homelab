@@ -18,6 +18,7 @@ import time
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
 local_tz = datetime.now().astimezone().tzinfo
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now(local_tz).strftime(r"%Y-%m-%d_%H-%M-%S")
@@ -58,7 +59,7 @@ class MainConfig:  # pylint: disable=too-many-instance-attributes
     docker_compose_command_args: list[str] = field(default_factory=list)
 
 
-main_config: MainConfig | None = None
+main_config: MainConfig = cast(None, MainConfig)
 
 
 class LogFormatter(logging.Formatter):
