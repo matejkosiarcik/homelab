@@ -2,7 +2,7 @@
 
 ### Dependencies ###
 
-FROM golang:1.27.4-trixie AS envsubst_build
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -25,7 +25,7 @@ RUN sh validate-executable.sh /homelab/bin/envsubst
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -35,7 +35,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Config ###
 
-FROM debian:13.8-slim AS config
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS config
 USER root
 WORKDIR /homelab
 COPY --from=envsubst_build /homelab/bin/envsubst /homelab/bin/
@@ -48,20 +48,20 @@ RUN mkdir -p /homelab/config && \
 
 ### App ###
 
-FROM codeswhat/sockguard:2.4.9 AS sockguard_app
+FROM codeswhat/sockguard:2.4.9@sha256:2fa18c54c22c65947727d9ae1a3e6d7c4804afa0a0cef59c28a54032aab2d3f5 AS sockguard_app
 
 ### Other ###
 
-FROM busybox:1.38.0-uclibc AS busybox
+FROM busybox:1.38.0-uclibc@sha256:b2e35951f72501f6a99f1bf45bcfe6d4795be08c518c2f97d0ed2fe776958a3b AS busybox
 USER root
 RUN mkdir -p '/fsroot/bin' && \
-    cp '/bin/date' '/bin/sh' '/fsroot/bin/'
+    cp -a '/bin/date' '/bin/sh' '/fsroot/bin/'
 
 ### User setup ###
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/

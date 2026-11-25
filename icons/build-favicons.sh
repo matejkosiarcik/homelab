@@ -84,7 +84,7 @@ convert_image_full "${input_dir}/prebuild/lets-encrypt.png" "${output_dir}/certb
 
 ## Dozzle Agent ##
 
-output_dir="$(git rev-parse --show-toplevel)/docker-images/dozzleagent/icons"
+output_dir="$(git rev-parse --show-toplevel)/docker-images/dozzle/agent/icons"
 prepare_output_dir "${output_dir}"
 convert_image_full "${input_dir}/prebuild/dozzleagent.png" "${output_dir}/favicon.png"
 convert_image_draft 'magick -background none INPUT_FILE -resize 16x16 -density 1200 OUTPUT_FILE' "${input_dir}/prebuild/dozzleagent.png" "${tmpdir}/dozzleagent-favicon-16.png"

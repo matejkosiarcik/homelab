@@ -4,7 +4,7 @@
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -27,7 +27,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM bitnamilegacy/rabbitmq:4.1.3-debian-12-r1 AS final
+FROM bitnamilegacy/rabbitmq:4.1.3-debian-12-r1@sha256:9e635efba43143807c003fd52cd741e88ae1b45e4f5739105c8bf8f6f94912fe AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 # FROM rabbitmq:4.3.2-management

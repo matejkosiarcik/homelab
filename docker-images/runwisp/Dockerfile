@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM debian:13.8-slim AS gitconfig
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 
 ### Build dependencies ###
 
-FROM python:3.15.2-slim AS gitman
+FROM python:3.15.2-slim@sha256:63bb298d2b7b88f176f51b5189f54ce6535c997682ea70885d2132f5d473a8a5 AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -30,7 +30,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK="1" \
 RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_pipcache \
     python3 -m pip install --quiet --no-compile --require-hashes --requirement './requirements.txt' --target './python-vendor'
 
-FROM golang:1.27.4-trixie AS envsubst_build
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -53,7 +53,7 @@ RUN sh validate-executable.sh /homelab/bin/envsubst
 
 ### RunWisp ###
 
-FROM python:3.15.2-slim AS runwisp_gitman
+FROM python:3.15.2-slim@sha256:63bb298d2b7b88f176f51b5189f54ce6535c997682ea70885d2132f5d473a8a5 AS runwisp_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_gitman_aptcache \
@@ -71,7 +71,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet && \
     find '.' -type d -name '.git' -prune -exec rm -rf {} \;
 
-FROM golang:1.27.4-trixie AS runwisp_build_tweak_paths
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS runwisp_build_tweak_paths
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_build_aptcache \
@@ -85,7 +85,7 @@ COPY ./docker-images/runwisp/add-prefix.sh /homelab/
 WORKDIR /homelab/runwisp
 RUN sh '/homelab/add-prefix.sh'
 
-FROM oven/bun:1.4.5-debian AS runwisp_build_frontend
+FROM oven/bun:1.4.5-debian@sha256:3dddea58e1f8f2240eca906b023fedb944f9a8352515a35309fd0c879fe00aaa AS runwisp_build_frontend
 USER root
 WORKDIR /homelab
 COPY --from=runwisp_build_tweak_paths /homelab/runwisp/ ./runwisp/
@@ -95,7 +95,7 @@ RUN --mount=type=cache,target=/root/.bun/install/cache,sharing=shared,id=homelab
 WORKDIR /homelab/runwisp/apps/ui
 RUN bunx --bun vite build
 
-FROM golang:1.27.4-trixie AS runwisp_build_backend
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS runwisp_build_backend
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_runwisp_build_aptcache \
@@ -119,7 +119,7 @@ RUN sh './validate-executable.sh' './runwisp/apps/runwisp/runwisp'
 
 ### Config ###
 
-FROM debian:13.8-slim AS config
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS config
 USER root
 WORKDIR /homelab
 COPY --from=envsubst_build /homelab/bin/envsubst /homelab/bin/
@@ -135,7 +135,7 @@ RUN mkdir -p /homelab/config && \
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -161,7 +161,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM docker:29.10.1 AS final
+FROM docker:29.10.1@sha256:fbbc96e0af32cdc190aff92ba97a1281a115351a723afe21af78879cc55126b0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

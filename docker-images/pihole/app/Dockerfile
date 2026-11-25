@@ -2,7 +2,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.8-slim AS yq
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -22,7 +22,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -51,7 +51,7 @@ RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
     sed -E 's~\.matejhome\.com~~;s~^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+) ~\4.\3.\2.\1.in-addr.arpa ~' <'/homelab/config/custom-domains-type-a.txt' >'/homelab/config/custom-domains-type-ptr.txt' && \
     printf '%s\n' "[ \"local-ttl=600\", \"ptr-record=1.0.0.127,localhost\", $(sed -E 's~^(.*) (.*)$~"ptr-record=\1,\2"~' <'/homelab/config/custom-domains-type-ptr.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config/FTL/misc.dnsmasq_lines.txt'
 
-FROM python:3.15.2-slim AS pihole_config_devices
+FROM python:3.15.2-slim@sha256:63bb298d2b7b88f176f51b5189f54ce6535c997682ea70885d2132f5d473a8a5 AS pihole_config_devices
 USER root
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/clients-groups.csv /homelab/
@@ -68,7 +68,7 @@ COPY --from=pihole_config_devices /homelab/clients-groups.txt /homelab/config/cl
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_pihole_user_setup_aptcache \
@@ -105,7 +105,7 @@ COPY --chmod=0777 ./docker-images/pihole/app/setcap.sh /usr/sbin/setcap
 
 ### Final ###
 
-FROM pihole/pihole:2026.11.0 AS final
+FROM pihole/pihole:2026.11.0@sha256:66c798d79a95c2691f280329c3611dba1746117c61c9f331907ca35a06a52778 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

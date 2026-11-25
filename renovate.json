@@ -50,16 +50,12 @@
       "allowedVersions": "!/^3\\.4\\.8($|-)/"
     },
     {
-      "description": "Keep mutable upstream image tags reproducible while Renovate tracks new manifests",
+      "description": "Keep Dockerfile image tags reproducible while Renovate tracks new manifests",
       "matchDatasources": [
         "docker"
       ],
       "matchManagers": [
         "dockerfile"
-      ],
-      "matchPackageNames": [
-        "gcr.io/distroless/**",
-        "linuxserver/tvheadend"
       ],
       "pinDigests": true
     },

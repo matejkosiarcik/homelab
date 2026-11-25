@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM node:26.13.1-slim AS npmconfig
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 
 ### App ###
 
-FROM node:26.13.1-slim AS nodejs_build
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS nodejs_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/homepage-helpers/package-lock.json ./docker-images/.shared/homepage-helpers/package.json /homelab/
@@ -37,7 +37,7 @@ RUN npm run build && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -47,12 +47,12 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.8-slim AS empty_dir
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS empty_dir
 USER root
 RUN mkdir /empty && \
     touch /empty.txt
 
-FROM ghcr.io/gethomepage/homepage:v2.8.0 AS entrypoint
+FROM ghcr.io/gethomepage/homepage:v2.8.0@sha256:019d8f063a7299e7c1c51ee4a70b692291809af3244894fbec2c2ac7d1f71b18 AS entrypoint
 USER root
 COPY ./docker-images/homepage/app/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -60,7 +60,7 @@ RUN head -n 1 /usr/local/bin/docker-entrypoint.sh >/homelab/entrypoint-upstream-
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM ghcr.io/gethomepage/homepage:v2.8.0 AS runtime_dirs
+FROM ghcr.io/gethomepage/homepage:v2.8.0@sha256:019d8f063a7299e7c1c51ee4a70b692291809af3244894fbec2c2ac7d1f71b18 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/app/.next/server/pages' && \
     cp -R '/app/.next/server/pages/.' '/homelab/original/app/.next/server/pages'
@@ -69,7 +69,7 @@ RUN mkdir -p '/homelab/original/app/.next/server/pages' && \
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -101,7 +101,7 @@ COPY --from=empty_dir /empty /app/config/logs
 
 ### Final ###
 
-FROM ghcr.io/gethomepage/homepage:v2.8.0 AS final
+FROM ghcr.io/gethomepage/homepage:v2.8.0@sha256:019d8f063a7299e7c1c51ee4a70b692291809af3244894fbec2c2ac7d1f71b18 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

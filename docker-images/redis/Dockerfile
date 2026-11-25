@@ -2,7 +2,7 @@
 
 ### Dependencies ###
 
-FROM golang:1.27.4-trixie AS envsubst_build
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -27,7 +27,7 @@ RUN sh validate-executable.sh /homelab/bin/envsubst
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -54,7 +54,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM redis:8.12.0 AS final
+FROM redis:8.12.0@sha256:3c4881844c6421f29fb9f9e8ca4f573d9fbdfb35967d65834504b6994cf6cd3b AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
