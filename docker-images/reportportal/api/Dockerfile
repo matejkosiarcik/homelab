@@ -82,4 +82,4 @@ ENV AUDIT_LOGGER="OFF" \
     RP_REQUESTLOGGING="false" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:8585/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8585/health\"}" ]

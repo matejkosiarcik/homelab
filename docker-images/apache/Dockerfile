@@ -321,5 +321,5 @@ ENV HOMELAB_CONTAINER_NAME="apache" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "https://localhost:443/.apache", "--insecure" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"https://localhost:443/.apache\",\"insecure\":true}" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

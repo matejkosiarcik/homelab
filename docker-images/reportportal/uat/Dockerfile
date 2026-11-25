@@ -72,4 +72,4 @@ ENV DATASTORE_TYPE="filesystem" \
     RP_SESSION_LIVE="86400" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:9999/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:9999/health\"}" ]

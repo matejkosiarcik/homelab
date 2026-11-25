@@ -305,5 +305,5 @@ ENV FAVICON_PASSWORD="" \
     PATH="/homelab/bin:/homelab/imagemagick/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:8080/.health" ]
+HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/.health\"}" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

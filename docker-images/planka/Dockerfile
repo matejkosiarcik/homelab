@@ -74,4 +74,4 @@ ENV BASE_URL="${HOMELAB_APP_EXTERNAL_URL}" \
     SECRET_KEY="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:1337" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:1337\"}" ]
