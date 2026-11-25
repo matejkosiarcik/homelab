@@ -4,12 +4,12 @@ import argparse
 import fnmatch
 import logging
 import os
-import pathlib
 import subprocess
 import sys
 import time
+from dataclasses import dataclass
 from datetime import UTC, datetime
-from os import path
+from pathlib import Path
 
 local_tz = datetime.now().astimezone().tzinfo
 start_datetime = datetime.now(local_tz)
@@ -17,20 +17,22 @@ start_datestr = start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
 start_time = start_datetime.timestamp()
 os.environ["START_DATE"] = start_datestr
 
-server_dir = path.abspath(path.curdir)
-server_name = path.basename(server_dir)
-git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-log_file = path.join(git_dir, ".logs", start_datestr, "server.txt")
+server_dir = Path.cwd()
+server_name = server_dir.name
+git_dir = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], encoding="utf-8").strip())
+log_file = git_dir / ".logs" / start_datestr / "server.txt"
 
-os.makedirs(path.dirname(log_file), exist_ok=True)
+log_file.parent.mkdir(parents=True, exist_ok=True)
 
-applist = []
-is_dryrun = False
-is_online = True
-is_pull = False
-env_mode = ""
-when_mode = ""
-include_secrets = False
+
+@dataclass
+class MainConfig:
+    apps: list[str]
+    env_mode: str
+    when_mode: str = ""
+    is_dryrun: bool = False
+    is_pull: bool = False
+    include_secrets: bool = False
 
 
 class LogFormatter(logging.Formatter):
@@ -71,7 +73,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
     apps_list_output: list[str] = []
 
     # Get a list of all apps
-    for item in sorted(pathlib.Path(path.join(server_dir, "docker-apps")).iterdir()):
+    for item in sorted((server_dir / "docker-apps").iterdir()):
         if item.is_dir() and not item.name.startswith("."):
             all_apps_list.append(item.name)
 
@@ -79,9 +81,9 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
         return list(dict.fromkeys([app_name for app_pattern in app_patterns for app_name in all_apps_list if fnmatch.fnmatchcase(app_name, f"*{app_pattern}*")]))
 
     # Add priority apps
-    priority_file = path.join(server_dir, "docker-apps", "priority.txt")
-    if path.exists(priority_file):
-        with open(priority_file, "r", encoding="utf-8") as file:
+    priority_file = server_dir / "docker-apps" / "priority.txt"
+    if priority_file.exists():
+        with priority_file.open(encoding="utf-8") as file:
             priority_apps_list = [app for app in [line.split("#", maxsplit=1)[0].strip() for line in file] if len(app) > 0]
             apps_list_output += get_matching_apps(priority_apps_list)
 
@@ -91,12 +93,12 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
             apps_list_output.append(item)
 
     # If "--only" -> only output apps that match it
-    if only_apps is not None and len(only_apps) > 0:
+    if only_apps:
         args_only = [x for x in only_apps.split(",") if len(x) > 0]
         apps_list_output = get_matching_apps(args_only)
 
     # If "--skip" -> remove apps which match it
-    if skip_apps is not None and len(skip_apps) > 0:
+    if skip_apps:
         args_skip = [x for x in skip_apps.split(",") if len(x) > 0]
         apps_list_skip = get_matching_apps(args_skip)
         apps_list_output = [app_name for app_name in apps_list_output if app_name not in apps_list_skip]
@@ -105,7 +107,6 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
 
 
 def main(argv: list[str]):
-    global applist, env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -147,16 +148,7 @@ def main(argv: list[str]):
     args = parser.parse_args(argv)
 
     command = args.subcommand
-    is_dryrun = args.dry_run
-
     applist = get_apps_list(args.only, args.skip)
-
-    if command == "secrets":
-        is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
-    if command == "deploy":
-        include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
-
-    is_pull = hasattr(args, "pull") and args.pull is True
 
     env_mode = args.mode
     if env_mode is None:
@@ -168,54 +160,58 @@ def main(argv: list[str]):
         log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)
 
-    if command == "deploy":
-        when_mode = args.when_mode or ("always" if env_mode == "dev" else "onchange")
+    config = MainConfig(
+        apps=applist,
+        env_mode=env_mode,
+        when_mode=(args.when_mode or ("always" if env_mode == "dev" else "onchange")) if command == "deploy" else "",
+        is_dryrun=args.dry_run,
+        is_pull=getattr(args, "pull", False) is True,
+        include_secrets=getattr(args, "with_secrets", False) is True if command == "deploy" else False,
+    )
 
     if command == "install":
         server_install()
         return
 
     if command in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
-        server_action(command)
+        server_action(command, config)
         return
 
     log.error("Unrecognized command: %s", command)
     sys.exit(1)
 
 
-def server_action(action: str):
+def server_action(action: str, config: MainConfig):
     action_log = action.replace("-", " ").capitalize()
     if action == "secrets":
         action_log += " for"
     log.info("%s %s docker apps", "↓", action_log)
     print("\n---\n")
 
-    cli_args = ["--mode", env_mode]
-    if is_dryrun:
+    cli_args = ["--mode", config.env_mode]
+    if config.is_dryrun:
         cli_args.append("--dry-run")
-    if is_pull:
+    if config.is_pull:
         cli_args.append("--pull")
-    if action == "deploy" and include_secrets is True:
+    if action == "deploy" and config.include_secrets:
         cli_args.append("--with-secrets")
     if action == "deploy":
-        cli_args.extend([f"--{when_mode}"])
+        cli_args.append(f"--{config.when_mode}")
 
-    for app in applist:
-        subprocess.check_call(["task", "--taskfile", "./Taskfile.yml", action, "--", *cli_args], cwd=path.join(server_dir, "docker-apps", app))
+    for app in config.apps:
+        subprocess.check_call(["task", "--taskfile", "./Taskfile.yml", action, "--", *cli_args], cwd=server_dir / "docker-apps" / app)
         print("\n---\n")
 
     total_elapsed = time.time() - start_time
-    total_elapsed_mins = int(total_elapsed) // 60
-    total_elapsed_secs = int(total_elapsed) % 60
+    total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
     log.info("%s %s docker apps %02d:%02d", ascii_checkmark, action_log, total_elapsed_mins, total_elapsed_secs)
 
 
 def server_install():
     log.info("%s Installing global server config", "↓")
-    subprocess.check_call(["sh", path.join(git_dir, "utils", "server-helpers", "install.sh")])
+    subprocess.check_call(["sh", git_dir / "utils" / "server-helpers" / "install.sh"])
     total_elapsed = time.time() - start_time
-    total_elapsed_mins = int(total_elapsed) // 60
-    total_elapsed_secs = int(total_elapsed) % 60
+    total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
     log.info("%s Install global config %02d:%02d", ascii_checkmark, total_elapsed_mins, total_elapsed_secs)
 
 

@@ -15,55 +15,47 @@ import subprocess
 import sys
 import threading
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from os import path
+from pathlib import Path
 
 local_tz = datetime.now().astimezone().tzinfo
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now(local_tz).strftime(r"%Y-%m-%d_%H-%M-%S")
 
-app_dir = path.abspath(path.curdir)
-git_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
-main_log_dir = path.join(app_dir, "app-logs")
-log_dir = path.join(main_log_dir, ".meta")
-log_file_main = path.join(log_dir, "task.log")
+app_dir = Path.cwd()
+git_dir = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], encoding="utf-8").strip())
+main_log_dir = app_dir / "app-logs"
+log_dir = main_log_dir / ".meta"
+log_file_main = log_dir / "task.log"
 
 is_ci = bool(os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CIRCLECI") == "true" or os.environ.get("CI") in ["1", "true"])
 cpu_count = os.cpu_count() or 1
 
-if path.exists(log_dir):
+if log_dir.exists():
     shutil.rmtree(log_dir)
-os.makedirs(log_dir, exist_ok=True)
+log_dir.mkdir(parents=True, exist_ok=True)
 
 
 @dataclass
 class AppConfig:
-    app_fullname: str
-    app_shortname: str
-    app_type: str
-    app_ip: str
-    app_domain: str
+    app_fullname: str = ""
+    app_shortname: str = ""
+    app_type: str = ""
+    app_ip: str = ""
+    app_domain: str = ""
 
 
-app_config = AppConfig(
-    app_fullname="",
-    app_shortname="",
-    app_type="",
-    app_ip="",
-    app_domain="",
-)
-
-
-is_dryrun = False
-is_online = True
-is_pull = True
-env_mode = ""
-when_mode = ""
-include_secrets = False
-
-docker_compose_args = []
-docker_buildx_bake_args = []
-docker_compose_command_args = []
+@dataclass
+class MainConfig:
+    env_mode: str
+    when_mode: str = ""
+    is_dryrun: bool = False
+    is_pull: bool = False
+    include_secrets: bool = False
+    app: AppConfig = field(default_factory=AppConfig)
+    docker_compose_args: list[str] = field(default_factory=list)
+    docker_buildx_bake_args: list[str] = field(default_factory=list)
+    docker_compose_command_args: list[str] = field(default_factory=list)
 
 
 class LogFormatter(logging.Formatter):
@@ -90,7 +82,7 @@ log.addHandler(log_file_handler)
 
 # Write current anticache.txt
 with open(
-    path.join(git_dir, "docker-images", ".shared", "anticache.txt"),
+    git_dir / "docker-images" / ".shared" / "anticache.txt",
     "w",
     encoding="utf-8",
 ) as anticachefile:
@@ -113,15 +105,12 @@ if tty_supports_color():
     ascii_skip = f"\033[36m{ascii_skip}\033[0m"
 
 
-last_exit_code: int | None = None
-
-
-def write_log_file_header(command_log_file: str):
+def write_log_file_header(command_log_file: Path):
     with open(command_log_file, "w", encoding="utf-8") as file:
         file.write(f"Start date: {start_datestr}\n\n")
 
 
-def write_log_file_footer(command_log_file: str):
+def write_log_file_footer(command_log_file: Path):
     with open(command_log_file, "a", encoding="utf-8") as file:
         file.write(f"\nEnd date: {start_datestr}\n")
 
@@ -131,25 +120,26 @@ def get_canonical_app_value(function_name: str) -> str:
     if function_name not in ["get_app_domain", "get_app_full_name_machine", "get_app_ip", "get_app_type"]:
         raise ValueError(f"Unsupported canonical app function: {function_name}")
 
-    resolver_path = path.join(git_dir, "docker-images", ".shared", "build-utils", "parse-app-entry-utils.sh")
+    resolver_path = git_dir / "docker-images" / ".shared" / "build-utils" / "parse-app-entry-utils.sh"
     return subprocess.check_output(
         ["sh", "-c", f'. "$1"; {function_name} "$2"', "sh", resolver_path, app_dir],
         text=True,
     ).strip()
 
 
-def load_app_config():
-    config_path = path.join(app_dir, "config", "config.yml")
-    if not path.exists(config_path):
+def load_app_config(config: MainConfig):
+    config_path = app_dir / "config" / "config.yml"
+    if not config_path.exists():
         raise FileNotFoundError("App config.yml not found")
 
     # Set name properties
-    app_config.app_shortname = path.basename(app_dir).lstrip(".")
+    app_config = config.app
+    app_config.app_shortname = app_dir.name.lstrip(".")
     app_config.app_type = get_canonical_app_value("get_app_type")
     app_config.app_fullname = get_canonical_app_value("get_app_full_name_machine")
 
     # Set network properties
-    if env_mode == "prod":
+    if config.env_mode == "prod":
         app_config.app_domain = get_canonical_app_value("get_app_domain")
         app_config.app_ip = get_canonical_app_value("get_app_ip")
     else:
@@ -172,7 +162,9 @@ def load_env_file(env_path):
             os.environ[key] = value
 
 
-def load_full_env():
+def load_full_env(config: MainConfig):
+    app_config = config.app
+    env_mode = config.env_mode
     default_protocol = "smb" if "samba" in app_config.app_fullname else "https"
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
@@ -180,13 +172,13 @@ def load_full_env():
         "COMPOSE_PROJECT_NAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
         "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
-        "DOCKER_COMPOSE_APP_PATH": app_dir,
+        "DOCKER_COMPOSE_APP_PATH": str(app_dir),
         "DOCKER_COMPOSE_APP_TYPE": app_config.app_type,
         "DOCKER_COMPOSE_ENV": env_mode,
         "DOCKER_COMPOSE_NETWORK_DOMAIN": app_config.app_domain,
         "DOCKER_COMPOSE_NETWORK_IP": app_config.app_ip,
         "DOCKER_COMPOSE_NETWORK_URL": f"{default_protocol}://{app_config.app_domain}{port_delimiter}{default_port}",
-        "DOCKER_COMPOSE_REPOROOT_PATH": git_dir,
+        "DOCKER_COMPOSE_REPOROOT_PATH": str(git_dir),
         "DOCKER_COMPOSE_UID": str(os.getuid()) if env_mode == "prod" else "1000",
         "DOCKER_COMPOSE_GID": str(os.getgid()) if env_mode == "prod" else "1000",
         "DOCKER_COMPOSE_DOCKER_GID": str(grp.getgrnam("docker").gr_gid) if env_mode == "prod" else "0",
@@ -198,15 +190,14 @@ def load_full_env():
             os.environ.pop(key)
 
     # Load env files
-    if path.exists(path.join("config", "compose.env")):
-        load_env_file(path.join("config", "compose.env"))
-    if path.exists(path.join("config", f"compose-{env_mode}.env")):
-        load_env_file(path.join("config", f"compose-{env_mode}.env"))
+    if (env_file := Path("config") / "compose.env").exists():
+        load_env_file(env_file)
+    if (env_file := Path("config") / f"compose-{env_mode}.env").exists():
+        load_env_file(env_file)
 
     # Fill in default values
     for key, default_value in default_env_values.items():
-        if os.environ.get(key) is None:
-            os.environ[key] = default_value
+        os.environ.setdefault(key, default_value)
 
     for i in range(2, 10):
         if os.environ.get(f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}") is not None and os.environ.get(f"DOCKER_COMPOSE_NETWORK_URL_{i}") is None:
@@ -218,38 +209,39 @@ def load_full_env():
             os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"] = domain
 
 
-def symlink_app():
-    app_compose_dir = path.join(git_dir, "docker-compose", app_config.app_type)
+def symlink_app(config: MainConfig):
+    app_compose_dir = git_dir / "docker-compose" / config.app.app_type
     for file in ["compose.yml", "compose.override.yml", "compose.prod.yml"]:
         try:
             os.remove(file)
         except OSError:
             pass
-    os.symlink(path.join(app_compose_dir, "compose.yml"), "compose.yml")
-    os.symlink(path.join(app_compose_dir, "compose.override-dev.yml"), "compose.override.yml")
-    os.symlink(path.join(app_compose_dir, "compose.override-prod.yml"), "compose.prod.yml")
+    os.symlink(app_compose_dir / "compose.yml", "compose.yml")
+    os.symlink(app_compose_dir / "compose.override-dev.yml", "compose.override.yml")
+    os.symlink(app_compose_dir / "compose.override-prod.yml", "compose.prod.yml")
 
 
-def get_docker_compose_config() -> str:
-    return subprocess.check_output(["docker", "compose", *docker_compose_args, "config", "--format", "json"]).decode()
+def get_docker_compose_config(config: MainConfig) -> str:
+    return subprocess.check_output(["docker", "compose", *config.docker_compose_args, "config", "--format", "json"], encoding="utf-8")
 
 
 def get_docker_images_shasum(config: str) -> str:
     config_obj = json.loads(config)
-    image_names = sorted([config_obj["services"][service]["image"] for service in config_obj["services"]])
+    image_names = sorted(service["image"] for service in config_obj["services"].values())
     output = []
     for image in image_names:
         try:
             inspect_output = subprocess.check_output(
                 ["docker", "image", "inspect", image, "--format", "json"],
                 stderr=subprocess.DEVNULL,
-            ).decode()
+                encoding="utf-8",
+            )
             layers_output = (
                 subprocess.check_output(
                     ["jq", "-r", '(.[0].RootFS.Layers // ["N/A"])[]'],
-                    input=inspect_output.encode(),
+                    input=inspect_output,
+                    encoding="utf-8",
                 )
-                .decode()
                 .replace("\n", " ")
                 .strip()
             )
@@ -260,15 +252,15 @@ def get_docker_images_shasum(config: str) -> str:
     return "\n".join(output)
 
 
-def get_docker_containers_are_running(config: str) -> bool:
-    if when_mode == "always":
+def get_docker_containers_are_running(config_json: str, config: MainConfig) -> bool:
+    if config.when_mode == "always":
         return False
 
-    config_obj = json.loads(config)
+    config_obj = json.loads(config_json)
     expected_containers = {service["container_name"] for service in config_obj["services"].values()}
     running_containers = set(
         subprocess.check_output(
-            ["docker", "compose", *docker_compose_args, "ps", "--status", "running", "--format", "{{.Name}}"],
+            ["docker", "compose", *config.docker_compose_args, "ps", "--status", "running", "--format", "{{.Name}}"],
             text=True,
         ).splitlines()
     )
@@ -282,19 +274,19 @@ def run_with_spinner(
     command: list[str],
     description_progress: str,
     description_done: str,
-    command_log_file: str,
+    command_log_file: Path,
     print_output: bool,
 ):
     start_time = time.time()
     done = threading.Event()
     global_exit = False
     last_output_line = ""
+    last_exit_code: int | None = None
 
     write_log_file_header(command_log_file)
 
     def subprocess_main():
-        global last_exit_code  # pylint: disable=global-statement
-        last_exit_code = None
+        nonlocal last_exit_code
         master_fd, slave_fd = pty.openpty()  # This is for making the subprocess think the output is a TTY and it enables colored output
         with open(command_log_file, "a", encoding="utf-8") as file, subprocess.Popen(command, stdout=slave_fd, stderr=slave_fd, stdin=slave_fd, text=True, bufsize=1, close_fds=True) as last_process:
             os.close(slave_fd)
@@ -327,8 +319,7 @@ def run_with_spinner(
 
         while not done.is_set():
             elapsed = time.time() - start_time
-            elapsed_mins = int(elapsed) // 60
-            elapsed_secs = int(elapsed) % 60
+            elapsed_mins, elapsed_secs = divmod(int(elapsed), 60)
             last_output_line = f"{spinner_chars[math.floor(spinner_index)]} {description_progress} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} {elapsed_mins:02d}:{elapsed_secs:02d} "
             if global_exit:
                 break
@@ -345,8 +336,7 @@ def run_with_spinner(
     finally:
         done.set()
         total_elapsed = time.time() - start_time
-        total_elapsed_mins = int(total_elapsed) // 60
-        total_elapsed_secs = int(total_elapsed) % 60
+        total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
         status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
         print(f"\r{' ' * len(last_output_line)}", end="", flush=True)
         print(
@@ -362,36 +352,36 @@ def run_with_spinner(
             with open(command_log_file, "r", encoding="utf-8") as file:
                 for line in collections.deque(file, maxlen=50):
                     log.error(">> %s", line.rstrip())
-            log.error('See logfile "%s" for all details.', path.basename(command_log_file))
+            log.error('See logfile "%s" for all details.', command_log_file.name)
             sys.exit(1)
 
     if global_exit:
         sys.exit(0)
 
 
-def docker_build():
-    commands = ["docker", "buildx", "bake", *docker_buildx_bake_args]
-    docker_log_file = path.join(log_dir, "docker-build.log")
+def docker_build(config: MainConfig):
+    commands = ["docker", "buildx", "bake", *config.docker_buildx_bake_args]
+    docker_log_file = log_dir / "docker-build.log"
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
-def docker_debug_compose():
-    compose_file = path.join(log_dir, f"compose-{env_mode}.yml")
-    commands = ["docker", "compose", *docker_compose_args, "config", "--output", compose_file]
-    docker_log_file = path.join(log_dir, "docker-debug-compose.log")
+def docker_debug_compose(config: MainConfig):
+    compose_file = log_dir / f"compose-{config.env_mode}.yml"
+    commands = ["docker", "compose", *config.docker_compose_args, "config", "--output", str(compose_file)]
+    docker_log_file = log_dir / "docker-debug-compose.log"
     run_with_spinner(commands, "Resolving compose config for", "Resolve compose config for", docker_log_file, False)
     log.info("Resolved compose config written to %s", compose_file)
 
 
-def docker_stop():
-    commands = ["docker", "compose", *docker_compose_args, "down", *docker_compose_command_args]
-    docker_log_file = path.join(log_dir, "docker-stop.log")
+def docker_stop(config: MainConfig):
+    commands = ["docker", "compose", *config.docker_compose_args, "down", *config.docker_compose_command_args]
+    docker_log_file = log_dir / "docker-stop.log"
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
 
 def clear_app_runtime_logs():
     for log_entry in os.scandir(main_log_dir):
-        if log_entry.name == path.basename(log_dir):
+        if log_entry.name == log_dir.name:
             continue
         if log_entry.is_dir(follow_symlinks=False):
             shutil.rmtree(log_entry.path)
@@ -399,10 +389,10 @@ def clear_app_runtime_logs():
             os.unlink(log_entry.path)
 
 
-def docker_start():
+def docker_start(config: MainConfig):
     clear_app_runtime_logs()
 
-    config_json = get_docker_compose_config()
+    config_json = get_docker_compose_config(config)
     config_obj = json.loads(config_json)
 
     # Extract all volumes from docker-compose yaml
@@ -416,11 +406,11 @@ def docker_start():
     # Precreate all volumes - this ensures proper directory permissions
     for volume in volumes:
         created = False
-        if not path.exists(volume):
-            os.makedirs(volume, exist_ok=True)
+        if not Path(volume).exists():
+            Path(volume).mkdir(parents=True, exist_ok=True)
             created = True
             os.chmod(volume, mode=0o755)  # TODO: Remove this line and uncomment code below
-        if created or volume.startswith(app_dir):
+        if created or volume.startswith(str(app_dir)):
             pass  # TODO: Re-enable code below
             # os.chown(volume, uid=current_user, gid=current_user_group)
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
@@ -428,36 +418,35 @@ def docker_start():
     commands = [
         "docker",
         "compose",
-        *docker_compose_args,
+        *config.docker_compose_args,
         "up",
         "--force-recreate",
         "--always-recreate-deps",
         "--remove-orphans",
         "--no-build",
-        *docker_compose_command_args,
-        *(["--detach", "--wait"] if env_mode == "prod" else []),
+        *config.docker_compose_command_args,
+        *(["--detach", "--wait"] if config.env_mode == "prod" else []),
     ]
-    docker_log_file = path.join(log_dir, "docker-start.log")
-    run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
+    docker_log_file = log_dir / "docker-start.log"
+    run_with_spinner(commands, "Starting", "Start", docker_log_file, config.env_mode == "dev")
 
 
-def create_secrets():
-    docker_log_file = path.join(log_dir, "secrets.log")
+def create_secrets(config: MainConfig):
+    docker_log_file = log_dir / "secrets.log"
     commands = [
         "sh",
         f"{git_dir}/utils/secrets-helpers/main.sh",
-        f"--{env_mode}",
+        f"--{config.env_mode}",
     ]
     run_with_spinner(commands, "Secrets", "Secrets", docker_log_file, False)
 
 
-def run_main_command(command: str):
-    global docker_compose_args, docker_buildx_bake_args, docker_compose_command_args  # pylint: disable=global-statement
-    docker_compose_args = [
+def run_main_command(command: str, config: MainConfig):
+    config.docker_compose_args = [
         "--file",
         "compose.yml",
         "--file",
-        f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
+        f"compose.{'prod' if config.env_mode == 'prod' else 'override'}.yml",
         "--project-name",
         os.environ["DOCKER_COMPOSE_APP_SHORTNAME"],
         "--progress",
@@ -465,65 +454,64 @@ def run_main_command(command: str):
         "--parallel",
         str(int(max(cpu_count // 2, 1))),
     ]
-    docker_compose_command_args = ["--dry-run"] if is_dryrun else []
-    docker_buildx_bake_args = [
+    config.docker_compose_command_args = ["--dry-run"] if config.is_dryrun else []
+    config.docker_buildx_bake_args = [
         f"--allow=fs.read={git_dir}",
         "--file",
         "compose.yml",
         "--file",
-        f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
+        f"compose.{'prod' if config.env_mode == 'prod' else 'override'}.yml",
         "--progress",
         "plain",
         "--jobs",
         str(max(cpu_count // 2, 1)),
         "--load",
         "--provenance=false",
-        *(["--print"] if is_dryrun else []),
-        *(["--pull"] if is_pull else []),
+        *(["--print"] if config.is_dryrun else []),
+        *(["--pull"] if config.is_pull else []),
     ]
 
     # Check if docker-compose stack exists
-    compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])
-    if not path.isdir(compose_path):
+    compose_path = git_dir / "docker-compose" / os.environ["DOCKER_COMPOSE_APP_TYPE"]
+    if not compose_path.is_dir():
         log.error("Docker compose stack for app %s not found", os.environ.get("DOCKER_COMPOSE_APP_TYPE"))
         sys.exit(1)
 
     # Execute commands
     if command == "build":
-        docker_build()
+        docker_build(config)
     elif command == "debug-compose":
-        docker_debug_compose()
+        docker_debug_compose(config)
     elif command == "deploy":
-        if include_secrets is True:
-            create_secrets()
-        config = get_docker_compose_config()
-        shasum_before = get_docker_images_shasum(config)
-        docker_build()
-        shasum_after = get_docker_images_shasum(config)
+        if config.include_secrets:
+            create_secrets(config)
+        config_json = get_docker_compose_config(config)
+        shasum_before = get_docker_images_shasum(config_json)
+        docker_build(config)
+        shasum_after = get_docker_images_shasum(config_json)
         images_changed = shasum_before != shasum_after
-        all_containers_running = get_docker_containers_are_running(config)
-        if when_mode == "always" or images_changed or not all_containers_running:
-            docker_stop()
-            docker_start()
+        all_containers_running = get_docker_containers_are_running(config_json, config)
+        if config.when_mode == "always" or images_changed or not all_containers_running:
+            docker_stop(config)
+            docker_start(config)
         else:
             print(f"{ascii_skip} Stop skipped")
             print(f"{ascii_skip} Start skipped")
     elif command == "restart":
-        docker_stop()
-        docker_start()
+        docker_stop(config)
+        docker_start(config)
     elif command == "start":
-        docker_start()
+        docker_start(config)
     elif command == "stop":
-        docker_stop()
+        docker_stop(config)
     elif command == "secrets":
-        create_secrets()
+        create_secrets(config)
     else:
         log.error("Unrecognized command '%s'", command)
         sys.exit(1)
 
 
 def main(argv):
-    global env_mode, include_secrets, is_dryrun, is_online, is_pull, when_mode  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -571,14 +559,6 @@ def main(argv):
     args = parser.parse_args(argv)
 
     command = args.subcommand
-    is_dryrun = args.dry_run
-
-    if command == "deploy":
-        include_secrets = hasattr(args, "with_secrets") and args.with_secrets is True
-    if command == "secrets":
-        is_online = (hasattr(args, "online") and args.online is True) or (not hasattr(args, "offline") or args.offline is False)
-    is_pull = hasattr(args, "pull") and args.pull is True
-
     env_mode = args.mode
     if env_mode is None:
         env_mode = os.environ.get("HOMELAB_ENV")
@@ -589,17 +569,22 @@ def main(argv):
         log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)
 
-    if command == "deploy":
-        when_mode = args.when_mode or ("always" if env_mode == "dev" else "onchange")
+    config = MainConfig(
+        env_mode=env_mode,
+        when_mode=(args.when_mode or ("always" if env_mode == "dev" else "onchange")) if command == "deploy" else "",
+        is_dryrun=args.dry_run,
+        is_pull=getattr(args, "pull", False) is True,
+        include_secrets=getattr(args, "with_secrets", False) is True if command == "deploy" else False,
+    )
 
     if command not in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
         log.error("Unrecognized command: %s", command)
         sys.exit(1)
 
-    load_app_config()
-    load_full_env()
-    symlink_app()
-    run_main_command(command)
+    load_app_config(config)
+    load_full_env(config)
+    symlink_app(config)
+    run_main_command(command, config)
 
 
 if __name__ == "__main__":
