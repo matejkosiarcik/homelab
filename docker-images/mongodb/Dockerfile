@@ -4,7 +4,7 @@
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -28,7 +28,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM mongo:9.0.8 AS final
+FROM mongo:9.0.8@sha256:b0c835c26e5997413e985000f1013c275377cd9607761c1784d486f6dd620b7f AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM jellyfin/jellyfin:12.4.20261026-211555 AS favicon
+FROM jellyfin/jellyfin:12.4.20261026-211555@sha256:fea863d0cd9ec445985d9c75fc6ed64e38a1d2766cf0c250a33d553f4fc1b771 AS favicon
 USER root
 RUN find '/jellyfin/jellyfin-web' -name 'favicon.*.ico' -type f -maxdepth 1 -exec cp {} '/jellyfin/jellyfin-web/favicon.ico' \; && \
     if [ ! -f '/jellyfin/jellyfin-web/favicon.ico' ]; then \
@@ -12,7 +12,7 @@ RUN find '/jellyfin/jellyfin-web' -name 'favicon.*.ico' -type f -maxdepth 1 -exe
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jellyfin_user_setup_aptcache \
@@ -55,7 +55,7 @@ COPY --from=favicon /jellyfin/jellyfin-web/favicon.ico /fsroot/favicon/favicon.i
 
 ### Final ###
 
-FROM jellyfin/jellyfin:12.4.20261026-211555 AS final
+FROM jellyfin/jellyfin:12.4.20261026-211555@sha256:fea863d0cd9ec445985d9c75fc6ed64e38a1d2766cf0c250a33d553f4fc1b771 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

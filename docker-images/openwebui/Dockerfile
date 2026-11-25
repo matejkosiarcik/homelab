@@ -2,7 +2,7 @@
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM openwebui/open-webui:0.13.4 AS entrypoint
+FROM openwebui/open-webui:0.13.4@sha256:d5168bfbc28609eff5bea1b438dd864cf64d185cf6582c02244865e18385b901 AS entrypoint
 USER root
 COPY ./docker-images/openwebui/entrypoint-extra.sh /homelab/
 RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -20,7 +20,7 @@ RUN head -n 1 /app/backend/start.sh >/homelab/entrypoint-upstream-shebang.sh && 
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM openwebui/open-webui:0.13.4 AS runtime_dirs
+FROM openwebui/open-webui:0.13.4@sha256:d5168bfbc28609eff5bea1b438dd864cf64d185cf6582c02244865e18385b901 AS runtime_dirs
 USER root
 WORKDIR /homelab
 RUN mkdir -p '/homelab/original/app/backend/open_webui/static' && \
@@ -30,7 +30,7 @@ RUN mkdir -p '/homelab/original/app/backend/open_webui/static' && \
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -56,7 +56,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/start.sh
 
 ### Final ###
 
-FROM openwebui/open-webui:0.13.4 AS final
+FROM openwebui/open-webui:0.13.4@sha256:d5168bfbc28609eff5bea1b438dd864cf64d185cf6582c02244865e18385b901 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
