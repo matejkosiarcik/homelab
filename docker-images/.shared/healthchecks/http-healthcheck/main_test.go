@@ -126,7 +126,9 @@ func TestCheckEndpointsConcurrentAndIndependent(t *testing.T) {
 			writer.WriteHeader(http.StatusServiceUnavailable)
 			return
 		}
-		_, _ = writer.Write([]byte("ready"))
+		if _, err := writer.Write([]byte("ready")); err != nil {
+			t.Errorf("writer.Write() error = %v", err)
+		}
 	}))
 	defer server.Close()
 	body := "ready"
