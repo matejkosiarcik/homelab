@@ -53,7 +53,7 @@ RUN version="$(cat '/homelab/stunnel-version.txt')" && \
     mkdir -p '/homelab/bin' && \
     gcc -static -no-pie -Wl,--build-id=none,-z,noexecstack -o '/homelab/bin/stunnel' src/stunnel-*.o -lssl -lcrypto -lz && \
     strip --strip-all '/homelab/bin/stunnel' && \
-    sh '/homelab/validate-executable.sh' --static '/homelab/bin/stunnel'
+    sh '/homelab/validate-executable.sh' '/homelab/bin/stunnel'
 
 ### User setup ###
 

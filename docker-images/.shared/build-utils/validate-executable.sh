@@ -24,7 +24,7 @@ log() {
 }
 
 if [ "${#}" -lt 1 ]; then
-    log ERROR 'Not enough arguments. Executable path not provided.'
+    log ERROR 'Usage: validate-executable.sh EXECUTABLE'
     exit 1
 fi
 
@@ -46,6 +46,27 @@ fi
 # Executables should be built without BuildID - relevant for Rust and Go programs
 if printf '%s\n' "${executable_info}" | grep -i 'buildid\|build-id' >'/dev/null'; then
     log ERROR "$(printf 'Executable contains a BuildID: %s' "${executable_info}")"
+    exit 1
+fi
+
+if ! printf '%s\n' "${executable_info}" | grep -q 'ELF'; then
+    log ERROR "Static validation requires an ELF executable: ${executable_info}"
+    exit 1
+fi
+if ! program_headers="$(readelf -l "${1}" 2>&1)"; then
+    log ERROR "Could not inspect program headers: ${program_headers}"
+    exit 1
+fi
+if ! dynamic_section="$(readelf -d "${1}" 2>&1)"; then
+    log ERROR "Could not inspect dynamic section: ${dynamic_section}"
+    exit 1
+fi
+if printf '%s\n' "${program_headers}" | grep -q 'INTERP'; then
+    log ERROR "Executable requires an ELF interpreter: ${1}"
+    exit 1
+fi
+if printf '%s\n' "${dynamic_section}" | grep -q '(NEEDED)'; then
+    log ERROR "Executable requires shared libraries: ${1}"
     exit 1
 fi
 
