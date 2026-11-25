@@ -79,4 +79,4 @@ ENV HOMELAB_CONTAINER_NAME="omadacontroller" \
     SSL_CERT_NAME="" \
     SSL_KEY_NAME="" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec healthcheck --endpoint '{\"url\":\"https://127.0.0.1:'\"${MANAGE_HTTPS_PORT:-8043}\"'/login\",\"insecure\":true,\"status\":\"200\"}'" ]
+HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"https://127.0.0.1:${MANAGE_HTTPS_PORT:-8043}/login\",\"insecure\":true,\"status\":\"200\"}" ]

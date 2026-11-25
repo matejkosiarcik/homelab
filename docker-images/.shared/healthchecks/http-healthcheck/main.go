@@ -29,6 +29,8 @@ var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 
 const checkTimeout = 2 * time.Second
 
+var urlEnvironmentVariable = regexp.MustCompile(`\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}`)
+
 type healthcheckArgs struct {
 	URL                  string  `json:"url"`
 	Method               string  `json:"method"`
@@ -52,7 +54,7 @@ type commandArgs struct {
 
 func (commandArgs) Epilogue() string {
 	return `Endpoint JSON fields:
-  url                    Required file, http, https, or tcp URL
+  url                    Required file, http, https, or tcp URL; expands ${NAME} and ${NAME:-default}
   method                 HTTP method (default: GET)
   body                   Exact response or file body
   bodyRegex              Regular expression for the response or file body
@@ -88,6 +90,24 @@ func (args *healthcheckArgs) UnmarshalText(data []byte) error {
 	}
 	if endpoint.URL == "" {
 		return errors.New("endpoint url is required")
+	}
+	var missingVariable string
+	endpoint.URL = urlEnvironmentVariable.ReplaceAllStringFunc(endpoint.URL, func(placeholder string) string {
+		parts := urlEnvironmentVariable.FindStringSubmatch(placeholder)
+		value, exists := os.LookupEnv(parts[1])
+		if (!exists || value == "") && strings.Contains(placeholder, ":-") {
+			return parts[2]
+		}
+		if !exists && missingVariable == "" {
+			missingVariable = parts[1]
+		}
+		return value
+	})
+	if missingVariable != "" {
+		return fmt.Errorf("endpoint URL environment variable is unset: %s", missingVariable)
+	}
+	if endpoint.URL == "" {
+		return errors.New("endpoint url is empty after environment expansion")
 	}
 	if endpoint.Method == "" {
 		endpoint.Method = http.MethodGet

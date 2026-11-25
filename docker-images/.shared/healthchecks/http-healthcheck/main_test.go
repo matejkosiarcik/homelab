@@ -51,6 +51,50 @@ func TestEndpointArguments(t *testing.T) {
 	}
 }
 
+func TestEndpointURLEnvironmentExpansion(t *testing.T) {
+	t.Setenv("HEALTHCHECK_TEST_HOST", "localhost")
+	t.Setenv("HEALTHCHECK_TEST_PORT", "8443")
+	t.Setenv("HEALTHCHECK_TEST_EMPTY", "")
+	t.Setenv("HEALTHCHECK_TEST_NESTED", "${HEALTHCHECK_TEST_HOST}")
+	t.Setenv("HEALTHCHECK_TEST_MISSING_79381", "")
+	if err := os.Unsetenv("HEALTHCHECK_TEST_MISSING_79381"); err != nil {
+		t.Fatal(err)
+	}
+
+	for _, test := range []struct {
+		name    string
+		input   string
+		want    string
+		wantErr string
+	}{
+		{name: "multiple variables", input: `{"url":"https://${HEALTHCHECK_TEST_HOST}:${HEALTHCHECK_TEST_PORT}/${HEALTHCHECK_TEST_HOST}","body":"${HEALTHCHECK_TEST_HOST}"}`, want: "https://localhost:8443/localhost"},
+		{name: "default for missing", input: `{"url":"https://localhost:${HEALTHCHECK_TEST_MISSING_79381:-8043}"}`, want: "https://localhost:8043"},
+		{name: "default for empty", input: `{"url":"https://localhost:${HEALTHCHECK_TEST_EMPTY:-8043}"}`, want: "https://localhost:8043"},
+		{name: "set overrides default", input: `{"url":"https://localhost:${HEALTHCHECK_TEST_PORT:-8043}"}`, want: "https://localhost:8443"},
+		{name: "no recursive expansion", input: `{"url":"https://localhost/${HEALTHCHECK_TEST_NESTED}"}`, want: "https://localhost/${HEALTHCHECK_TEST_HOST}"},
+		{name: "unbraced is literal", input: `{"url":"https://localhost/$HEALTHCHECK_TEST_HOST"}`, want: "https://localhost/$HEALTHCHECK_TEST_HOST"},
+		{name: "missing variable", input: `{"url":"https://${HEALTHCHECK_TEST_MISSING_79381}"}`, wantErr: "HEALTHCHECK_TEST_MISSING_79381"},
+		{name: "empty URL", input: `{"url":"${HEALTHCHECK_TEST_EMPTY}"}`, wantErr: "empty after environment expansion"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			var endpoint healthcheckArgs
+			err := endpoint.UnmarshalText([]byte(test.input))
+			if test.wantErr != "" {
+				if err == nil || !strings.Contains(err.Error(), test.wantErr) {
+					t.Errorf("error = %v, want %q", err, test.wantErr)
+				}
+				return
+			}
+			if err != nil || endpoint.URL != test.want {
+				t.Fatalf("URL = %q, error = %v; want %q", endpoint.URL, err, test.want)
+			}
+			if endpoint.Body != nil && *endpoint.Body != "${HEALTHCHECK_TEST_HOST}" {
+				t.Errorf("body was expanded: %q", *endpoint.Body)
+			}
+		})
+	}
+}
+
 func TestInvalidEndpointArguments(t *testing.T) {
 	for _, argv := range [][]string{
 		{},
