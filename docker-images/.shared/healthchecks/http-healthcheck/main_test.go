@@ -16,13 +16,97 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/alexflint/go-arg"
 	"github.com/itchyny/gojq"
 )
+
+func TestEndpointArguments(t *testing.T) {
+	var args commandArgs
+	parser, err := arg.NewParser(arg.Config{}, &args)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = parser.Parse([]string{
+		"--endpoint", `{"url":"https://localhost/a","method":"POST","body":"","status":"200,204","insecure":true,"tlsServerCACert":"ca","tlsClientCert":"cert","tlsClientKey":"key","basicAuthUsername":"user","basicAuthPassword":"pass","basicAuthUsernameEnv":"USER_ENV","basicAuthPasswordEnv":"PASS_ENV"}`,
+		"--endpoint", `{"url":"http://localhost/b","bodyRegex":"ready"}`,
+		"--endpoint", `{"url":"http://localhost/c","bodyJSON":".healthy"}`,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	empty := ""
+	want := []healthcheckArgs{
+		{URL: "https://localhost/a", Method: "POST", Body: &empty, Status: "200,204", Insecure: true, TLSServerCACert: "ca", TLSClientCert: "cert", TLSClientKey: "key", BasicAuthUsername: "user", BasicAuthPassword: "pass", BasicAuthUsernameEnv: "USER_ENV", BasicAuthPasswordEnv: "PASS_ENV"},
+		{URL: "http://localhost/b", Method: "GET", BodyRegex: "ready"},
+		{URL: "http://localhost/c", Method: "GET", BodyJSON: ".healthy"},
+	}
+	if !reflect.DeepEqual(args.Endpoints, want) {
+		t.Errorf("endpoints = %#v, want %#v", args.Endpoints, want)
+	}
+}
+
+func TestInvalidEndpointArguments(t *testing.T) {
+	for _, argv := range [][]string{
+		{},
+		{"--url", "http://localhost"},
+		{"--endpoint", `null`},
+		{"--endpoint", `{}`},
+		{"--endpoint", `{"url":"http://localhost","insec ure":true}`},
+		{"--endpoint", `{"url":"http://localhost"} {}`},
+		{"--endpoint", `{"url":"http://localhost","insecure":"true"}`},
+	} {
+		var args commandArgs
+		parser, err := arg.NewParser(arg.Config{}, &args)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := parser.Parse(argv); err == nil {
+			t.Errorf("Parse(%q) succeeded, want error", argv)
+		}
+	}
+}
+
+func TestCheckEndpointsConcurrentAndIndependent(t *testing.T) {
+	arrived := make(chan struct{}, 2)
+	release := make(chan struct{})
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		arrived <- struct{}{}
+		<-release
+		if request.URL.Path == "/bad" {
+			writer.WriteHeader(http.StatusServiceUnavailable)
+			return
+		}
+		_, _ = writer.Write([]byte("ready"))
+	}))
+	defer server.Close()
+	body := "ready"
+	results := make(chan []error, 1)
+	go func() {
+		results <- checkEndpoints([]healthcheckArgs{
+			{URL: server.URL + "/good", Body: &body},
+			{URL: server.URL + "/bad"},
+		})
+	}()
+	for range 2 {
+		select {
+		case <-arrived:
+		case <-time.After(time.Second):
+			close(release)
+			t.Fatal("checks did not run concurrently")
+		}
+	}
+	close(release)
+	errs := <-results
+	if errs[0] != nil || errs[1] == nil {
+		t.Errorf("checkEndpoints() = %v, want success then failure", errs)
+	}
+}
 
 func TestCheckHTTP(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
@@ -67,7 +151,7 @@ func TestCheckHTTPLiteralBody(t *testing.T) {
 func TestCheckHTTPOnlyAllowsOneBodyValidation(t *testing.T) {
 	body := "healthy"
 	err := checkHTTP(healthcheckArgs{URL: "http://localhost", Body: &body, BodyRegex: "healthy"})
-	if err == nil || !strings.Contains(err.Error(), "use only one of --body, --body-regex, and --body-json") {
+	if err == nil || !strings.Contains(err.Error(), "use only one of body, bodyRegex, and bodyJSON") {
 		t.Errorf("checkHTTP() error = %v, want mutually-exclusive body-validation error", err)
 	}
 }
@@ -219,7 +303,7 @@ func TestTLSClientConfigRequiresCertificateAndKey(t *testing.T) {
 		{TLSClientCert: "cert.pem"},
 		{TLSClientKey: "key.pem"},
 	} {
-		if _, err := tlsClientConfig(args); err == nil || !strings.Contains(err.Error(), "both --tls-client-cert and --tls-client-key") {
+		if _, err := tlsClientConfig(args); err == nil || !strings.Contains(err.Error(), "both tlsClientCert and tlsClientKey") {
 			t.Errorf("tlsClientConfig(%+v) error = %v, want incomplete client-certificate error", args, err)
 		}
 	}
