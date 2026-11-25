@@ -91,5 +91,5 @@ ENV HOMELAB_CONTAINER_NAME="owntracks-decryptor" \
     SECRET_KEY="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:8080/.health" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

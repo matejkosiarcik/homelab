@@ -53,4 +53,4 @@ ENV GOTIFY_DEFAULTUSER_PASS="" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec /homelab/bin/healthcheck --url \"http://localhost:${GOTIFY_SERVER_PORT}/health\" --status 200 --body-json '.health == \"green\" and .database == \"green\"'" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec healthcheck --url \"http://localhost:${GOTIFY_SERVER_PORT}/health\" --status 200 --body-json '.health == \"green\" and .database == \"green\"'" ]

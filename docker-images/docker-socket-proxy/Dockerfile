@@ -118,5 +118,5 @@ ENV ALLOW_ARCHIVE="0" \
     VOLUMES="0"
 USER homelab
 VOLUME /var/run/docker.sock
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "tcp://localhost:2375" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "tcp://localhost:2375" ]
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

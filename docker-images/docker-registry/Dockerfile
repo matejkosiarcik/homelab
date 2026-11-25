@@ -95,6 +95,6 @@ ENV HOMELAB_CONTAINER_NAME="docker-registry" \
     REGISTRY_PROXY_USERNAME="" \
     TZ="Europe/Bratislava"
 # TODO: Eventually enable OpenTelemetry
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost" ]
 USER homelab
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

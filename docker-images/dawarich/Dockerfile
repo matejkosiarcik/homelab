@@ -95,6 +95,6 @@ ENV APPLICATION_PROTOCOL="http" \
     TZ="Europe/Bratislava" \
     WEBUI_SECRET_KEY=""
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body-json", ".status == \"ok\"" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body-json", ".status == \"ok\"" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []
