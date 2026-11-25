@@ -94,9 +94,6 @@ class MainConfig:  # pylint: disable=too-many-instance-attributes
     docker_compose_command_args: list[str] = field(default_factory=list)
 
 
-main_config: MainConfig
-
-
 class LogFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         timestamp = datetime.fromtimestamp(record.created, UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
@@ -172,7 +169,7 @@ def get_canonical_app_value(function_name: str) -> str:
     ).strip()
 
 
-def load_app_config():
+def load_app_config(main_config: MainConfig):
     config_path = app_dir / "config" / "config.yml"
     if not config_path.exists():
         raise FileNotFoundError("App config.yml not found")
@@ -207,7 +204,7 @@ def load_env_file(env_path):
             os.environ[key] = value
 
 
-def load_full_env():
+def load_full_env(main_config: MainConfig):
     app_config = main_config.app
     env_mode = main_config.env_mode
     default_protocol = "smb" if "samba" in app_config.app_fullname else "https"
@@ -254,7 +251,7 @@ def load_full_env():
             os.environ[f"DOCKER_COMPOSE_NETWORK_DOMAIN_{i}"] = domain
 
 
-def symlink_app():
+def symlink_app(main_config: MainConfig):
     app_compose_dir = git_dir / "docker-compose" / main_config.app.app_type
     for file in ["compose.yml", "compose.override.yml", "compose.prod.yml"]:
         try:
@@ -266,7 +263,7 @@ def symlink_app():
     os.symlink(app_compose_dir / "compose.override-prod.yml", "compose.prod.yml")
 
 
-def get_docker_compose_config() -> str:
+def get_docker_compose_config(main_config: MainConfig) -> str:
     return subprocess.check_output(["docker", "compose", *main_config.docker_compose_args, "config", "--format", "json"], encoding="utf-8")
 
 
@@ -297,7 +294,7 @@ def get_docker_images_shasum(config: str) -> str:
     return "\n".join(output)
 
 
-def get_docker_containers_are_running(config_json: str) -> bool:
+def get_docker_containers_are_running(config_json: str, main_config: MainConfig) -> bool:
     if main_config.when_mode == "always":
         return False
 
@@ -404,13 +401,13 @@ def run_with_spinner(
         sys.exit(0)
 
 
-def docker_build():
+def docker_build(main_config: MainConfig):
     commands = ["docker", "buildx", "bake", *main_config.docker_buildx_bake_args]
     docker_log_file = log_dir / "docker-build.log"
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
-def docker_debug_compose():
+def docker_debug_compose(main_config: MainConfig):
     compose_file = log_dir / f"compose-{main_config.env_mode}.yml"
     commands = ["docker", "compose", *main_config.docker_compose_args, "config", "--output", str(compose_file)]
     docker_log_file = log_dir / "docker-debug-compose.log"
@@ -418,7 +415,7 @@ def docker_debug_compose():
     log.info("Resolved compose config written to %s", compose_file)
 
 
-def docker_stop():
+def docker_stop(main_config: MainConfig):
     commands = ["docker", "compose", *main_config.docker_compose_args, "down", *main_config.docker_compose_command_args]
     docker_log_file = log_dir / "docker-stop.log"
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
@@ -434,10 +431,10 @@ def clear_app_runtime_logs():
             os.unlink(log_entry.path)
 
 
-def docker_start():
+def docker_start(main_config: MainConfig):
     clear_app_runtime_logs()
 
-    config_json = get_docker_compose_config()
+    config_json = get_docker_compose_config(main_config)
     config_obj = json.loads(config_json)
 
     # Extract all volumes from docker-compose yaml
@@ -476,7 +473,7 @@ def docker_start():
     run_with_spinner(commands, "Starting", "Start", docker_log_file, main_config.env_mode == "dev")
 
 
-def create_secrets():
+def create_secrets(main_config: MainConfig):
     docker_log_file = log_dir / "secrets.log"
     commands = [
         "sh",
@@ -486,7 +483,7 @@ def create_secrets():
     run_with_spinner(commands, "Secrets", "Secrets", docker_log_file, False)
 
 
-def run_main_command(command: str):
+def run_main_command(command: str, main_config: MainConfig):
     main_config.docker_compose_args = [
         "--file",
         "compose.yml",
@@ -524,40 +521,39 @@ def run_main_command(command: str):
 
     # Execute commands
     if command == "build":
-        docker_build()
+        docker_build(main_config)
     elif command == "debug-compose":
-        docker_debug_compose()
+        docker_debug_compose(main_config)
     elif command == "deploy":
         if main_config.include_secrets:
-            create_secrets()
-        config_json = get_docker_compose_config()
+            create_secrets(main_config)
+        config_json = get_docker_compose_config(main_config)
         shasum_before = get_docker_images_shasum(config_json)
-        docker_build()
+        docker_build(main_config)
         shasum_after = get_docker_images_shasum(config_json)
         images_changed = shasum_before != shasum_after
-        all_containers_running = get_docker_containers_are_running(config_json)
+        all_containers_running = get_docker_containers_are_running(config_json, main_config)
         if main_config.when_mode == "always" or images_changed or not all_containers_running:
-            docker_stop()
-            docker_start()
+            docker_stop(main_config)
+            docker_start(main_config)
         else:
             print(f"{ascii_chars.skip} Stop skipped")
             print(f"{ascii_chars.skip} Start skipped")
     elif command == "restart":
-        docker_stop()
-        docker_start()
+        docker_stop(main_config)
+        docker_start(main_config)
     elif command == "start":
-        docker_start()
+        docker_start(main_config)
     elif command == "stop":
-        docker_stop()
+        docker_stop(main_config)
     elif command == "secrets":
-        create_secrets()
+        create_secrets(main_config)
     else:
         log.error("Unrecognized command '%s'", command)
         sys.exit(1)
 
 
 def main(argv):
-    global main_config  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -627,10 +623,10 @@ def main(argv):
         log.error("Unrecognized command: %s", command)
         sys.exit(1)
 
-    load_app_config()
-    load_full_env()
-    symlink_app()
-    run_main_command(command)
+    load_app_config(main_config)
+    load_full_env(main_config)
+    symlink_app(main_config)
+    run_main_command(command, main_config)
 
 
 if __name__ == "__main__":
