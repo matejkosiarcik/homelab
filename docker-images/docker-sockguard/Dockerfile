@@ -55,7 +55,7 @@ FROM codeswhat/sockguard:2.4.9 AS sockguard_app
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
 RUN mkdir -p '/fsroot/bin' && \
-    cp '/bin/date' '/bin/sh' '/fsroot/bin/'
+    cp -a '/bin/date' '/bin/sh' '/fsroot/bin/'
 
 ### User setup ###
 

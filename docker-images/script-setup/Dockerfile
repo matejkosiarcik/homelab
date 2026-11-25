@@ -99,7 +99,7 @@ RUN tag="$(cat '/homelab/curl-tag.txt')" && \
 FROM busybox:1.38.0-uclibc AS busybox
 USER root
 RUN mkdir -p '/fsroot/bin' && \
-    cp '/bin/date' '/bin/grep' '/bin/sed' '/bin/sh' '/bin/sleep' '/bin/timeout' '/bin/wc' '/fsroot/bin/'
+    cp -a '/bin/date' '/bin/grep' '/bin/sed' '/bin/sh' '/bin/sleep' '/bin/timeout' '/bin/wc' '/fsroot/bin/'
 
 ### Healthcheck ###
 
