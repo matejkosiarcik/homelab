@@ -47,7 +47,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM ollama/ollama:0.40.18@sha256:1cabd20e1762a7a8444bf4b7110b346d923cd77ab6c97c984434140638c913ec AS final
+FROM ollama/ollama:0.40.18 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
