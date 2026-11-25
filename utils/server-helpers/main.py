@@ -4,6 +4,7 @@ import argparse
 import fnmatch
 import logging
 import os
+import re
 import subprocess
 import sys
 import time
@@ -12,15 +13,49 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import cast
 
+
+def get_server_and_git_dirs() -> tuple[Path, Path]:
+    """Return the server directory only when invoked from a server directory."""
+    current_dir = Path.cwd().resolve()
+    try:
+        repository_dir = Path(
+            subprocess.check_output(
+                ["git", "rev-parse", "--show-toplevel"],
+                cwd=current_dir,
+                stderr=subprocess.DEVNULL,
+                encoding="utf-8",
+            ).strip()
+        ).resolve()
+    except subprocess.CalledProcessError as error:
+        raise ValueError(f"Current directory is not in a Git working tree: {current_dir}") from error
+
+    try:
+        relative_dir = current_dir.relative_to(repository_dir)
+    except ValueError as error:
+        raise ValueError(f"Current directory is outside this Git working tree: {current_dir}") from error
+
+    if not re.fullmatch(r"servers/[^/]+", relative_dir.as_posix()):
+        raise ValueError(f"Run server tasks from <git-dir>/servers/<server>; got: {current_dir}")
+    if not (current_dir / "docker-apps").is_dir():
+        raise ValueError(f"Server docker-apps directory is missing: {current_dir / 'docker-apps'}")
+
+    return current_dir, repository_dir
+
+
+try:
+    server_dir, git_dir = get_server_and_git_dirs()
+except ValueError as error:
+    print(f"Error: {error}", file=sys.stderr)
+    sys.exit(2)
+
+
 local_tz = datetime.now().astimezone().tzinfo
 start_datetime = datetime.now(local_tz)
 start_datestr = start_datetime.strftime(r"%Y-%m-%d_%H-%M-%S")
 start_time = start_datetime.timestamp()
 os.environ["START_DATE"] = start_datestr
 
-server_dir = Path.cwd()
 server_name = server_dir.name
-git_dir = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], encoding="utf-8").strip())
 log_file = git_dir / ".logs" / start_datestr / "server.txt"
 
 log_file.parent.mkdir(parents=True, exist_ok=True)
@@ -84,7 +119,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
 
     # Get a list of all apps
     for item in sorted((server_dir / "docker-apps").iterdir()):
-        if item.is_dir() and not item.name.startswith("."):
+        if item.is_dir() and not item.name.startswith(".") and (item / "config" / "config.yml").is_file():
             all_apps_list.append(item.name)
 
     def get_matching_apps(app_patterns: list[str]) -> list[str]:
@@ -210,7 +245,7 @@ def server_action(action: str):
         cli_args.append(f"--{main_config.when_mode}")
 
     for app in main_config.apps:
-        subprocess.check_call(["task", "--taskfile", "./Taskfile.yml", action, "--", *cli_args], cwd=server_dir / "docker-apps" / app)
+        subprocess.check_call(["task", action, "--", *cli_args], cwd=server_dir / "docker-apps" / app)
         print("\n---\n")
 
     total_elapsed = time.time() - start_time

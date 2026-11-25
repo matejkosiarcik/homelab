@@ -4,35 +4,42 @@ silent: true
 tasks:
   build:
     desc: Build current app
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py build {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' build {{.CLI_ARGS}}
 
   debug-compose:
     desc: Dump resolved compose config for current app
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py debug-compose {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' debug-compose {{.CLI_ARGS}}
 
   deploy:
     desc: Deploy current app (build+stop+start)
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py deploy {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' deploy {{.CLI_ARGS}}
 
   restart:
     desc: Restart current app
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py restart {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' restart {{.CLI_ARGS}}
 
   secrets:
     desc: Create new secrets for current app
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py secrets {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' secrets {{.CLI_ARGS}}
 
   start:
     desc: Start current app
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py start {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' start {{.CLI_ARGS}}
 
   stop:
     desc: Stop current app
+    dir: "{{.USER_WORKING_DIR}}"
     cmds:
-      - python3 ../../../../utils/app-helpers/main.py stop {{.CLI_ARGS}}
+      - python3 '{{.ROOT_DIR}}/../../../utils/app-helpers/main.py' stop {{.CLI_ARGS}}

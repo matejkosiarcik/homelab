@@ -76,9 +76,9 @@ configuration, integrations, or generated assets.
 
 - Do not connect to, deploy to, restart, or otherwise modify the running physical servers (Odroids and Raspberry Pis).
 - Add a server-specific application directory at `servers/<server>/docker-apps/<instance>/` only when the user
-  explicitly requests deployment on that named server. Include the standard `Taskfile.yml` that imports
-  `utils/app-helpers/Taskfile.yml` and `config/config.yml` with the instance's type or variant when needed. One
-  deployment instance maps to one `docker-compose` stack.
+  explicitly requests deployment on that named server. The shared `servers/<server>/docker-apps/Taskfile.yml`
+  imports `utils/app-helpers/Taskfile.yml`; do not add an app-level Taskfile. Include `config/config.yml` with the
+  instance's type or variant when needed. One deployment instance maps to one `docker-compose` stack.
 - For a requested deployment instance, determine the highest IP already used in that server's
   `docker-apps/*/config/config.yml` files and assign the next IP address. Preserve the default domain unless a domain
   override is requested.

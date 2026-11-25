@@ -20,11 +20,47 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import cast
 
+
+def get_app_and_git_dirs() -> tuple[Path, Path]:
+    """Return the app directory only when Task was invoked from a deployed app."""
+    current_dir = Path.cwd().resolve()
+    try:
+        repository_dir = Path(
+            subprocess.check_output(
+                ["git", "rev-parse", "--show-toplevel"],
+                cwd=current_dir,
+                stderr=subprocess.DEVNULL,
+                encoding="utf-8",
+            ).strip()
+        ).resolve()
+    except subprocess.CalledProcessError as error:
+        raise ValueError(f"Current directory is not in a Git working tree: {current_dir}") from error
+
+    try:
+        relative_dir = current_dir.relative_to(repository_dir)
+    except ValueError as error:
+        raise ValueError(f"Current directory is outside this Git working tree: {current_dir}") from error
+
+    expected_path = "<git-dir>/servers/<server>/docker-apps/<app>"
+    if not re.fullmatch(r"servers/[^/]+/docker-apps/[^/]+", relative_dir.as_posix()):
+        raise ValueError(f"Run app tasks from {expected_path}; got: {current_dir}")
+
+    if not (current_dir / "config" / "config.yml").is_file():
+        raise ValueError(f"App config is missing from {current_dir}; expected: {current_dir / 'config' / 'config.yml'}")
+
+    return current_dir, repository_dir
+
+
+try:
+    app_dir, git_dir = get_app_and_git_dirs()
+except ValueError as error:
+    print(f"Error: {error}", file=sys.stderr)
+    sys.exit(2)
+
+
 local_tz = datetime.now().astimezone().tzinfo
 start_datestr = os.environ["START_DATE"] if os.environ.get("START_DATE") is not None else datetime.now(local_tz).strftime(r"%Y-%m-%d_%H-%M-%S")
 
-app_dir = Path.cwd()
-git_dir = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], encoding="utf-8").strip())
 main_log_dir = app_dir / "app-logs"
 log_dir = main_log_dir / ".meta"
 log_file_main = log_dir / "task.log"
