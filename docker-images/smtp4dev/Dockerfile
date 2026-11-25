@@ -49,6 +49,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /app/wwwroot/favicon.ico /app/wwwroot/favicon.png /app/wwwroot/
 ENV HOMELAB_CONTAINER_NAME="smtp4dev" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     ServerOptions__LockSettings="true" \
     ServerOptions__Users__0__DefaultMailbox="Default" \
     ServerOptions__Users__0__Password="" \

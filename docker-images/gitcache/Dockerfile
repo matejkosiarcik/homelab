@@ -87,6 +87,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="gitcache" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
+    PATH="/homelab/bin:${PATH}" \
     PGPASSWORD="" \
     REDIS_PASSWORD="" \
     TZ="Europe/Bratislava"

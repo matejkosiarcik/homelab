@@ -65,6 +65,7 @@ ENV HOMELAB_CONTAINER_NAME="vikunja" \
     HOMELAB_CONTAINER_VARIANT="default" \
     HOMELAB_TEST_PASSWORD="" \
     MATEJ_PASSWORD="" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava" \
     VIKUNJA_METRICS_PASSWORD="" \
     VIKUNJA_SERVICE_SECRET=""

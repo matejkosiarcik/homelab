@@ -53,6 +53,7 @@ ENV ADMIN_TOKEN="" \
     LOG_LEVEL="error" \
     LOG_LEVEL="warn" \
     PASSWORD_ITERATIONS="500000" \
+    PATH="/homelab/bin:${PATH}" \
     SENDS_ALLOWED="true" \
     SIGNUPS_ALLOWED="false" \
     SIGNUPS_VERIFY="true" \

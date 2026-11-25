@@ -65,6 +65,7 @@ ENV DB="sqlite" \
     HOMELAB_CONTAINER_NAME="healthchecks" \
     HOMELAB_CONTAINER_VARIANT="default" \
     INTEGRATIONS_ALLOW_PRIVATE_IPS="True" \
+    PATH="/homelab/bin:${PATH}" \
     PROMETHEUS_ENABLED="True" \
     REGISTRATION_OPEN="False" \
     SECRET_KEY="" \

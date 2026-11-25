@@ -57,6 +57,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV AUTOCONNECT="true" \
     HOMELAB_CONTAINER_NAME="novnc" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava" \
     VNC_SERVER="PLACEHOLDER" \
     WEB_AUTH_PASSWORD="" \

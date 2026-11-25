@@ -80,6 +80,7 @@ ARG UID=1000
 ENV ENABLE_LETSENCRYPT="False" \
     HOMELAB_CONTAINER_NAME="openspeedtest" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PGID="${GID}" \
     PUID="${UID}" \
     TZ="Europe/Bratislava"

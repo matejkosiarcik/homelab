@@ -67,6 +67,7 @@ ENV HOMELAB_CONTAINER_NAME="jellyfin" \
     HOMELAB_CONTAINER_VARIANT="default" \
     JELLYFIN_CACHE_DIR="/cache" \
     JELLYFIN_LOG_DIR="/logs" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8096" ]

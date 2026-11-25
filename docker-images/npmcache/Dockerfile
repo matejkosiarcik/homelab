@@ -50,7 +50,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="npmcache" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PATH="/srv/app:${PATH}" \
+    PATH="/homelab/bin:/srv/app:${PATH}" \
     REDIS_ADDRESS="redis:6379" \
     REDIS_PASSWORD="" \
     TZ="Europe/Bratislava"

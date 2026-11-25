@@ -38,6 +38,7 @@ ENV ALLOW_CDP_LOG="no" \
     CHROME_USER_DATA_DIR="/homelab/chrome-user-data" \
     HOMELAB_CONTAINER_NAME="sockpuppetbrowser" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "python3 /usr/src/app/docker-health-check.py --host 'http://localhost' || exit 1" ]

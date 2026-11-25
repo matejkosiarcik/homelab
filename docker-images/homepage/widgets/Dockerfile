@@ -87,6 +87,7 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="homepage-widgets" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
+    PATH="/homelab/bin:${PATH}" \
     PROMETHEUS_PASSWORD="" \
     SMTP4DEV_PASSWORD="" \
     TZ="Europe/Bratislava"

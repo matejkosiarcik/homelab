@@ -101,7 +101,7 @@ WORKDIR /homelab
 USER homelab
 ENV HOMELAB_CONTAINER_NAME="libretranslate" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PATH="/homelab/python-vendor/bin:${PATH}" \
+    PATH="/homelab/bin:/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor" \
     TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000" ]

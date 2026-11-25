@@ -49,6 +49,7 @@ ENV APP_ENV="production" \
     APP_PASSWORD="" \
     HOMELAB_CONTAINER_NAME="koffan" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PORT="8080" \
     TZ="Europe/Bratislava"
 USER homelab

@@ -71,7 +71,8 @@ ENV bootstrap.memory_lock="true" \
     HOMELAB_CONTAINER_NAME="opensearch" \
     HOMELAB_CONTAINER_VARIANT="default" \
     OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx512m" \
-    plugins.security.disabled="true"
+    plugins.security.disabled="true" \
+    PATH="/homelab/bin:${PATH}"
 
 # Port 9200 - OpenSearch HTTP API
 # Port 9600 - OpenSearch Performance Analyzer

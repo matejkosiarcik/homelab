@@ -302,7 +302,7 @@ ENV FAVICON_PASSWORD="" \
     HOMELAB_CONTAINER_NAME="favicons" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
-    PATH="/homelab/imagemagick/bin:${PATH}" \
+    PATH="/homelab/bin:/homelab/imagemagick/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080/.health" ]

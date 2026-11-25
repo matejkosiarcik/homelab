@@ -138,6 +138,7 @@ ENV GATUS_CONFIG_PATH="/homelab/config.yml" \
     GATUS_LOG_LEVEL="INFO" \
     HOMELAB_CONTAINER_NAME="gatus" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PORT="8080" \
     TZ="Europe/Bratislava"
 USER homelab

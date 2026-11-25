@@ -54,6 +54,7 @@ ENV DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_VARIANT="default" \
     JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:MinRAMPercentage=60.0 -XX:MaxRAMPercentage=90.0 --add-opens=java.base/java.lang=ALL-UNNAMED" \
     RP_AMQP_ANALYZER-VHOST="app-analyzer" \
+    PATH="/homelab/bin:${PATH}" \
     RP_AMQP_APIPASS="" \
     RP_AMQP_APIPORT="15672" \
     RP_AMQP_APIUSER="rabbitmq" \

@@ -69,6 +69,7 @@ RUN chown -R homelab:homelab /app && \
 ENV HOMELAB_CONTAINER_NAME="openwebui" \
     HOMELAB_CONTAINER_VARIANT="default" \
     OLLAMA_BASE_URL="" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava" \
     WEBUI_SECRET_KEY=""
 USER homelab

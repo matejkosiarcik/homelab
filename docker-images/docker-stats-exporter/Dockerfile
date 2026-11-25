@@ -57,6 +57,7 @@ ENV DOCKER_HOST="tcp://docker-sockguard:2375" \
     HOMELAB_CONTAINER_NAME="docker-stats-exporter" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9487" ]

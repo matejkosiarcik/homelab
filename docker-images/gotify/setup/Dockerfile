@@ -119,6 +119,7 @@ ENV GOTIFY_DEFAULTUSER_NAME="matej" \
     HOMELAB_CONTAINER_NAME="script-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava" \
     USER_HOMELAB_TEST_PASSWORD="" \
     USER_HOMELAB_VIEWER_PASSWORD="" \

@@ -56,6 +56,7 @@ ENV HOMELAB_CONTAINER_NAME="minio-server" \
     HOMELAB_CONTAINER_VARIANT="default" \
     MINIO_ROOT_PASSWORD="" \
     MINIO_ROOT_USER="matej" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9000/minio/health/live" ]

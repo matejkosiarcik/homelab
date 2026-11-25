@@ -42,6 +42,7 @@ ENV HOMELAB_CONTAINER_NAME="mongodb" \
     MONGO_INITDB_ROOT_USERNAME="root" \
     MONGO_PASSWORD="" \
     MONGO_USER="mongo" \
+    PATH="/homelab/bin:${PATH}" \
     PORT="27017" \
     TZ="Europe/Bratislava"
 USER homelab

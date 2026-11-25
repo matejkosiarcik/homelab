@@ -202,6 +202,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="unbound" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "unbound-control", "-q", "-c", "/homelab/unbound.conf", "status" ]

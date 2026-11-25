@@ -163,6 +163,7 @@ ENV ADMIN_EMAIL="" \
     MAIL_SCHEME="" \
     MAIL_USERNAME="" \
     NOTIFICATION_POLLING="5s" \
+    PATH="/homelab/bin:${PATH}" \
     PGID="${GID}" \
     PUBLIC_DASHBOARD="false" \
     PUID="${UID}" \

@@ -57,6 +57,7 @@ COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 USER homelab
 ENV HOMELAB_CONTAINER_NAME="ollama" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:11434" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -47,6 +47,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV BODY_SIZE_LIMIT="Infinity" \
     HOMELAB_CONTAINER_NAME="adventurelog" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PUBLIC_SERVER_URL="http://app-backend:8000" \
     TZ="Europe/Bratislava"
 USER homelab

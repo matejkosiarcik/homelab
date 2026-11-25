@@ -69,6 +69,7 @@ ENV BASE_URL="${HOMELAB_APP_EXTERNAL_URL}" \
     HOMELAB_CONTAINER_VARIANT="default" \
     KNEX_REJECT_UNAUTHORIZED_SSL_CERTIFICATE="false" \
     NODE_EXTRA_CA_CERTS="/homelab/certs/postgres.crt" \
+    PATH="/homelab/bin:${PATH}" \
     PGSSLMODE="verify-full" \
     SECRET_KEY="" \
     TZ="Europe/Bratislava"

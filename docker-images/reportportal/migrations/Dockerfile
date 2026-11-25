@@ -62,6 +62,7 @@ USER homelab
 
 ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     POSTGRES_DB="database" \
     POSTGRES_PASSWORD="" \
     POSTGRES_PORT="5432" \

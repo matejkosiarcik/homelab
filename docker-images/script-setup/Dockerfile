@@ -159,6 +159,7 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="script-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     SPEEDTEST_RUN_TOKEN="" \
     TZ="Europe/Bratislava"
 USER homelab

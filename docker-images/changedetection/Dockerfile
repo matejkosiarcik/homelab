@@ -48,6 +48,7 @@ ENV FETCH_WORKERS="4" \
     HOMELAB_CONTAINER_NAME="changedetection" \
     HOMELAB_CONTAINER_VARIANT="default" \
     LOGGER_LEVEL="WARNING" \
+    PATH="/homelab/bin:${PATH}" \
     PLAYWRIGHT_DRIVER_URL="ws://sockpuppetbrowser:3000" \
     TZ="Europe/Bratislava"
 USER homelab

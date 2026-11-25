@@ -53,6 +53,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV ERR_ERL_UNEXPECTED_X_FORWARDED_FOR="false" \
     HOMELAB_CONTAINER_NAME="actualbudget" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 WORKDIR /homelab/app
 USER homelab

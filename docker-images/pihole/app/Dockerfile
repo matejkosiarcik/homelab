@@ -144,6 +144,7 @@ ENV DHCP_ACTIVE="false" \
     FTLCONF_webserver_interface_theme="default-darker" \
     HOMELAB_CONTAINER_NAME="pihole" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PIHOLE_GID="${GID}" \
     PIHOLE_UID="${UID}" \
     TZ="Europe/Bratislava"

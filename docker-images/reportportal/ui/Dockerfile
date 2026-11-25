@@ -50,6 +50,7 @@ USER homelab
 
 ENV HOMELAB_CONTAINER_NAME="reportportal-ui" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     RP_SERVER_PORT="8080" \
     TZ="Europe/Bratislava"
 
