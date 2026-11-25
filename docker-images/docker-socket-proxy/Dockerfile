@@ -25,6 +25,20 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
     --mount=type=cache,target=/root/.cache/go-build,sharing=shared,id=homelab_go_gobuildcache \
     CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o healthcheck .
 
+### App ###
+
+FROM linuxserver/socket-proxy:3.4.7 AS app
+USER root
+RUN mkdir -p /approot/bin /approot/lib /approot/usr/bin /approot/usr/lib /approot/usr/sbin /approot/usr/share/zoneinfo/Europe && \
+    cp -a /bin/busybox /bin/cat /bin/mkdir /bin/sed /bin/sh /approot/bin/ && \
+    cp -a /lib/ld-musl-*.so.* /lib/libc.musl-*.so.* /approot/lib/ && \
+    cp -a /docker-entrypoint.sh /templates /approot/ && \
+    cp -a /usr/sbin/haproxy /approot/usr/bin/ && \
+    ln -s ../bin/haproxy /approot/usr/sbin/haproxy && \
+    cp -a /usr/lib/libcrypto.so.* /usr/lib/libpcre2-8.so.* /usr/lib/libssl.so.* /usr/lib/libz.so.* /approot/usr/lib/ && \
+    cp -L /usr/lib/liblua-*.so.* /approot/usr/lib/ && \
+    cp -L /usr/share/zoneinfo/Europe/Bratislava /approot/usr/share/zoneinfo/Europe/
+
 ### Prefinal ###
 
 FROM scratch AS homelab_dir
@@ -32,16 +46,18 @@ WORKDIR /homelab
 COPY --from=healthcheck_build /homelab/healthcheck /homelab/bin/
 
 FROM scratch AS prefinal
+COPY --from=app /approot /approot
 COPY --from=user_setup /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=user_setup /home/homelab /home/homelab
 COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM linuxserver/socket-proxy:3.4.7 AS final
+FROM scratch AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
+COPY --from=prefinal /approot/ /
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
@@ -89,9 +105,11 @@ ENV ALLOW_ARCHIVE="0" \
     PING="0" \
     PLUGINS="0" \
     POST="0" \
+    PATH="/homelab/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
     SECRETS="0" \
     SERVICES="0" \
     SESSION="0" \
+    SOCKET_PATH="/var/run/docker.sock" \
     SWARM="0" \
     SYSTEM="0" \
     TASKS="0" \
@@ -101,3 +119,4 @@ ENV ALLOW_ARCHIVE="0" \
 USER homelab
 VOLUME /var/run/docker.sock
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "tcp://localhost:2375" ]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
