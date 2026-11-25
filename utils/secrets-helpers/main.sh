@@ -2107,6 +2107,10 @@ dockerstats | dozzleagent | ntfy | pihole | renovatebot)
     write_mtls_ca client sockguard "${initial_output}/${mtls_client_dir}"
     write_mtls_cert_for_client sockguard "${initial_output}/${mtls_client_dir}"
     ;;
+
+*)
+    true
+    ;;
 esac
 
 # Lower permissions for all secret files
