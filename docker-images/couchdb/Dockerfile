@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM golang:1.27.4-trixie AS envsubst_build
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS envsubst_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_envsubst_build_aptcache \
@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 COPY ./docker-images/.shared/build-utils/validate-executable.sh /homelab/
 RUN sh validate-executable.sh /homelab/bin/envsubst
 
-FROM couchdb:3.5.3 AS entrypoint
+FROM couchdb:3.5.3@sha256:0ba6b4b8dd823232185fa2c7de04634b925be62f97c9b7cbece7dd9119470e17 AS entrypoint
 USER root
 WORKDIR /homelab
 COPY ./docker-images/couchdb/entrypoint-extra.sh /homelab/
@@ -32,14 +32,14 @@ RUN head -n 1 /docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && 
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM couchdb:3.5.3 AS runtime_dirs
+FROM couchdb:3.5.3@sha256:0ba6b4b8dd823232185fa2c7de04634b925be62f97c9b7cbece7dd9119470e17 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/opt/couchdb/etc/local.d' && \
     cp -R '/opt/couchdb/etc/local.d/.' '/homelab/original/opt/couchdb/etc/local.d'
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -51,7 +51,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -79,7 +79,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/docker-en
 
 ### Final ###
 
-FROM couchdb:3.5.3 AS final
+FROM couchdb:3.5.3@sha256:0ba6b4b8dd823232185fa2c7de04634b925be62f97c9b7cbece7dd9119470e17 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

@@ -2,7 +2,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.8-slim AS yq
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM debian:13.8-slim AS jinja
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
@@ -40,7 +40,7 @@ ENV PATH="/homelab/python-vendor/bin:${PATH}" \
 
 ### Build config ###
 
-FROM node:26.13.1-slim AS npmconfig
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -80,7 +80,7 @@ RUN jinja2 --strict './.htaccess-extra.j2' './config.json' --format json -o './.
         exit 1; \
     fi
 
-FROM debian:13.8-slim AS htaccess_config_3
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS htaccess_config_3
 USER root
 WORKDIR /homelab
 COPY --from=htaccess_config_2 /homelab/.htaccess-extra /homelab/
@@ -100,7 +100,7 @@ RUN jinja2 --strict './apache.conf-extra.j2' './config.json' --format json -o '.
         exit 1; \
     fi
 
-FROM debian:13.8-slim AS apache_config_3
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS apache_config_3
 USER root
 WORKDIR /homelab
 COPY --from=apache_config_2 /homelab/apache.conf-extra /homelab/
@@ -110,7 +110,7 @@ RUN sed -e '/# <<INSERT_EXTRA_REVERSE_PROXY>>/{' -e 'r /homelab/apache.conf-extr
 
 ### Error pages ###
 
-FROM node:26.13.1-slim AS errors_build
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS errors_build
 USER root
 WORKDIR /homelab
 COPY --from=npmconfig /root/.npmrc /root/.npmrc
@@ -160,7 +160,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=shared,id=homelab_nodejs_npmcac
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -170,7 +170,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.8-slim AS empty_dir
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS empty_dir
 USER root
 RUN mkdir /empty && \
     touch /empty.txt
@@ -179,7 +179,7 @@ RUN mkdir /empty && \
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_user_setup_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_user_setup_aptlibcache \
@@ -220,7 +220,7 @@ COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
-FROM debian:13.8-slim AS final
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

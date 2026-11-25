@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM debian:13.8-slim AS gitconfig
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig
 #     { curl --fail --silent 'https://gitcache-github.matejhome.com' || exit 0; } && \
 #     git config --global 'url.https://gitcache-github.matejhome.com/.insteadOf' 'https://github.com/'
 
-FROM node:26.13.1-slim AS npmconfig
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS npmconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig_aptcache \
@@ -37,7 +37,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_npmconfig
 
 ### Dependencies ###
 
-FROM python:3.15.2-slim AS gitman
+FROM python:3.15.2-slim@sha256:63bb298d2b7b88f176f51b5189f54ce6535c997682ea70885d2132f5d473a8a5 AS gitman
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/dependencies/gitman/requirements.txt /homelab/
@@ -49,7 +49,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 
 ### Supercronic ###
 
-FROM python:3.15.2-slim AS supercronic_gitman
+FROM python:3.15.2-slim@sha256:63bb298d2b7b88f176f51b5189f54ce6535c997682ea70885d2132f5d473a8a5 AS supercronic_gitman
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_gitman_aptcache \
@@ -68,7 +68,7 @@ RUN --mount=type=cache,target=/root/.gitcache,sharing=locked,id=homelab_gitman_g
     retry --times=3 -- gitman install --quiet && \
     find '.' -type d -name '.git' -prune -exec rm -rf {} \;
 
-FROM golang:1.27.4-trixie AS supercronic_build
+FROM golang:1.27.4-trixie@sha256:430985542100b871e108ccc00e8dcc5eef08ca14ee5825e98ebf563d8ffec4ee AS supercronic_build
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_supercronic_build_aptcache \
@@ -90,7 +90,7 @@ RUN sh validate-executable.sh ./supercronic/supercronic
 
 ### App ###
 
-FROM node:26.13.1-slim AS nodejs_main_build
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS nodejs_main_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/data-optimization/package-lock.json ./docker-images/data-optimization/package.json /homelab/
@@ -106,7 +106,7 @@ RUN npm run build && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -116,7 +116,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.8-slim AS empty_dir
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS empty_dir
 USER root
 RUN mkdir /empty
 
@@ -124,7 +124,7 @@ RUN mkdir /empty
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
@@ -155,7 +155,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM node:26.13.1-slim AS final
+FROM node:26.13.1-slim@sha256:abe7e5a82b61a8ef67b315b85497c9e65173387ccf2f4a029248184b8e020be5 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

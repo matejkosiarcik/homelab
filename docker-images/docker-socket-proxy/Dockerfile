@@ -4,7 +4,7 @@
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.8-slim AS user_setup
+FROM debian:13.8-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS user_setup
 USER root
 WORKDIR /homelab
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
@@ -17,7 +17,7 @@ RUN sh '/homelab/create-user.sh' && \
 
 ### Healthcheck ###
 
-FROM golang:1.27.4-alpine AS healthcheck_build
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS healthcheck_build
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/healthchecks/http-healthcheck/main.go ./docker-images/.shared/healthchecks/http-healthcheck/go.mod ./docker-images/.shared/healthchecks/http-healthcheck/go.sum /homelab/
@@ -27,7 +27,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### App ###
 
-FROM linuxserver/socket-proxy:3.4.7 AS app
+FROM linuxserver/socket-proxy:3.4.7@sha256:18289eeb306e8e3b70901ffec23eafbb318d73b4514d0bd737dbfc7c5b4fe506 AS app
 USER root
 RUN mkdir -p /approot/bin /approot/lib /approot/usr/bin /approot/usr/lib /approot/usr/sbin /approot/usr/share/zoneinfo/Europe && \
     cp -a /bin/busybox /bin/cat /bin/mkdir /bin/sed /bin/sh /approot/bin/ && \
