@@ -131,6 +131,9 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-sockguard:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-sockguard/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/docker-socket-proxy/server/ca.crt:/homelab/tls-certs/client/docker-socket-proxy/ca.pem:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/sockguard/client/docker-socket-proxy/client.crt:/homelab/tls-certs/client/docker-socket-proxy/cert.pem:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/sockguard/client/docker-socket-proxy/client.key:/homelab/tls-certs/client/docker-socket-proxy/key.pem:ro
 
   docker-socket-proxy:
     extends:
@@ -146,6 +149,9 @@ services:
       - /run:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-socket-proxy/healthcheck:/homelab/logs/healthcheck:rw
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/docker-socket-proxy/server/server.crt:/homelab/tls-certs/server/server.crt:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/docker-socket-proxy/server/server.key:/homelab/tls-certs/server/server.key:ro
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/sockguard/client/docker-socket-proxy/ca.crt:/homelab/tls-certs/server/client-ca.crt:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   docker-app-setup:

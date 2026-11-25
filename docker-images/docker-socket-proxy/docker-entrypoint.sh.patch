@@ -1,0 +1,15 @@
+--- a/docker-entrypoint.sh
++++ b/docker-entrypoint.sh
+@@ -2,11 +2,7 @@
+ 
+ mkdir -p /run/haproxy
+ 
+-if [ "${DISABLE_IPV6}" = 1 ]; then
+-    BIND_PROTO=":2375"
+-else
+-    BIND_PROTO="[::]:2375 v4v6"
+-fi
++BIND_PROTO="127.0.0.1:2376"
+ 
+ sed -e "s/@@BIND_PROTO@@/${BIND_PROTO}/g" \
+     -e "s/@@TIMEOUT_CLIENT@@/${TIMEOUT_CLIENT:-10}m/g" \

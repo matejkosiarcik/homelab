@@ -1,0 +1,32 @@
+location: gitman-repositories/
+sources:
+  - repo: https://github.com/mtrojnar/stunnel.git
+    name: stunnel
+    rev: master
+    type: git
+    params: --depth=1
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+sources_locked:
+  - repo: https://github.com/mtrojnar/stunnel.git
+    name: stunnel
+    rev: b611485e29e96e71404967fbaba1ecff15ff0c4c
+    type: git
+    params:
+    sparse_paths:
+      -
+    links:
+      -
+    scripts:
+      -
+    patches:
+      -
+default_group: ""
+groups:
+  -
