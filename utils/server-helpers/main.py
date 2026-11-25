@@ -57,15 +57,21 @@ log_file_handler.setFormatter(log_formatter)
 log.addHandler(log_file_handler)
 
 
-def tty_supports_color():
-    return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+@dataclass
+class AsciiChars:
+    checkmark: str = "✔"
+    cross: str = "✘"
+
+    def __post_init__(self):
+        def tty_supports_color():
+            return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+
+        if tty_supports_color():
+            self.checkmark = f"\033[32m{self.checkmark}\033[0m"
+            self.cross = f"\033[31m{self.cross}\033[0m"
 
 
-ascii_checkmark = "✔"
-ascii_cross = "✘"
-if tty_supports_color():
-    ascii_checkmark = f"\033[32m{ascii_checkmark}\033[0m"
-    ascii_cross = f"\033[31m{ascii_cross}\033[0m"
+ascii_chars = AsciiChars()
 
 
 def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
@@ -204,7 +210,7 @@ def server_action(action: str, config: MainConfig):
 
     total_elapsed = time.time() - start_time
     total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
-    log.info("%s %s docker apps %02d:%02d", ascii_checkmark, action_log, total_elapsed_mins, total_elapsed_secs)
+    log.info("%s %s docker apps %02d:%02d", ascii_chars.checkmark, action_log, total_elapsed_mins, total_elapsed_secs)
 
 
 def server_install():
@@ -212,7 +218,7 @@ def server_install():
     subprocess.check_call(["sh", git_dir / "utils" / "server-helpers" / "install.sh"])
     total_elapsed = time.time() - start_time
     total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
-    log.info("%s Install global config %02d:%02d", ascii_checkmark, total_elapsed_mins, total_elapsed_secs)
+    log.info("%s Install global config %02d:%02d", ascii_chars.checkmark, total_elapsed_mins, total_elapsed_secs)
 
 
 if __name__ == "__main__":

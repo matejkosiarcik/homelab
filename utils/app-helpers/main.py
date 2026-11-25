@@ -92,17 +92,23 @@ with open(
     )
 
 
-def tty_supports_color():
-    return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+@dataclass
+class AsciiChars:
+    checkmark: str = "✔"
+    cross: str = "✘"
+    skip: str = "⏭"
+
+    def __post_init__(self):
+        def tty_supports_color():
+            return sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+
+        if tty_supports_color():
+            self.checkmark = f"\033[32m{self.checkmark}\033[0m"
+            self.cross = f"\033[31m{self.cross}\033[0m"
+            self.skip = f"\033[36m{self.skip}\033[0m"
 
 
-ascii_checkmark = "✔"
-ascii_cross = "✘"
-ascii_skip = "⏭"
-if tty_supports_color():
-    ascii_checkmark = f"\033[32m{ascii_checkmark}\033[0m"
-    ascii_cross = f"\033[31m{ascii_cross}\033[0m"
-    ascii_skip = f"\033[36m{ascii_skip}\033[0m"
+ascii_chars = AsciiChars()
 
 
 def write_log_file_header(command_log_file: Path):
@@ -337,7 +343,7 @@ def run_with_spinner(
         done.set()
         total_elapsed = time.time() - start_time
         total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
-        status_marker = ascii_checkmark if last_exit_code == 0 and not global_exit else ascii_cross
+        status_marker = ascii_chars.checkmark if last_exit_code == 0 and not global_exit else ascii_chars.cross
         print(f"\r{' ' * len(last_output_line)}", end="", flush=True)
         print(
             f"\r{status_marker} {description_done} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} {total_elapsed_mins:02d}:{total_elapsed_secs:02d} ",
@@ -495,8 +501,8 @@ def run_main_command(command: str, config: MainConfig):
             docker_stop(config)
             docker_start(config)
         else:
-            print(f"{ascii_skip} Stop skipped")
-            print(f"{ascii_skip} Start skipped")
+            print(f"{ascii_chars.skip} Stop skipped")
+            print(f"{ascii_chars.skip} Start skipped")
     elif command == "restart":
         docker_stop(config)
         docker_start(config)
