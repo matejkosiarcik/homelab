@@ -1,5 +1,7 @@
 x-definitions: {}
 
+name: ${DOCKER_COMPOSE_APP_SHORTNAME}
+
 services:
   app:
     extends:
@@ -46,6 +48,39 @@ services:
       EVENTS: 1
       INFO: 1
       PING: 1
+
+  certificator:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: certificator
+
+  apache:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache
+    # Override:
+    volumes:
+      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/docker-sockguard-prometheus.htpasswd:/homelab/users/docker-sockguard-prometheus.htpasswd:ro
+
+  apache-prometheus-exporter:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: apache-prometheus-exporter
+
+  favicons:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: favicons
+
+  file-server:
+    extends:
+      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
+      service: file-server
+    # Override:
+    build:
+      args:
+        HOMELAB_COPY_PATH_1_SRC: "./docker-images/dozzleagent/icons/"
+        HOMELAB_COPY_PATH_1_DEST: ""
 
 networks:
   default:

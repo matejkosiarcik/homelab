@@ -102,7 +102,7 @@ docker-build:
 	# Disabled - It's complicated
 	# printf '%s' "$(DOCKER_APPS)" | tr -d ' ' | base64 -d | while read -r app; do \
 	# 	printf 'Building %s\n' "$${app}" && \
-	# 	docker compose --project-directory "$(PROJECT_DIR)/$${app}" build --with-dependencies <'/dev/null' && \
+	# 	docker buildx bake --file "$(PROJECT_DIR)/$${app}/compose.yml" <'/dev/null' && \
 	# 	printf '\n\n' && \
 	# true; done
 

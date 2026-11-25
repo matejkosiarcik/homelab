@@ -1,16 +1,36 @@
 app:
   name: DozzleAgent - <<server>>
 
-apache: {}
+apache:
+  upstream-url:
+    - path: /docker-sockguard/metrics
+      target: http://docker-sockguard:2375/metrics
+    - path: /
+      target: http://file-server:8080
+
+favicons:
+  default: "/favicon.png"
 
 gatus:
   enabled: true
-  type: [tcp]
+  type: [http, tcp]
   additional_ports:
     tcp:
       - 7007
+  endpoints:
+    - path: /docker-sockguard/metrics
+      authentication:
+        basic: prometheus
 
-healthchecks: [] # empty
+healthchecks:
+  - slug: certificator
 
 prometheus:
-  enabled: false
+  enabled: true
+  endpoints:
+    - path: /.apache/metrics
+      auth:
+        type: basic
+    - path: /docker-sockguard/metrics
+      auth:
+        type: basic

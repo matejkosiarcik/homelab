@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
+import { axios } from '#/utils/axios.ts';
+import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
 import { getEnv } from '#/utils/utils.ts';
 
 const app = apps.dozzle;
@@ -89,7 +90,39 @@ test.describe(agentApp.title, () => {
         }
 
         test.describe(instance.title, () => {
-            createTcpTests(instance.url, 7007);
+            const url = instance.url.replace('tcp://', 'https://');
+
+            createHttpToHttpsRedirectTests(url);
+            createProxyTests(url);
+            createApiRootTest(url);
+            createTcpTests(url, [80, 443, 7007]);
+            createFaviconTests(url);
+            createPrometheusTests(url, {
+                path: '/docker-sockguard/metrics',
+                token: getEnv(url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
+            });
+
+            test('API: Docker Sockguard Prometheus metrics content', async () => {
+                const response = await test.step('Request metrics', async () => {
+                    const response = await axios.get(`${url}/docker-sockguard/metrics`, {
+                        auth: {
+                            username: 'prometheus',
+                            password: getEnv(url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
+                        },
+                    });
+                    expect(response.status, 'Response status').toStrictEqual(200);
+                    return response;
+                });
+
+                await test.step('Validate metrics', async () => {
+                    const content = response.data as string;
+                    await test.info().attach('docker-sockguard-metrics.txt', { contentType: 'text/plain', body: content });
+                    const lines = content.split('\n');
+                    for (const metric of sharedMetrics.dockerSockguard) {
+                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
+                    }
+                });
+            });
         });
     }
 });

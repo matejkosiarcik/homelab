@@ -520,6 +520,9 @@ dozzle)
     ;;
 
 dozzleagent)
+    # Preload #
+    docker_sockguard_prometheus_password="$(load_secret ".${app_full_name_key}.docker_sockguard.prometheus_user" dev=default)"
+
     # App #
     openssl genpkey -algorithm RSA -out "${tmpdir}/key.pem" -pkeyopt rsa_keygen_bits:2048
     openssl req -new -key "${tmpdir}/key.pem" -out "${tmpdir}/request.csr" -subj "/C=SK/ST=Slovakia/L=Bratislava/O=Homelab"
@@ -527,6 +530,20 @@ dozzleagent)
     load_secret ".dozzle.app.agent_key" "dev=value=$(base64 <"${tmpdir}/key.pem")" | base64 -d >"${initial_output}/dozzle-key.pem"
     load_secret ".dozzle.app.agent_cert" "dev=value=$(base64 <"${tmpdir}/cert.pem")" | base64 -d >"${initial_output}/dozzle-cert.pem"
     rm -f "${tmpdir}/key.pem" "${tmpdir}/request.csr" "${tmpdir}/cert.pem"
+
+    # Docker Sockguard #
+    write_http_auth_user prometheus "${docker_sockguard_prometheus_password}" docker-sockguard-prometheus
+    printf 'docker-sockguard-prometheus,%s\n' "${docker_sockguard_prometheus_password}" >>"${initial_output}/.secrets.csv"
+
+    # Apache #
+    write_default_proxy_users "${app_full_name_key}"
+
+    # Certificator #
+    write_certificator_users
+    write_healthcheck_url "${app_full_name_machine}" certificator
+
+    # Favicons #
+    touch "${initial_output}/favicons.env"
     ;;
 
 gatus)

@@ -1,5 +1,7 @@
 x-definitions: {}
 
+name: ${DOCKER_COMPOSE_APP_SHORTNAME}
+
 services:
   app:
     extends:
@@ -43,7 +45,7 @@ services:
       MONGO_AUTHSOURCE: admin
       MONGO_DBNAME: unifi
       MONGO_USER: unifi
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-mongodb:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-mongodb:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/mongodb/data:/data/db:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/mongodb/default:/homelab/logs/default:rw
@@ -85,7 +87,7 @@ services:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/web-backup.env
   #   environment:
   #     HOMELAB_CONTAINER_VARIANT: backup
-  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:1.0.0
+  #   image: ${DOCKER_COMPOSE_APP_SHORTNAME}-web-backup:latest
   #   volumes:
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-data/app-backup/data:/homelab/backup:rw
   #     - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-backup/errors:/homelab/logs/errors:rw

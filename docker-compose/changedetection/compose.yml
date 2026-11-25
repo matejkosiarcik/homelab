@@ -1,5 +1,7 @@
 x-definitions: {}
 
+name: ${DOCKER_COMPOSE_APP_SHORTNAME}
+
 services:
   app:
     extends:
@@ -23,7 +25,7 @@ services:
     build:
       dockerfile: ./docker-images/sockpuppetbrowser/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sockpuppetbrowser:latest
     init: false
     networks: # Internet access required for monitoring public websites
       - external-network

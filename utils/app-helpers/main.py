@@ -62,7 +62,8 @@ when_mode = ""
 include_secrets = False
 
 docker_compose_args = []
-docker_command_args = []
+docker_buildx_bake_args = []
+docker_compose_command_args = []
 
 
 class LogFormatter(logging.Formatter):
@@ -176,6 +177,7 @@ def load_full_env():
     default_port = "8443" if env_mode == "dev" else ""
     port_delimiter = ":" if default_port != "" else ""
     default_env_values = {
+        "COMPOSE_PROJECT_NAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_FULLNAME": app_config.app_fullname,
         "DOCKER_COMPOSE_APP_SHORTNAME": app_config.app_shortname,
         "DOCKER_COMPOSE_APP_PATH": app_dir,
@@ -229,7 +231,7 @@ def symlink_app():
 
 
 def get_docker_compose_config() -> str:
-    return subprocess.check_output(["docker", "compose"] + docker_compose_args + ["config", "--format", "json"]).decode()
+    return subprocess.check_output(["docker", "compose", *docker_compose_args, "config", "--format", "json"]).decode()
 
 
 def get_docker_images_shasum(config: str) -> str:
@@ -266,7 +268,7 @@ def get_docker_containers_are_running(config: str) -> bool:
     expected_containers = {service["container_name"] for service in config_obj["services"].values()}
     running_containers = set(
         subprocess.check_output(
-            ["docker", "compose"] + docker_compose_args + ["ps", "--status", "running", "--format", "{{.Name}}"],
+            ["docker", "compose", *docker_compose_args, "ps", "--status", "running", "--format", "{{.Name}}"],
             text=True,
         ).splitlines()
     )
@@ -368,24 +370,21 @@ def run_with_spinner(
 
 
 def docker_build():
-    cpu_cores = os.cpu_count()
-    if cpu_cores is None:
-        cpu_cores = 1
-    commands = ["docker", "compose"] + docker_compose_args + ["build", "--with-dependencies", "--provenance=false"] + docker_command_args + (["--pull"] if is_pull else [])
+    commands = ["docker", "buildx", "bake", *docker_buildx_bake_args]
     docker_log_file = path.join(log_dir, "docker-build.log")
     run_with_spinner(commands, "Building", "Build", docker_log_file, False)
 
 
 def docker_debug_compose():
     compose_file = path.join(log_dir, f"compose-{env_mode}.yml")
-    commands = ["docker", "compose"] + docker_compose_args + ["config", "--output", compose_file]
+    commands = ["docker", "compose", *docker_compose_args, "config", "--output", compose_file]
     docker_log_file = path.join(log_dir, "docker-debug-compose.log")
     run_with_spinner(commands, "Resolving compose config for", "Resolve compose config for", docker_log_file, False)
     log.info("Resolved compose config written to %s", compose_file)
 
 
 def docker_stop():
-    commands = ["docker", "compose"] + docker_compose_args + ["down"] + docker_command_args
+    commands = ["docker", "compose", *docker_compose_args, "down", *docker_compose_command_args]
     docker_log_file = path.join(log_dir, "docker-stop.log")
     run_with_spinner(commands, "Stopping", "Stop", docker_log_file, False)
 
@@ -426,7 +425,18 @@ def docker_start():
             # os.chown(volume, uid=current_user, gid=current_user_group)
             # os.chmod(volume, mode=0o755)  # TODO: Change to 0o750
 
-    commands = ["docker", "compose"] + docker_compose_args + ["up", "--force-recreate", "--always-recreate-deps", "--remove-orphans", "--no-build"] + docker_command_args + (["--detach", "--wait"] if env_mode == "prod" else [])
+    commands = [
+        "docker",
+        "compose",
+        *docker_compose_args,
+        "up",
+        "--force-recreate",
+        "--always-recreate-deps",
+        "--remove-orphans",
+        "--no-build",
+        *docker_compose_command_args,
+        *(["--detach", "--wait"] if env_mode == "prod" else []),
+    ]
     docker_log_file = path.join(log_dir, "docker-start.log")
     run_with_spinner(commands, "Starting", "Start", docker_log_file, env_mode == "dev")
 
@@ -442,7 +452,7 @@ def create_secrets():
 
 
 def run_main_command(command: str):
-    global docker_compose_args, docker_command_args  # pylint: disable=global-statement
+    global docker_compose_args, docker_buildx_bake_args, docker_compose_command_args  # pylint: disable=global-statement
     docker_compose_args = [
         "--file",
         "compose.yml",
@@ -455,7 +465,22 @@ def run_main_command(command: str):
         "--parallel",
         str(int(max(cpu_count // 2, 1))),
     ]
-    docker_command_args = ["--dry-run"] if is_dryrun else []
+    docker_compose_command_args = ["--dry-run"] if is_dryrun else []
+    docker_buildx_bake_args = [
+        f"--allow=fs.read={git_dir}",
+        "--file",
+        "compose.yml",
+        "--file",
+        f"compose.{'prod' if env_mode == 'prod' else 'override'}.yml",
+        "--progress",
+        "plain",
+        "--jobs",
+        str(max(cpu_count // 2, 1)),
+        "--load",
+        "--provenance=false",
+        *(["--print"] if is_dryrun else []),
+        *(["--pull"] if is_pull else []),
+    ]
 
     # Check if docker-compose stack exists
     compose_path = path.join(git_dir, "docker-compose", os.environ["DOCKER_COMPOSE_APP_TYPE"])

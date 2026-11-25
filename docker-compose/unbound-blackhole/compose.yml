@@ -1,5 +1,7 @@
 x-definitions: {}
 
+name: ${DOCKER_COMPOSE_APP_SHORTNAME}
+
 services:
   app:
     extends:
@@ -31,7 +33,7 @@ services:
     build:
       dockerfile: ./docker-images/unbound/prometheus-exporter/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-prometheus-exporter:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-prometheus-exporter/healthcheck:/homelab/logs/healthcheck:rw

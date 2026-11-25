@@ -1,5 +1,7 @@
 x-definitions: {}
 
+name: ${DOCKER_COMPOSE_APP_SHORTNAME}
+
 services:
   app-main:
     extends:
@@ -43,7 +45,7 @@ services:
       retries: 1
       start_period: 60s
       timeout: 5s
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq:latest
     tmpfs:
       # - /root/.cache/gem:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
       - /var/app/db:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
@@ -77,7 +79,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/decryptor.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor:1.0.0
+    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-decryptor:latest
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/decryptor/default:/homelab/logs/default:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/decryptor/healthcheck:/homelab/logs/healthcheck:rw
