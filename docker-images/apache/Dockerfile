@@ -2,7 +2,7 @@
 
 ### Dependencies ###
 
-FROM debian:13.7-slim AS yq
+FROM debian:13.8-slim AS yq
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_yq_aptcache \
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cache/pip,sharing=shared,id=homelab_python_
 ENV PATH="/homelab/python-vendor/bin:${PATH}" \
     PYTHONPATH="/homelab/python-vendor"
 
-FROM debian:13.7-slim AS jinja
+FROM debian:13.8-slim AS jinja
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_jinja_aptcache \
@@ -80,7 +80,7 @@ RUN jinja2 --strict './.htaccess-extra.j2' './config.json' --format json -o './.
         exit 1; \
     fi
 
-FROM debian:13.7-slim AS htaccess_config_3
+FROM debian:13.8-slim AS htaccess_config_3
 USER root
 WORKDIR /homelab
 COPY --from=htaccess_config_2 /homelab/.htaccess-extra /homelab/
@@ -100,7 +100,7 @@ RUN jinja2 --strict './apache.conf-extra.j2' './config.json' --format json -o '.
         exit 1; \
     fi
 
-FROM debian:13.7-slim AS apache_config_3
+FROM debian:13.8-slim AS apache_config_3
 USER root
 WORKDIR /homelab
 COPY --from=apache_config_2 /homelab/apache.conf-extra /homelab/
@@ -170,7 +170,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### Other ###
 
-FROM debian:13.7-slim AS empty_dir
+FROM debian:13.8-slim AS empty_dir
 USER root
 RUN mkdir /empty && \
     touch /empty.txt
@@ -179,7 +179,7 @@ RUN mkdir /empty && \
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.7-slim AS user_setup
+FROM debian:13.8-slim AS user_setup
 USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_apache_user_setup_aptcache \
     --mount=type=cache,target=/var/lib/apt,sharing=locked,id=homelab_apache_user_setup_aptlibcache \
@@ -220,7 +220,7 @@ COPY --from=apache_config_3 /homelab/apache.conf /fsroot/apache.conf
 
 ### Final ###
 
-FROM debian:13.7-slim AS final
+FROM debian:13.8-slim AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root

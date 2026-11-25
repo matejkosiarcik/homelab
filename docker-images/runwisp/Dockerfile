@@ -2,7 +2,7 @@
 
 ### Build config ###
 
-FROM debian:13.7-slim AS gitconfig
+FROM debian:13.8-slim AS gitconfig
 USER root
 WORKDIR /homelab
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=homelab_gitconfig_aptcache \
@@ -119,7 +119,7 @@ RUN sh './validate-executable.sh' './runwisp/apps/runwisp/runwisp'
 
 ### Config ###
 
-FROM debian:13.7-slim AS config
+FROM debian:13.8-slim AS config
 USER root
 WORKDIR /homelab
 COPY --from=envsubst_build /homelab/bin/envsubst /homelab/bin/
@@ -135,7 +135,7 @@ RUN mkdir -p /homelab/config && \
 
 FROM gcr.io/distroless/static-debian13:latest@sha256:4c2cd1dee442c9a99924a378c7c126fac8fef14771579ef567c3f2bdd7a5122a AS user_setup_base
 
-FROM debian:13.7-slim AS user_setup
+FROM debian:13.8-slim AS user_setup
 USER root
 COPY --from=user_setup_base /etc/group /etc/passwd /etc/
 ARG GID=1000
