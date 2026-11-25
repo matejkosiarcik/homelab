@@ -49,8 +49,9 @@ if printf '%s\n' "${executable_info}" | grep -i 'buildid\|build-id' >'/dev/null'
     exit 1
 fi
 
+# Executables must be statically linked ELF binaries
 if ! printf '%s\n' "${executable_info}" | grep -q 'ELF'; then
-    log ERROR "Static validation requires an ELF executable: ${executable_info}"
+    log ERROR "Executable is not an ELF binary: ${executable_info}"
     exit 1
 fi
 if ! program_headers="$(readelf -l "${1}" 2>&1)"; then
