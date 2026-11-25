@@ -70,7 +70,7 @@ class MainConfig:
     include_secrets: bool = False
 
 
-main_config: MainConfig = MainConfig()
+main_config: MainConfig
 
 
 class LogFormatter(logging.Formatter):
@@ -193,7 +193,6 @@ def main(argv: list[str]):
     args = parser.parse_args(argv)
 
     command = args.subcommand
-    applist = get_apps_list(args.only, args.skip)
 
     env_mode = args.mode
     if env_mode is None:
@@ -206,7 +205,7 @@ def main(argv: list[str]):
         sys.exit(1)
 
     main_config = MainConfig(
-        apps=applist,
+        apps=get_apps_list(args.only, args.skip),
         env_mode=env_mode,
         when_mode=(args.when_mode or ("always" if env_mode == "dev" else "onchange")) if command == "deploy" else "",
         is_dryrun=args.dry_run,

@@ -94,7 +94,7 @@ class MainConfig:  # pylint: disable=too-many-instance-attributes
     docker_compose_command_args: list[str] = field(default_factory=list)
 
 
-main_config: MainConfig = MainConfig()
+main_config: MainConfig
 
 
 class LogFormatter(logging.Formatter):
