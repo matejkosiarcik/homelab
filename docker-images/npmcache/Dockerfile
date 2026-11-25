@@ -39,7 +39,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM pkgems/npm-cache-proxy:1.3.5 AS final
+FROM pkgems/npm-cache-proxy:1.3.5@sha256:475ae3f1d7fb4b0acd72a091da4d317d15825996f40b00cb3959de088c151417 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
