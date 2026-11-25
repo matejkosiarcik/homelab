@@ -101,7 +101,7 @@ func TestInvalidEndpointArguments(t *testing.T) {
 		{"--url", "http://localhost"},
 		{"--endpoint", `null`},
 		{"--endpoint", `{}`},
-		{"--endpoint", `{"url":"http://localhost","insec ure":true}`},
+		{"--endpoint", `{"url":"http://localhost","in secure":true}`},
 		{"--endpoint", `{"url":"http://localhost"} {}`},
 		{"--endpoint", `{"url":"http://localhost","insecure":"true"}`},
 	} {
