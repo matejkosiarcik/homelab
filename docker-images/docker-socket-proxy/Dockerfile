@@ -46,9 +46,10 @@ RUN version="$(cat '/homelab/stunnel-version.txt')" && \
     curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 --output "${archive}" "https://www.stunnel.org/downloads/${archive}" && \
     curl --fail --silent --show-error --location --retry 3 --retry-connrefused --retry-max-time 60 --output "${archive}.sha256" "https://www.stunnel.org/downloads/${archive}.sha256" && \
     sha256sum -c "${archive}.sha256" && \
-    tar -xzf "${archive}" && \
-    cd "stunnel-${version}" && \
-    ./configure --prefix='/homelab' --with-ssl='/usr' --disable-shared --disable-systemd --disable-libwrap && \
+    mkdir -p '/homelab/stunnel' && \
+    tar -xzf "${archive}" --strip-components=1 -C '/homelab/stunnel'
+WORKDIR /homelab/stunnel
+RUN ./configure --prefix='/homelab' --with-ssl='/usr' --disable-shared --disable-systemd --disable-libwrap && \
     make -j"$(getconf _NPROCESSORS_ONLN)" && \
     mkdir -p '/homelab/bin' && \
     gcc -static -no-pie -Wl,--build-id=none,-z,noexecstack -o '/homelab/bin/stunnel' src/stunnel-*.o -lssl -lcrypto -lz && \
