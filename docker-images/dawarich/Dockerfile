@@ -82,7 +82,7 @@ ENV APPLICATION_PROTOCOL="http" \
     HOMELAB_CONTAINER_NAME="dawarich" \
     HOMELAB_CONTAINER_VARIANT="default" \
     MIN_MINUTES_SPENT_IN_CITY="60" \
-    PATH="/var/app/vendor/bundle/ruby/4.0.0/bin:${PATH}" \
+    PATH="/homelab/bin:/var/app/vendor/bundle/ruby/4.0.0/bin:${PATH}" \
     PROMETHEUS_EXPORTER_ENABLED="true" \
     PROMETHEUS_EXPORTER_HOST="0.0.0.0" \
     PROMETHEUS_EXPORTER_PORT="9394" \
@@ -95,6 +95,6 @@ ENV APPLICATION_PROTOCOL="http" \
     TZ="Europe/Bratislava" \
     WEBUI_SECRET_KEY=""
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body-json", ".status == \"ok\"" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:3000/api/v1/health", "--body-json", ".status == \"ok\"" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []

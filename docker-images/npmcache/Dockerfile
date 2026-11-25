@@ -50,10 +50,10 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="npmcache" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    PATH="/srv/app:${PATH}" \
+    PATH="/homelab/bin:/srv/app:${PATH}" \
     REDIS_ADDRESS="redis:6379" \
     REDIS_PASSWORD="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8080" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:8080" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

@@ -63,6 +63,7 @@ ENV DOZZLE_AUTH_PROVIDER="simple" \
     DOZZLE_REMOTE_AGENT="dozzleagent-odroid-h3.matejhome.com:7007,dozzleagent-odroid-h4-ultra.matejhome.com:7007,dozzleagent-raspberry-pi-4b-2g.matejhome.com:7007,dozzleagent-raspberry-pi-4b-4g.matejhome.com:7007" \
     HOMELAB_CONTAINER_NAME="dozzle" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
 HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/dozzle", "healthcheck" ]

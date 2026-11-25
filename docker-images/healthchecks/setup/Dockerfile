@@ -159,7 +159,8 @@ ENV HEALTHCHECKS_API_KEY="" \
     HOMELAB_CONTAINER_NAME="script-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \
     NODE_OPTIONS="--dns-result-order=ipv4first" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

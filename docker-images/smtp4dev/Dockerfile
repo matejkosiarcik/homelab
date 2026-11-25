@@ -49,6 +49,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /app/wwwroot/favicon.ico /app/wwwroot/favicon.png /app/wwwroot/
 ENV HOMELAB_CONTAINER_NAME="smtp4dev" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     ServerOptions__LockSettings="true" \
     ServerOptions__Users__0__DefaultMailbox="Default" \
     ServerOptions__Users__0__Password="" \
@@ -71,4 +72,4 @@ ENV HOMELAB_CONTAINER_NAME="smtp4dev" \
 
 USER homelab
 
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5000", "--basic-auth-username-env", "ServerOptions__Users__1__Username", "--basic-auth-password-env", "ServerOptions__Users__1__Password" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:5000", "--basic-auth-username-env", "ServerOptions__Users__1__Username", "--basic-auth-password-env", "ServerOptions__Users__1__Password" ]

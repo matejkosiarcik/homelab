@@ -65,7 +65,8 @@ ARG GID=1000
 ARG UID=1000
 ENV HOMELAB_CONTAINER_NAME="tvheadend" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PGID="${GID}" \
     PUID="${UID}" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9981" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:9981" ]

@@ -47,7 +47,8 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 ENV BODY_SIZE_LIMIT="Infinity" \
     HOMELAB_CONTAINER_NAME="adventurelog" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PUBLIC_SERVER_URL="http://app-backend:8000" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:3000" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:3000" ]

@@ -54,6 +54,7 @@ ENV DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_VARIANT="default" \
     JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:MinRAMPercentage=60.0 -XX:MaxRAMPercentage=90.0 --add-opens=java.base/java.lang=ALL-UNNAMED" \
     RP_AMQP_ANALYZER-VHOST="app-analyzer" \
+    PATH="/homelab/bin:${PATH}" \
     RP_AMQP_APIPASS="" \
     RP_AMQP_APIPORT="15672" \
     RP_AMQP_APIUSER="rabbitmq" \
@@ -71,4 +72,4 @@ ENV DATASTORE_TYPE="filesystem" \
     RP_SESSION_LIVE="86400" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9999/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:9999/health" ]

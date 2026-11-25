@@ -32,7 +32,8 @@ jobs:
           tmpfile="$(mktemp)"
           trap 'rm -f "$tmpfile"' EXIT HUP INT TERM
 
-          find '.' -type d -path './servers/*/docker-apps/*' -mindepth 4 -maxdepth 4 | while read -r path; do
+          find '.' -type f -path './servers/*/docker-apps/*/config/config.yml' | while read -r config_path; do
+            path="$(dirname "$(dirname "$config_path")")"
             if basename "$path" | grep -qE '^\.' >/dev/null 2>&1; then
               continue
             fi
@@ -177,7 +178,7 @@ jobs:
       - name: Setup secrets
         run: |
           set -euf
-          task --taskfile './Taskfile.yml' secrets -- --mode dev
+          task secrets -- --mode dev
 
       - name: Set build cache key
         id: build-cache-key
@@ -191,7 +192,7 @@ jobs:
       - name: Docker build
         uses: Wandalen/wretry.action@v3.8.0
         with:
-          command: task --taskfile './Taskfile.yml' build -- --mode dev
+          command: task build -- --mode dev
           current_path: ${{ matrix.path }}
           attempt_limit: >-
             ${{ (
@@ -207,12 +208,12 @@ jobs:
       - name: Docker start
         run: |
           set -euf
-          task --taskfile './Taskfile.yml' start -- --mode dev --dry-run
+          task start -- --mode dev --dry-run
 
       - name: Docker stop
         run: |
           set -euf
-          task --taskfile './Taskfile.yml' stop -- --mode dev --dry-run
+          task stop -- --mode dev --dry-run
 
   status:
     name: Docker Build Status

@@ -57,6 +57,7 @@ ENV AUDIT_LOGGER="OFF" \
     JAVA_OPTS="-Xmx1g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp -Dcom.sun.management.jmxremote.rmi.port=12349 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0" \
     LOGGING_LEVEL_ORG_HIBERNATE_SQL="info" \
     MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED="false" \
+    PATH="/homelab/bin:${PATH}" \
     REPORTING_CONSUMER_PREFETCHCOUNT="10" \
     REPORTING_PARKINGLOT_TTL_DAYS="7" \
     REPORTING_QUEUES_COUNT="10" \
@@ -81,4 +82,4 @@ ENV AUDIT_LOGGER="OFF" \
     RP_REQUESTLOGGING="false" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8585/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:8585/health" ]

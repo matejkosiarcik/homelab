@@ -62,6 +62,7 @@ USER homelab
 
 ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     POSTGRES_DB="database" \
     POSTGRES_PASSWORD="" \
     POSTGRES_PORT="5432" \
@@ -70,4 +71,4 @@ ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     POSTGRES_USER="postgres" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]

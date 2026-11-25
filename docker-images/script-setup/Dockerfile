@@ -159,8 +159,9 @@ COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
 WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="script-setup" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     SPEEDTEST_RUN_TOKEN="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

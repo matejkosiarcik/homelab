@@ -684,7 +684,7 @@
 
         before_sha="$( (find "${HOME}/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l || true) | shasum)"
 
-        task --taskfile './Taskfile.yml' install
+        task install
 
         after_sha="$( (find "${HOME}/config" -type f -exec shasum {} \; 2>/dev/null ; crontab -l) | shasum)"
         if [ "${before_sha}" != "${after_sha}" ]; then
@@ -720,7 +720,7 @@
 
         before_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
 
-        task --taskfile './Taskfile.yml' secrets
+        task secrets
 
         after_sha="$((find '.' -path './docker-apps/*/app-secrets/*' -type f -exec shasum {} \; 2>/dev/null || true) | shasum)"
         if [ "${before_sha}" != "${after_sha}" ]; then

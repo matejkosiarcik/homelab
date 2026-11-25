@@ -45,6 +45,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="postgres" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PGDATA="/var/lib/postgresql/data/database" \
     POSTGRES_DB="database" \
     POSTGRES_PASSWORD="" \

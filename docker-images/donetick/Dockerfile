@@ -52,6 +52,7 @@ ENV DONETICK_DISABLE_SIGNUP="true" \
     DT_SQLITE_PATH="/data/donetick.db" \
     HOMELAB_CONTAINER_NAME="donetick" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:2021" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:2021" ]

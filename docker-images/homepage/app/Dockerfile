@@ -119,6 +119,7 @@ ENV HOMELAB_CONTAINER_NAME="homepage" \
     HOMEPAGE_AUTH_PASSWORD="" \
     HOMEPAGE_AUTH_SECRET="" \
     HOMEPAGE_MCP_ENABLED="false" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec /homelab/bin/healthcheck --url \"http://localhost:${PORT}/api/healthcheck\" --status '200' --body-regex '^up'" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec healthcheck --url \"http://localhost:${PORT}/api/healthcheck\" --status '200' --body-regex '^up'" ]

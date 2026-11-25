@@ -71,7 +71,8 @@ ENV bootstrap.memory_lock="true" \
     HOMELAB_CONTAINER_NAME="opensearch" \
     HOMELAB_CONTAINER_VARIANT="default" \
     OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx512m" \
-    plugins.security.disabled="true"
+    plugins.security.disabled="true" \
+    PATH="/homelab/bin:${PATH}"
 
 # Port 9200 - OpenSearch HTTP API
 # Port 9600 - OpenSearch Performance Analyzer
@@ -79,4 +80,4 @@ EXPOSE 9200 9600
 
 # TODO: Validate response body
 # Original healthcheck: curl -s -f http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:9200/_cluster/health" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:9200/_cluster/health" ]

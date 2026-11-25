@@ -57,6 +57,7 @@ ENV AMQP_EXCHANGE_NAME="app-analyzer-default" \
     HOMELAB_CONTAINER_NAME="reportportal-analyzer" \
     HOMELAB_CONTAINER_VARIANT="default" \
     LOGGING_LEVEL="info" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:5001" ]
+HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:5001" ]

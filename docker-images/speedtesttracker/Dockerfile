@@ -163,10 +163,11 @@ ENV ADMIN_EMAIL="" \
     MAIL_SCHEME="" \
     MAIL_USERNAME="" \
     NOTIFICATION_POLLING="5s" \
+    PATH="/homelab/bin:${PATH}" \
     PGID="${GID}" \
     PUBLIC_DASHBOARD="false" \
     PUID="${UID}" \
     RESULTS_POLLING="5s" \
     SPEEDTEST_SCHEDULE="15 * * * *" \
     TZ="Etc/Utc"
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "https://localhost:443/api/healthcheck", "--insecure" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "https://localhost:443/api/healthcheck", "--insecure" ]

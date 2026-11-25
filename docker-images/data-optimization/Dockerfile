@@ -172,7 +172,8 @@ WORKDIR /homelab
 ENV HOMELAB_CONTAINER_NAME="homepage-widgets" \
     HOMELAB_CONTAINER_VARIANT="default" \
     HOMELAB_CRON_SKIP_INITIAL="1" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=10m --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
+HEALTHCHECK --interval=10s --start-period=10m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

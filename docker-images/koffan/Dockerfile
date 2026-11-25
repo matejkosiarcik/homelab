@@ -49,7 +49,8 @@ ENV APP_ENV="production" \
     APP_PASSWORD="" \
     HOMELAB_CONTAINER_NAME="koffan" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PORT="8080" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec /homelab/bin/healthcheck --url \"http://localhost:${PORT}\" --status '200'" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec healthcheck --url \"http://localhost:${PORT}\" --status '200'" ]

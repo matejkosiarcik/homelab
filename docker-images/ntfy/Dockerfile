@@ -54,8 +54,9 @@ ENV HOMELAB_CONTAINER_NAME="ntfy" \
     NTFY_PASSWORD_HOMELAB_TEST="" \
     NTFY_PASSWORD_HOMELAB_VIEWER="" \
     NTFY_PASSWORD_MATEJ="" \
+    PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/v1/health", "--body-json", ".healthy == true" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:80/v1/health", "--body-json", ".healthy == true" ]
 ENTRYPOINT [ "ntfy" ]
 CMD [ "serve" ]

@@ -53,6 +53,7 @@ ENV ADMIN_TOKEN="" \
     LOG_LEVEL="error" \
     LOG_LEVEL="warn" \
     PASSWORD_ITERATIONS="500000" \
+    PATH="/homelab/bin:${PATH}" \
     SENDS_ALLOWED="true" \
     SIGNUPS_ALLOWED="false" \
     SIGNUPS_VERIFY="true" \
@@ -64,6 +65,6 @@ ENV ADMIN_TOKEN="" \
     TZ="Europe/Bratislava" \
     WEBSOCKET_ENABLED="true"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:80/alive", "--status", "200", "--body-regex", "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:80/alive", "--status", "200", "--body-regex", "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z" ]
 
 # TODO: Set SMTP authentication: SMTP_SECURITY, SMTP_USERNAME, SMTP_PASSWORD

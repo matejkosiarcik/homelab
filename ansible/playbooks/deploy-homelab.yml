@@ -36,7 +36,7 @@
         sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
         find "${HOME}/config" -type f -exec shasum {} \; >>"${tmpdir}/shasum-before.txt"
 
-        task --taskfile './Taskfile.yml' install
+        task install
 
         crontab -l | shasum >>"${tmpdir}/shasum-after.txt"
         sudo find /root/config -type f -exec shasum {} \; >>"${tmpdir}/shasum-after.txt"
@@ -89,5 +89,5 @@
           exit 1
         fi
 
-        task --taskfile './Taskfile.yml' deploy -- --prod
+        task deploy -- --prod
         printf 'CHANGED\n'

@@ -62,6 +62,7 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 ENV HOMELAB_CONTAINER_NAME="omadacontroller" \
     HOMELAB_CONTAINER_VARIANT="default" \
+    PATH="/homelab/bin:${PATH}" \
     PGID="${GID}" \
     PORT_ADOPT_V1="29812" \
     PORT_APP_DISCOVERY="27001" \
@@ -78,4 +79,4 @@ ENV HOMELAB_CONTAINER_NAME="omadacontroller" \
     SSL_CERT_NAME="" \
     SSL_KEY_NAME="" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec /homelab/bin/healthcheck --url \"https://127.0.0.1:${MANAGE_HTTPS_PORT:-8043}/login\" --insecure --status '200'" ]
+HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "exec healthcheck --url \"https://127.0.0.1:${MANAGE_HTTPS_PORT:-8043}/login\" --insecure --status '200'" ]

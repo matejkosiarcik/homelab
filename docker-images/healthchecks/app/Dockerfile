@@ -65,6 +65,7 @@ ENV DB="sqlite" \
     HOMELAB_CONTAINER_NAME="healthchecks" \
     HOMELAB_CONTAINER_VARIANT="default" \
     INTEGRATIONS_ALLOW_PRIVATE_IPS="True" \
+    PATH="/homelab/bin:${PATH}" \
     PROMETHEUS_ENABLED="True" \
     REGISTRATION_OPEN="False" \
     SECRET_KEY="" \
@@ -79,4 +80,4 @@ ENV DB="sqlite" \
 # EMAIL_USE_TLS=True
 USER homelab
 # Multiple statuses are for dev and prod environments
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/healthcheck", "--url", "http://localhost:8000", "--status", "200,400" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:8000", "--status", "200,400" ]
