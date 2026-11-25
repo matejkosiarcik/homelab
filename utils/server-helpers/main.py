@@ -35,6 +35,9 @@ class MainConfig:
     include_secrets: bool = False
 
 
+main_config: MainConfig = None
+
+
 class LogFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         timestamp = datetime.fromtimestamp(record.created, UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
@@ -113,6 +116,7 @@ def get_apps_list(only_apps: str | None, skip_apps: str | None) -> list[str]:
 
 
 def main(argv: list[str]):
+    global main_config  # pylint: disable=global-statement
     parser = argparse.ArgumentParser(prog="task")
     subparsers = parser.add_subparsers(dest="subcommand")
     subcommands = [
@@ -166,7 +170,7 @@ def main(argv: list[str]):
         log.error("Invalid mode, got: %s, valid values are: dev|prod", env_mode)
         sys.exit(1)
 
-    config = MainConfig(
+    main_config = MainConfig(
         apps=applist,
         env_mode=env_mode,
         when_mode=(args.when_mode or ("always" if env_mode == "dev" else "onchange")) if command == "deploy" else "",
@@ -180,31 +184,31 @@ def main(argv: list[str]):
         return
 
     if command in ["build", "debug-compose", "deploy", "restart", "secrets", "start", "stop"]:
-        server_action(command, config)
+        server_action(command)
         return
 
     log.error("Unrecognized command: %s", command)
     sys.exit(1)
 
 
-def server_action(action: str, config: MainConfig):
+def server_action(action: str):
     action_log = action.replace("-", " ").capitalize()
     if action == "secrets":
         action_log += " for"
     log.info("%s %s docker apps", "↓", action_log)
     print("\n---\n")
 
-    cli_args = ["--mode", config.env_mode]
-    if config.is_dryrun:
+    cli_args = ["--mode", main_config.env_mode]
+    if main_config.is_dryrun:
         cli_args.append("--dry-run")
-    if config.is_pull:
+    if main_config.is_pull:
         cli_args.append("--pull")
-    if action == "deploy" and config.include_secrets:
+    if action == "deploy" and main_config.include_secrets:
         cli_args.append("--with-secrets")
     if action == "deploy":
-        cli_args.append(f"--{config.when_mode}")
+        cli_args.append(f"--{main_config.when_mode}")
 
-    for app in config.apps:
+    for app in main_config.apps:
         subprocess.check_call(["task", "--taskfile", "./Taskfile.yml", action, "--", *cli_args], cwd=server_dir / "docker-apps" / app)
         print("\n---\n")
 
