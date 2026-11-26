@@ -84,6 +84,8 @@ rm -f './.secrets.env'
     printf 'DATA__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.samba_data.apache.prometheus_user')"
 
     printf 'DAWARICH__HOMELAB_TEST_PASSWORD=%s\n' "$(load_secret '.dawarich.app.homelab_test_user')"
+    printf 'DAWARICH__MATEJ_API_KEY=%s\n' "$(load_secret '.dawarich.app.matej_api_key')"
+    printf 'DAWARICH__MATEJ_PASSWORD=%s\n' "$(load_secret '.dawarich.app.matej_user')"
     printf 'DAWARICH__PROXY_STATUS_PASSWORD=%s\n' "$(load_secret '.dawarich.apache.status_user')"
     printf 'DAWARICH__PROXY_PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dawarich.apache.prometheus_user')"
     printf 'DAWARICH__PROMETHEUS_PASSWORD=%s\n' "$(load_secret '.dawarich.app.prometheus_user')"

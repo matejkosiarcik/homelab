@@ -426,11 +426,11 @@ dawarich)
     postgis_password="$(load_secret ".${app_full_name_key}.postgis.user" dev=default)"
     redis_password="$(load_secret ".${app_full_name_key}.redis.user" dev=default)"
     matej_password="$(load_secret ".${app_full_name_key}.app.matej_user" dev=default)"
-    api_key="$(load_secret ".${app_full_name_key}.app.api_key" dev=empty)"
+    matej_api_key="$(load_secret ".${app_full_name_key}.app.matej_api_key" dev=empty)"
     homelab_test_password="$(load_secret ".${app_full_name_key}.app.homelab_test_user" dev=default)"
 
     # App #
-    printf 'api-key,%s\n' "${api_key}" >>"${initial_output}/.secrets.csv"
+    printf 'matej-api-key,%s\n' "${matej_api_key}" >>"${initial_output}/.secrets.csv"
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
     printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
 

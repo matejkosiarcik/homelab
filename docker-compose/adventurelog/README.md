@@ -24,4 +24,5 @@ Frontend:
 ## After initial installation
 
 - Temporarily enable registrations
-    - Create accounts
+    - Create accounts for `matej`, `monika`, and `homelab-test`
+    - Verify emails for each account
