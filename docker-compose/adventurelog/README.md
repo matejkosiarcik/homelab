@@ -25,3 +25,4 @@ Frontend:
 
 - Temporarily enable registrations
     - Create accounts for `matej`, `monika`, and `homelab-test`
+    - Verify emails for each account
