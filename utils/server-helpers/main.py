@@ -245,7 +245,7 @@ def server_action(action: str, config: MainConfig):
 
     total_elapsed = time.time() - start_time
     total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
-    log.info("%s %s docker apps %02d:%02d", ascii_chars.checkmark, action_log, total_elapsed_mins, total_elapsed_secs)
+    log.info("%s %s server %s %02d:%02d", ascii_chars.checkmark, action_log, server_name, total_elapsed_mins, total_elapsed_secs)
 
 
 def server_install():
