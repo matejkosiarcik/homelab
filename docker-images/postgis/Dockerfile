@@ -28,7 +28,7 @@ COPY --from=homelab_dir /homelab /homelab
 ### Final ###
 
 # hadolint ignore=DL3029
-FROM --platform=linux/amd64 postgis/postgis:18-3.7@sha256:57e61cca60b05756e56da5979c23f8360c13d3eb18d1cfbd9e44c467c5926c87 AS final
+FROM --platform=linux/amd64 postgis/postgis:19-3.7@sha256:fb3b0686833282d392a6af200c6c5234ed2d671ef372fa245106ec39b5c95945 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
