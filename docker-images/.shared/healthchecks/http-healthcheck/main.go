@@ -18,6 +18,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/alexflint/go-arg"
@@ -28,21 +29,90 @@ var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 
 const checkTimeout = 2 * time.Second
 
+var urlEnvironmentVariable = regexp.MustCompile(`\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}`)
+
 type healthcheckArgs struct {
-	URL                  string  `arg:"--url,required" help:"Endpoint URL to check; supports file, http, https, and tcp"`
-	Method               string  `arg:"--method" default:"GET" help:"HTTP method"`
-	Body                 *string `arg:"--body" help:"Literal response body to validate (optional)"`
-	BodyRegex            string  `arg:"--body-regex" help:"Regex to validate response body against (optional)"`
-	BodyJSON             string  `arg:"--body-json" help:"jq query that must return a truthy result for JSON response body (optional)"`
-	Status               string  `arg:"--status" help:"Expected HTTP status code(s), delimited with \",\" for multiple values, also allows ranges with \"-\" (optional)"`
-	Insecure             bool    `arg:"--insecure" help:"Skip TLS certificate validation"`
-	TLSServerCACert      string  `arg:"--tls-server-ca-cert" help:"PEM CA certificate file that signed the TLS server certificate, used to verify that server (optional)"`
-	TLSClientCert        string  `arg:"--tls-client-cert" help:"PEM client certificate file for mutual TLS (optional)"`
-	TLSClientKey         string  `arg:"--tls-client-key" help:"PEM client private key file for mutual TLS (optional)"`
-	BasicAuthUsername    string  `arg:"--basic-auth-username" help:"HTTP Basic Auth username (optional)"`
-	BasicAuthPassword    string  `arg:"--basic-auth-password" help:"HTTP Basic Auth password (optional)"`
-	BasicAuthUsernameEnv string  `arg:"--basic-auth-username-env" help:"Environment variable containing the HTTP Basic Auth username (optional)"`
-	BasicAuthPasswordEnv string  `arg:"--basic-auth-password-env" help:"Environment variable containing the HTTP Basic Auth password (optional)"`
+	URL                  string  `json:"url"`
+	Method               string  `json:"method"`
+	Body                 *string `json:"body"`
+	BodyRegex            string  `json:"bodyRegex"`
+	BodyJSON             string  `json:"bodyJSON"`
+	Status               string  `json:"status"`
+	Insecure             bool    `json:"insecure"`
+	TLSServerCACert      string  `json:"tlsServerCACert"`
+	TLSClientCert        string  `json:"tlsClientCert"`
+	TLSClientKey         string  `json:"tlsClientKey"`
+	BasicAuthUsername    string  `json:"basicAuthUsername"`
+	BasicAuthPassword    string  `json:"basicAuthPassword"`
+	BasicAuthUsernameEnv string  `json:"basicAuthUsernameEnv"`
+	BasicAuthPasswordEnv string  `json:"basicAuthPasswordEnv"`
+}
+
+type commandArgs struct {
+	Endpoints []healthcheckArgs `arg:"--endpoint,separate,required" help:"Endpoint as a JSON object; repeat for multiple checks"`
+}
+
+func (commandArgs) Epilogue() string {
+	return `Endpoint JSON fields:
+		url                    Required file, http, https, or tcp URL; expands ${NAME} and ${NAME:-default}
+		method                 HTTP method (default: GET)
+		body                   Exact response or file body
+		bodyRegex              Regular expression for the response or file body
+		bodyJSON               jq query that must return a truthy result
+		status                 HTTP status codes and ranges, e.g. "200,400-404" (default: "200-299")
+		insecure               Skip TLS certificate verification (default: false)
+		tlsServerCACert        PEM server CA certificate path
+		tlsClientCert          PEM client certificate path
+		tlsClientKey           PEM client private key path
+		basicAuthUsername      HTTP Basic Auth username
+		basicAuthPassword      HTTP Basic Auth password
+		basicAuthUsernameEnv   Environment variable containing the username
+		basicAuthPasswordEnv   Environment variable containing the password
+	Use at most one of body, bodyRegex, and bodyJSON per endpoint.`
+}
+
+func (args *healthcheckArgs) UnmarshalText(data []byte) error {
+	if !bytes.HasPrefix(bytes.TrimSpace(data), []byte("{")) {
+		return errors.New("endpoint must be a JSON object")
+	}
+	// Decode into a separate value so that invalid input cannot leave partial settings.
+	type endpointJSON healthcheckArgs
+	var endpoint endpointJSON
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&endpoint); err != nil {
+		return fmt.Errorf("invalid endpoint JSON: %w", err)
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return errors.New("endpoint must contain exactly one JSON object")
+	}
+	if endpoint.URL == "" {
+		return errors.New("endpoint url is required")
+	}
+	var missingVariable string
+	endpoint.URL = urlEnvironmentVariable.ReplaceAllStringFunc(endpoint.URL, func(placeholder string) string {
+		parts := urlEnvironmentVariable.FindStringSubmatch(placeholder)
+		value, exists := os.LookupEnv(parts[1])
+		if (!exists || value == "") && strings.Contains(placeholder, ":-") {
+			return parts[2]
+		}
+		if !exists && missingVariable == "" {
+			missingVariable = parts[1]
+		}
+		return value
+	})
+	if missingVariable != "" {
+		return fmt.Errorf("endpoint URL environment variable is unset: %s", missingVariable)
+	}
+	if endpoint.URL == "" {
+		return errors.New("endpoint url is empty after environment expansion")
+	}
+	if endpoint.Method == "" {
+		endpoint.Method = http.MethodGet
+	}
+	*args = healthcheckArgs(endpoint)
+	return nil
 }
 
 func checkTCP(args healthcheckArgs) error {
@@ -82,7 +152,7 @@ func checkTCP(args healthcheckArgs) error {
 
 func tlsClientConfig(args healthcheckArgs) (*tls.Config, error) {
 	if (args.TLSClientCert == "") != (args.TLSClientKey == "") {
-		return nil, errors.New("mutual TLS requires both --tls-client-cert and --tls-client-key")
+		return nil, errors.New("mutual TLS requires both tlsClientCert and tlsClientKey")
 	}
 
 	if args.TLSServerCACert == "" && args.TLSClientCert == "" && !args.Insecure {
@@ -284,20 +354,20 @@ func newBodyValidator(args healthcheckArgs) (bodyValidator, error) {
 		bodyValidationCount++
 	}
 	if bodyValidationCount > 1 {
-		return bodyValidator{}, errors.New("use only one of --body, --body-regex, and --body-json")
+		return bodyValidator{}, errors.New("use only one of body, bodyRegex, and bodyJSON")
 	}
 
 	if args.BodyRegex != "" {
 		regex, err := regexp.Compile(args.BodyRegex)
 		if err != nil {
-			return bodyValidator{}, fmt.Errorf("invalid regex for --body-regex: %w", err)
+			return bodyValidator{}, fmt.Errorf("invalid regex for bodyRegex: %w", err)
 		}
 		validator.regex = regex
 	}
 	if args.BodyJSON != "" {
 		query, err := gojq.Parse(args.BodyJSON)
 		if err != nil {
-			return bodyValidator{}, fmt.Errorf("invalid jq query for --body-json: %w", err)
+			return bodyValidator{}, fmt.Errorf("invalid jq query for bodyJSON: %w", err)
 		}
 		validator.json = query
 	}
@@ -328,10 +398,10 @@ func (validator bodyValidator) validate(body []byte) error {
 // nolint:gocyclo
 func checkHTTP(args healthcheckArgs) error {
 	if args.BasicAuthUsername != "" && args.BasicAuthUsernameEnv != "" {
-		return errors.New("use only one of --basic-auth-username and --basic-auth-username-env")
+		return errors.New("use only one of basicAuthUsername and basicAuthUsernameEnv")
 	}
 	if args.BasicAuthPassword != "" && args.BasicAuthPasswordEnv != "" {
-		return errors.New("use only one of --basic-auth-password and --basic-auth-password-env")
+		return errors.New("use only one of basicAuthPassword and basicAuthPasswordEnv")
 	}
 	bodyValidator, err := newBodyValidator(args)
 	if err != nil {
@@ -373,14 +443,14 @@ func checkHTTP(args healthcheckArgs) error {
 		if strings.Contains(status, "-") {
 			parts := strings.Split(status, "-")
 			if len(parts) != 2 {
-				return fmt.Errorf("invalid HTTP status range for --status: %q", status)
+				return fmt.Errorf("invalid HTTP status range for status: %q", status)
 			}
 
 			start, err1 := strconv.Atoi(strings.TrimSpace(parts[0]))
 			end, err2 := strconv.Atoi(strings.TrimSpace(parts[1]))
 
 			if err1 != nil || err2 != nil || start < 100 || end > 599 || start > end {
-				return fmt.Errorf("invalid HTTP status range for --status: %q", status)
+				return fmt.Errorf("invalid HTTP status range for status: %q", status)
 			}
 
 			for code := start; code <= end; code++ {
@@ -389,7 +459,7 @@ func checkHTTP(args healthcheckArgs) error {
 		} else {
 			code, parseErr := strconv.Atoi(status)
 			if parseErr != nil || code < 100 || code > 599 {
-				return fmt.Errorf("invalid HTTP status code for --status: %q", status)
+				return fmt.Errorf("invalid HTTP status code for status: %q", status)
 			}
 
 			expectedStatuses = append(expectedStatuses, code)
@@ -439,8 +509,40 @@ func checkHTTP(args healthcheckArgs) error {
 	return nil
 }
 
+func checkEndpoint(args healthcheckArgs) error {
+	endpoint, err := url.Parse(args.URL)
+	if err != nil {
+		return fmt.Errorf("parsing URL: %w", err)
+	}
+
+	switch strings.ToLower(endpoint.Scheme) {
+	case "file":
+		return checkFile(args)
+	case "tcp":
+		return checkTCP(args)
+	case "http", "https":
+		return checkHTTP(args)
+	default:
+		return fmt.Errorf("unsupported URL protocol %q; use file, http, https, or tcp", endpoint.Scheme)
+	}
+}
+
+func checkEndpoints(endpoints []healthcheckArgs) []error {
+	results := make([]error, len(endpoints))
+	var checks sync.WaitGroup
+	for i, endpoint := range endpoints {
+		checks.Add(1)
+		go func() {
+			defer checks.Done()
+			results[i] = checkEndpoint(endpoint)
+		}()
+	}
+	checks.Wait()
+	return results
+}
+
 func main() {
-	var args healthcheckArgs
+	var args commandArgs
 	parser, parserErr := arg.NewParser(arg.Config{}, &args)
 	if parserErr != nil {
 		// nolint:errcheck
@@ -463,30 +565,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	endpoint, err := url.Parse(args.URL)
-	if err != nil {
-		log("ERROR", "Error parsing URL: %v\n", err)
-		os.Exit(1)
+	failed := false
+	for i, err := range checkEndpoints(args.Endpoints) {
+		if err != nil {
+			log("ERROR", "Endpoint %d health check failed: %v\n", i+1, err)
+			failed = true
+		}
 	}
-
-	switch strings.ToLower(endpoint.Scheme) {
-	case "file":
-		if err := checkFile(args); err != nil {
-			log("ERROR", "File health check failed: %v\n", err)
-			os.Exit(1)
-		}
-	case "tcp":
-		if err := checkTCP(args); err != nil {
-			log("ERROR", "TCP health check failed: %v\n", err)
-			os.Exit(1)
-		}
-	case "http", "https":
-		if err := checkHTTP(args); err != nil {
-			log("ERROR", "HTTP health check failed: %v\n", err)
-			os.Exit(1)
-		}
-	default:
-		log("ERROR", "Unsupported URL protocol %q; use file, http, https, or tcp\n", endpoint.Scheme)
+	if failed {
 		os.Exit(1)
 	}
 

@@ -56,6 +56,6 @@ ENV HOMELAB_CONTAINER_NAME="nodeexporter" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:9100" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:9100\"}" ]
 ENTRYPOINT [ "/homelab/bin/node_exporter" ]
 CMD [ "--path.rootfs=/host" ]

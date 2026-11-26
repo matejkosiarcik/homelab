@@ -105,4 +105,4 @@ ENV FILE__MONGO_PASS="/homelab/mongodb-password.txt" \
     PGID="${GID}" \
     PUID="${UID}" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=6m --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && exec healthcheck --url \"https://localhost:${https_port}/status\" --insecure --body-json '.meta.up == true'" ]
+HEALTHCHECK --interval=10s --start-period=6m --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "https_port=\"$(grep 'unifi.https.port' </defaults/system.properties | sed -E 's~^.+=~~')\" && exec healthcheck --endpoint '{\"url\":\"https://localhost:'\"${https_port}\"'/status\",\"insecure\":true,\"bodyJSON\":\".meta.up == true\"}'" ]

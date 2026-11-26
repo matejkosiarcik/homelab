@@ -136,7 +136,9 @@ ENV AUTH="0" \
     SOCKGUARD_ADMIN_LISTEN_INSECURE_ALLOW_PLAIN_TCP="false" \
     SOCKGUARD_ADMIN_LISTEN_INSECURE_ALLOW_UNAUTHENTICATED_CLIENTS="false" \
     SOCKGUARD_ADMIN_LISTEN_INSECURE_ALLOW_WIDE_OPEN="false" \
+    DOCKER_CERT_PATH="/homelab/tls-certs/client/docker-socket-proxy" \
     DOCKER_HOST="tcp://docker-socket-proxy:2375" \
+    DOCKER_TLS_VERIFY="1" \
     SOCKGUARD_LISTEN_ADDRESS="0.0.0.0:2375" \
     SOCKGUARD_LISTEN_INSECURE_ALLOW_PLAIN_TCP="true" \
     SOCKGUARD_LISTEN_INSECURE_ALLOW_UNAUTHENTICATED_CLIENTS="true" \
@@ -151,5 +153,5 @@ ENV AUTH="0" \
     SOCKET_PATH="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:2375/health" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:2375/health\"}" ]
 ENTRYPOINT ["sh", "/homelab/entrypoint.sh"]

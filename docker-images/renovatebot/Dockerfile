@@ -183,5 +183,5 @@ ENV GITHUB_COM_TOKEN="" \
     RENOVATE_TOKEN="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "file:///homelab/tmpfs/status.txt", "--body", "started\n" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

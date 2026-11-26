@@ -57,6 +57,6 @@ ENV ERR_ERL_UNEXPECTED_X_FORWARDED_FOR="false" \
     TZ="Europe/Bratislava"
 WORKDIR /homelab/app
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--url", "http://localhost:5006" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:5006\"}" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/app/app.js" ]
 CMD []

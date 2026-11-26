@@ -200,6 +200,86 @@ write_certificator_users() {
     printf 'CERTBOT_HOMELAB_VIEWER_PASSWORD="%s"\n' "${certbot_homelab_viewer_password}" >>"${initial_output}/certificator.env"
 }
 
+write_mtls_ca() {
+    role="${1}"
+    hostname="${2}"
+    outdir="${3}"
+    tmpdir2="$(mktemp -d "${tmpdir}/mtls.XXXXXX")"
+
+    # Create the CA
+    openssl req -x509 -newkey rsa:4096 -noenc -sha256 -days 3650 \
+        -subj "/CN=mTLS CA for ${role} ${hostname}" \
+        -addext 'basicConstraints=critical,CA:TRUE,pathlen:0' \
+        -addext 'keyUsage=critical,keyCertSign,cRLSign' \
+        -keyout "${tmpdir2}/ca.key" \
+        -out "${tmpdir2}/ca.crt"
+
+    mkdir -p "${outdir}"
+    cp "${tmpdir2}/ca.crt" "${tmpdir2}/ca.key" "${outdir}/"
+    rm -rf "${tmpdir2}"
+}
+
+write_mtls_cert_for_server() {
+    server_hostname="${1}"
+    outdir="${2}"
+    tmpdir2="$(mktemp -d "${tmpdir}/mtls.XXXXXX")"
+    cp -R "${outdir}/." "${tmpdir2}/"
+
+    # Create the stunnel server key and certificate request
+    openssl req -new -newkey rsa:4096 -noenc \
+        -subj "/CN=${server_hostname}" \
+        -addext 'basicConstraints=critical,CA:FALSE' \
+        -addext 'keyUsage=critical,digitalSignature' \
+        -addext 'extendedKeyUsage=serverAuth' \
+        -addext "subjectAltName=DNS:${server_hostname}" \
+        -keyout "${tmpdir2}/server.key" \
+        -out "${tmpdir2}/server.csr"
+
+    # Sign the server certificate
+    openssl x509 -req \
+        -in "${tmpdir2}/server.csr" \
+        -CA "${tmpdir2}/ca.crt" \
+        -CAkey "${tmpdir2}/ca.key" \
+        -CAcreateserial -days 365 -sha256 -copy_extensions copy \
+        -out "${tmpdir2}/server.crt"
+
+    openssl verify -CAfile "${tmpdir2}/ca.crt" -purpose sslserver -verify_hostname "${server_hostname}" "${tmpdir2}/server.crt"
+
+    mkdir -p "${outdir}"
+    cp "${tmpdir2}/server.crt" "${tmpdir2}/server.key" "${outdir}/"
+    rm -rf "${tmpdir2}"
+}
+
+write_mtls_cert_for_client() {
+    client_hostname="${1}"
+    outdir="${2}"
+    tmpdir2="$(mktemp -d "${tmpdir}/mtls.XXXXXX")"
+    cp -R "${outdir}/." "${tmpdir2}/"
+
+    # Create the client key and certificate request
+    openssl req -new -newkey rsa:4096 -noenc \
+        -subj "/CN=${client_hostname}" \
+        -addext 'basicConstraints=critical,CA:FALSE' \
+        -addext 'keyUsage=critical,digitalSignature' \
+        -addext 'extendedKeyUsage=clientAuth' \
+        -keyout "${tmpdir2}/client.key" \
+        -out "${tmpdir2}/client.csr"
+
+    # Sign the client certificate
+    openssl x509 -req \
+        -in "${tmpdir2}/client.csr" \
+        -CA "${tmpdir2}/ca.crt" \
+        -CAkey "${tmpdir2}/ca.key" \
+        -CAcreateserial -days 365 -sha256 -copy_extensions copy \
+        -out "${tmpdir2}/client.crt"
+
+    openssl verify -CAfile "${tmpdir2}/ca.crt" -purpose sslclient "${tmpdir2}/client.crt"
+
+    mkdir -p "${outdir}"
+    cp "${tmpdir2}/client.crt" "${tmpdir2}/client.key" "${outdir}/"
+    rm -rf "${tmpdir2}"
+}
+
 case "${app_type}" in
 actualbudget)
     # Preload #
@@ -1409,6 +1489,7 @@ pihole)
 
     # Favicons #
     touch "${initial_output}/favicons.env"
+
     ;;
 
 planka)
@@ -2014,6 +2095,21 @@ vikunja)
 *)
     log ERROR "$(printf 'Unknown app "%s" at "%s"' "${app_type}" "${app_dir_path}")"
     exit 1
+    ;;
+esac
+
+case "${app_type}" in
+dockerstats | dozzleagent | ntfy | pihole | renovatebot)
+    mtls_server_dir='mtls/docker-socket-proxy/server'
+    mtls_client_dir='mtls/sockguard/client/docker-socket-proxy'
+    write_mtls_ca server docker-socket-proxy "${initial_output}/${mtls_server_dir}"
+    write_mtls_cert_for_server docker-socket-proxy "${initial_output}/${mtls_server_dir}"
+    write_mtls_ca client sockguard "${initial_output}/${mtls_client_dir}"
+    write_mtls_cert_for_client sockguard "${initial_output}/${mtls_client_dir}"
+    ;;
+
+*)
+    true
     ;;
 esac
 

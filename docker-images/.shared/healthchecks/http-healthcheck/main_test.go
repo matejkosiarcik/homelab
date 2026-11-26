@@ -16,13 +16,143 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/alexflint/go-arg"
 	"github.com/itchyny/gojq"
 )
+
+func TestEndpointArguments(t *testing.T) {
+	var args commandArgs
+	parser, err := arg.NewParser(arg.Config{}, &args)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = parser.Parse([]string{
+		"--endpoint", `{"url":"https://localhost/a","method":"POST","body":"","status":"200,204","insecure":true,"tlsServerCACert":"ca","tlsClientCert":"cert","tlsClientKey":"key","basicAuthUsername":"user","basicAuthPassword":"pass","basicAuthUsernameEnv":"USER_ENV","basicAuthPasswordEnv":"PASS_ENV"}`,
+		"--endpoint", `{"url":"http://localhost/b","bodyRegex":"ready"}`,
+		"--endpoint", `{"url":"http://localhost/c","bodyJSON":".healthy"}`,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	empty := ""
+	want := []healthcheckArgs{
+		{URL: "https://localhost/a", Method: "POST", Body: &empty, Status: "200,204", Insecure: true, TLSServerCACert: "ca", TLSClientCert: "cert", TLSClientKey: "key", BasicAuthUsername: "user", BasicAuthPassword: "pass", BasicAuthUsernameEnv: "USER_ENV", BasicAuthPasswordEnv: "PASS_ENV"},
+		{URL: "http://localhost/b", Method: "GET", BodyRegex: "ready"},
+		{URL: "http://localhost/c", Method: "GET", BodyJSON: ".healthy"},
+	}
+	if !reflect.DeepEqual(args.Endpoints, want) {
+		t.Errorf("endpoints = %#v, want %#v", args.Endpoints, want)
+	}
+}
+
+func TestEndpointURLEnvironmentExpansion(t *testing.T) {
+	t.Setenv("HEALTHCHECK_TEST_HOST", "localhost")
+	t.Setenv("HEALTHCHECK_TEST_PORT", "8443")
+	t.Setenv("HEALTHCHECK_TEST_EMPTY", "")
+	t.Setenv("HEALTHCHECK_TEST_NESTED", "${HEALTHCHECK_TEST_HOST}")
+	t.Setenv("HEALTHCHECK_TEST_MISSING_79381", "")
+	if err := os.Unsetenv("HEALTHCHECK_TEST_MISSING_79381"); err != nil {
+		t.Fatal(err)
+	}
+
+	for _, test := range []struct {
+		name    string
+		input   string
+		want    string
+		wantErr string
+	}{
+		{name: "multiple variables", input: `{"url":"https://${HEALTHCHECK_TEST_HOST}:${HEALTHCHECK_TEST_PORT}/${HEALTHCHECK_TEST_HOST}","body":"${HEALTHCHECK_TEST_HOST}"}`, want: "https://localhost:8443/localhost"},
+		{name: "default for missing", input: `{"url":"https://localhost:${HEALTHCHECK_TEST_MISSING_79381:-8043}"}`, want: "https://localhost:8043"},
+		{name: "default for empty", input: `{"url":"https://localhost:${HEALTHCHECK_TEST_EMPTY:-8043}"}`, want: "https://localhost:8043"},
+		{name: "set overrides default", input: `{"url":"https://localhost:${HEALTHCHECK_TEST_PORT:-8043}"}`, want: "https://localhost:8443"},
+		{name: "no recursive expansion", input: `{"url":"https://localhost/${HEALTHCHECK_TEST_NESTED}"}`, want: "https://localhost/${HEALTHCHECK_TEST_HOST}"},
+		{name: "unbraced is literal", input: `{"url":"https://localhost/$HEALTHCHECK_TEST_HOST"}`, want: "https://localhost/$HEALTHCHECK_TEST_HOST"},
+		{name: "missing variable", input: `{"url":"https://${HEALTHCHECK_TEST_MISSING_79381}"}`, wantErr: "HEALTHCHECK_TEST_MISSING_79381"},
+		{name: "empty URL", input: `{"url":"${HEALTHCHECK_TEST_EMPTY}"}`, wantErr: "empty after environment expansion"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			var endpoint healthcheckArgs
+			err := endpoint.UnmarshalText([]byte(test.input))
+			if test.wantErr != "" {
+				if err == nil || !strings.Contains(err.Error(), test.wantErr) {
+					t.Errorf("error = %v, want %q", err, test.wantErr)
+				}
+				return
+			}
+			if err != nil || endpoint.URL != test.want {
+				t.Fatalf("URL = %q, error = %v; want %q", endpoint.URL, err, test.want)
+			}
+			if endpoint.Body != nil && *endpoint.Body != "${HEALTHCHECK_TEST_HOST}" {
+				t.Errorf("body was expanded: %q", *endpoint.Body)
+			}
+		})
+	}
+}
+
+func TestInvalidEndpointArguments(t *testing.T) {
+	for _, argv := range [][]string{
+		{},
+		{"--url", "http://localhost"},
+		{"--endpoint", `null`},
+		{"--endpoint", `{}`},
+		{"--endpoint", `{"url":"http://localhost","in secure":true}`},
+		{"--endpoint", `{"url":"http://localhost"} {}`},
+		{"--endpoint", `{"url":"http://localhost","insecure":"true"}`},
+	} {
+		var args commandArgs
+		parser, err := arg.NewParser(arg.Config{}, &args)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := parser.Parse(argv); err == nil {
+			t.Errorf("Parse(%q) succeeded, want error", argv)
+		}
+	}
+}
+
+func TestCheckEndpointsConcurrentAndIndependent(t *testing.T) {
+	arrived := make(chan struct{}, 2)
+	release := make(chan struct{})
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		arrived <- struct{}{}
+		<-release
+		if request.URL.Path == "/bad" {
+			writer.WriteHeader(http.StatusServiceUnavailable)
+			return
+		}
+		if _, err := writer.Write([]byte("ready")); err != nil {
+			t.Errorf("writer.Write() error = %v", err)
+		}
+	}))
+	defer server.Close()
+	body := "ready"
+	results := make(chan []error, 1)
+	go func() {
+		results <- checkEndpoints([]healthcheckArgs{
+			{URL: server.URL + "/good", Body: &body},
+			{URL: server.URL + "/bad"},
+		})
+	}()
+	for range 2 {
+		select {
+		case <-arrived:
+		case <-time.After(time.Second):
+			close(release)
+			t.Fatal("checks did not run concurrently")
+		}
+	}
+	close(release)
+	errs := <-results
+	if errs[0] != nil || errs[1] == nil {
+		t.Errorf("checkEndpoints() = %v, want success then failure", errs)
+	}
+}
 
 func TestCheckHTTP(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
@@ -67,7 +197,7 @@ func TestCheckHTTPLiteralBody(t *testing.T) {
 func TestCheckHTTPOnlyAllowsOneBodyValidation(t *testing.T) {
 	body := "healthy"
 	err := checkHTTP(healthcheckArgs{URL: "http://localhost", Body: &body, BodyRegex: "healthy"})
-	if err == nil || !strings.Contains(err.Error(), "use only one of --body, --body-regex, and --body-json") {
+	if err == nil || !strings.Contains(err.Error(), "use only one of body, bodyRegex, and bodyJSON") {
 		t.Errorf("checkHTTP() error = %v, want mutually-exclusive body-validation error", err)
 	}
 }
@@ -219,7 +349,7 @@ func TestTLSClientConfigRequiresCertificateAndKey(t *testing.T) {
 		{TLSClientCert: "cert.pem"},
 		{TLSClientKey: "key.pem"},
 	} {
-		if _, err := tlsClientConfig(args); err == nil || !strings.Contains(err.Error(), "both --tls-client-cert and --tls-client-key") {
+		if _, err := tlsClientConfig(args); err == nil || !strings.Contains(err.Error(), "both tlsClientCert and tlsClientKey") {
 			t.Errorf("tlsClientConfig(%+v) error = %v, want incomplete client-certificate error", args, err)
 		}
 	}
