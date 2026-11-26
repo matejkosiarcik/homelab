@@ -60,7 +60,7 @@ jobs:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
     strategy:
       fail-fast: true
-      max-parallel: 25
+      max-parallel: 50
       matrix:
         include: ${{ fromJSON(needs.discovery.outputs.matrix) }}
     steps:
