@@ -26,7 +26,7 @@
     "sharp-ico": "^0.1.5",
     "tar": "^7.5.23",
     "tslib": "^2.9.1",
-    "user-agents": "^2.1.254",
+    "user-agents": "^2.1.255",
     "winston": "^3.19.0"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@types/har-format": "^1.2.16",
     "@types/lodash": "^4.17.27",
     "@types/lzma-native": "^4.0.4",
-    "@types/node": "^26.6.6",
+    "@types/node": "^26.6.10",
     "@types/user-agents": "^1.0.4",
     "cross-env": "^10.1.0",
     "exitzero": "^1.0.1",
