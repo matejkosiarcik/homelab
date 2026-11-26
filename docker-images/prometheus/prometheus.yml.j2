@@ -8,9 +8,9 @@ scrape_configs:
 
 {%- if endpoint.path == "/metrics" %}
   {%- set endpoint_name_suffix = "app" %}
-{%- elif endpoint.path == "/api/prometheus" and app.app_type == "homeassistant" %}
+{%- elif app.app_type == "homeassistant" and endpoint.path == "/api/prometheus" %}
   {%- set endpoint_name_suffix = "app" %}
-{%- elif endpoint.path == "/minio/v2/metrics/cluster" and app.app_type == "minio" %}
+{%- elif app.app_type == "minio" and endpoint.path == "/minio/v2/metrics/cluster" %}
   {%- set endpoint_name_suffix = "app" %}
 {%- elif endpoint.path == "/.apache/metrics" %}
   {%- set endpoint_name_suffix = "proxy" %}
@@ -22,17 +22,13 @@ scrape_configs:
   # ERROR: Unknown path: {{ endpoint.path -}}
 {%- endif %}
 
+{%- set endpoint_auth_default_user = "prometheus" %}
+
 {%- if endpoint.path.startswith("/.apache/") %}
-  {%- set endpoint_auth_default_user = "prometheus" %}
   {%- set endpoint_secret_prefix = "proxy_" %}
-{%- elif endpoint.path.startswith("/docker-sockguard/") %}
-  {%- set endpoint_auth_default_user = "prometheus" %}
-  {%- set endpoint_secret_prefix = "docker_sockguard_" %}
-{%- elif endpoint.path.startswith("/runwisp/") %}
-  {%- set endpoint_auth_default_user = "prometheus" %}
-  {%- set endpoint_secret_prefix = "runwisp_" %}
+{%- elif endpoint.path.startswith("/docker-sockguard/") or endpoint.path.startswith("/runwisp/") %}
+  {%- set endpoint_name_suffix = endpoint.path.split("/")[1] | replace("-", "_") | replace(" ", "_") ~ "_" %}
 {%- else %}
-  {%- set endpoint_auth_default_user = "prometheus" %}
   {%- set endpoint_secret_prefix = "app_" %}
 {%- endif %}
 
