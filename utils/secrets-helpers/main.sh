@@ -1761,7 +1761,7 @@ renovatebot)
     # App #
     write_healthcheck_url "${app_full_name_machine}" app
     printf 'RENOVATE_TOKEN="%s"\n' "${renovate_token}" >>"${initial_output}/app.env"
-    printf 'GITHUB_COM_TOKEN="%s"\n' "${github_token}" >>"${initial_output}/app.env"
+    printf 'RENOVATE_GITHUB_COM_TOKEN="%s"\n' "${github_token}" >>"${initial_output}/app.env"
 
     # RunWisp #
     printf 'RUNWISP_PASSWORD="%s"\n' "${runwisp_admin_password}" >>"${initial_output}/runwisp.env"
