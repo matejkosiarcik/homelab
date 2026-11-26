@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-jobs:5.15.4@sha256:561efa65681a028dbbc6fa7f745c61e79906d1084c9ab5756667861377b5019f AS final
+FROM reportportal/service-jobs:6.0.0@sha256:0a5c1f83e23305db4d117118d7db3e4f5509842629af6e553d07d92c1e6d25bc AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
