@@ -1,0 +1,51 @@
+version: "3"
+silent: true
+
+tasks:
+  build:
+    desc: Build all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' build {{.CLI_ARGS}}
+
+  debug-compose:
+    desc: Dump resolved compose configs for all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' debug-compose {{.CLI_ARGS}}
+
+  deploy:
+    desc: Deploy all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' deploy {{.CLI_ARGS}}
+
+  install:
+    desc: Run server installation for each server
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' install {{.CLI_ARGS}}
+
+  restart:
+    desc: Restart all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' restart {{.CLI_ARGS}}
+
+  secrets:
+    desc: Create secrets for all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' secrets {{.CLI_ARGS}}
+
+  start:
+    desc: Start all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' start {{.CLI_ARGS}}
+
+  stop:
+    desc: Stop all apps in the site
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - python3 '{{.ROOT_DIR}}/../../utils/site-helpers/main.py' stop {{.CLI_ARGS}}

@@ -33,8 +33,8 @@ def get_server_and_git_dirs() -> tuple[Path, Path]:
     except ValueError as error:
         raise ValueError(f"Current directory is outside this Git working tree: {current_dir}") from error
 
-    if not re.fullmatch(r"servers/[^/]+", relative_dir.as_posix()):
-        raise ValueError(f"Run server tasks from <git-dir>/servers/<server>; got: {current_dir}")
+    if not re.fullmatch(r"sites/[^/]+/servers/[^/]+", relative_dir.as_posix()):
+        raise ValueError(f"Run server tasks from <git-dir>/sites/<site>/servers/<server>; got: {current_dir}")
     if not (current_dir / "docker-apps").is_dir():
         raise ValueError(f"Server docker-apps directory is missing: {current_dir / 'docker-apps'}")
 

@@ -40,8 +40,8 @@ def get_app_and_git_dirs() -> tuple[Path, Path]:
     except ValueError as error:
         raise ValueError(f"Current directory is outside this Git working tree: {current_dir}") from error
 
-    expected_path = "<git-dir>/servers/<server>/docker-apps/<app>"
-    if not re.fullmatch(r"servers/[^/]+/docker-apps/[^/]+", relative_dir.as_posix()):
+    expected_path = "<git-dir>/sites/<site>/servers/<server>/docker-apps/<app>"
+    if not re.fullmatch(r"sites/[^/]+/servers/[^/]+/docker-apps/[^/]+", relative_dir.as_posix()):
         raise ValueError(f"Run app tasks from {expected_path}; got: {current_dir}")
 
     if not (current_dir / "config" / "config.yml").is_file():
