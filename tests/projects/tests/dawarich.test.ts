@@ -35,7 +35,8 @@ test.describe(app.title, () => {
                     });
                     expect(response.status, 'Response status').toBe(variant.status);
                     if (variant.status === 200) {
-                        expect(Array.isArray(response.data), 'Response body is an array of points').toBe(true);
+                        expect(Array.isArray(response.data), 'Response body should be an array of points').toBeTruthy();
+                        expect(response.data, 'Response body should be an empty array').toStrictEqual([]);
                     }
                 });
             }
