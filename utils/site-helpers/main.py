@@ -52,7 +52,7 @@ class LogFormatter(logging.Formatter):
 
 
 @dataclass
-class MainConfig:
+class MainConfig:  # pylint: disable=too-many-instance-attributes
     servers: list[str]
     env_mode: str
     when_mode: str = ""
@@ -86,7 +86,7 @@ def get_servers_list(site_dir: Path, only_servers: str | None, skip_servers: str
     return servers
 
 
-def main(argv: list[str]) -> None:
+def main(argv: list[str]) -> None:  # pylint: disable=too-many-locals
     try:
         site_dir, git_dir = get_site_and_git_dirs()
     except ValueError as error:
