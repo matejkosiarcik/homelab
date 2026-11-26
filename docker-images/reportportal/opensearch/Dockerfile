@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=shared,id=homelab_go_gomodcach
 
 ### App ###
 
-FROM opensearchproject/opensearch:2.19.8@sha256:0171f36eee4c50f5251e858458216612c4b86bbf4cba4eb28e3b0708944266cf AS entrypoint
+FROM opensearchproject/opensearch:3.10.1@sha256:02358b2be62b268a404a54581184d027ac0dfa8f875be15fe4c4fa3f8884f464 AS entrypoint
 USER root
 COPY ./docker-images/reportportal/opensearch/entrypoint-extra.sh /homelab/
 RUN head -n 1 /usr/share/opensearch/opensearch-docker-entrypoint.sh >/homelab/entrypoint-upstream-shebang.sh && \
@@ -20,7 +20,7 @@ RUN head -n 1 /usr/share/opensearch/opensearch-docker-entrypoint.sh >/homelab/en
     cat /homelab/entrypoint-upstream-shebang.sh /homelab/entrypoint-extra.sh /homelab/entrypoint-upstream-rest.sh >/homelab/entrypoint-final.sh && \
     chmod u=rx,go= /homelab/entrypoint-final.sh
 
-FROM opensearchproject/opensearch:2.19.8@sha256:0171f36eee4c50f5251e858458216612c4b86bbf4cba4eb28e3b0708944266cf AS runtime_dirs
+FROM opensearchproject/opensearch:3.10.1@sha256:02358b2be62b268a404a54581184d027ac0dfa8f875be15fe4c4fa3f8884f464 AS runtime_dirs
 USER root
 RUN mkdir -p '/homelab/original/usr/share/opensearch/config' && \
     cp -R '/usr/share/opensearch/config/.' '/homelab/original/usr/share/opensearch/config'
@@ -55,7 +55,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/opensearc
 
 ### Final ###
 
-FROM opensearchproject/opensearch:2.19.8@sha256:0171f36eee4c50f5251e858458216612c4b86bbf4cba4eb28e3b0708944266cf AS final
+FROM opensearchproject/opensearch:3.10.1@sha256:02358b2be62b268a404a54581184d027ac0dfa8f875be15fe4c4fa3f8884f464 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
