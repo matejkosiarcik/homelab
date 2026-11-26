@@ -32,14 +32,15 @@ jobs:
           tmpfile="$(mktemp)"
           trap 'rm -f "$tmpfile"' EXIT HUP INT TERM
 
-          find '.' -type f -path './servers/*/docker-apps/*/config/config.yml' | while read -r config_path; do
+          find '.' -type f -path './sites/*/servers/*/docker-apps/*/config/config.yml' -not -path '*/.*' | while read -r config_path; do
             path="$(dirname "$(dirname "$config_path")")"
             if basename "$path" | grep -qE '^\.' >/dev/null 2>&1; then
               continue
             fi
+            site_name="$(basename "$(dirname "$(dirname "$(dirname "$(dirname "$path")")")")")"
             server_name="$(basename "$(dirname "$(dirname "$path")")")"
             app_name="$(basename "$path")"
-            app_label="$server_name - $app_name"
+            app_label="$site_name - $server_name - $app_name"
             printf '{"path":"%s","label":"%s"},' "$path" "$app_label" >>"$tmpfile"
           done
 

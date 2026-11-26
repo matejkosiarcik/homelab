@@ -74,9 +74,10 @@ configuration, integrations, or generated assets.
 
 ### Deployment instance
 
+- Use `home` as the default site when no site is specified.
 - Do not connect to, deploy to, restart, or otherwise modify the running physical servers (Odroids and Raspberry Pis).
-- Add a server-specific application directory at `servers/<server>/docker-apps/<instance>/` only when the user
-  explicitly requests deployment on that named server. The shared `servers/<server>/docker-apps/Taskfile.yml`
+- Add a server-specific application directory at `sites/<site>/servers/<server>/docker-apps/<instance>/` only when the user
+  explicitly requests deployment on that named server. The shared `sites/<site>/servers/<server>/docker-apps/Taskfile.yml`
   imports `utils/app-helpers/Taskfile.yml`; do not add an app-level Taskfile. Include `config/config.yml` with the
   instance's type or variant when needed. One deployment instance maps to one `docker-compose` stack.
 - For a requested deployment instance, determine the highest IP already used in that server's

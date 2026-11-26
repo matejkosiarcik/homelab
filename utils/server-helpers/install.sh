@@ -21,8 +21,7 @@ log() {
     done >&2
 }
 
-git_dir="$(git rev-parse --show-toplevel)"
-server_dir="${git_dir}/servers/.current"
+server_dir="$(pwd -P)"
 
 ### General config ###
 

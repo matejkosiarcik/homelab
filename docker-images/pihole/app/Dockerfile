@@ -37,10 +37,10 @@ USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/pihole/app/parse-app-entry.sh /homelab/
 COPY ./docker-images/pihole/app/extra-domains.txt /homelab/
-RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
+RUN --mount=type=bind,source=./sites/home/servers/,target=/homelab/sites/home/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     mkdir -p '/homelab/config' '/homelab/config/FTL' && \
-    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
+    find '/homelab/sites/home/servers' -path '/homelab/sites/home/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-domains.txt' && \
     cat '/homelab/app-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sort --version-sort >'/homelab/config/custom-domains-apps.txt' && \
     cat '/homelab/extra-domains.txt' | sed -E 's~ *#.*$~~' | grep -Ev '^$' | sed -E 's~#.*$~~;s~  ~ ~g;s~^ +~~;s~ +$~~' | grep -vE '^ *$' | sort --version-sort >'/homelab/config/custom-domains-extra.txt' && \
     cat '/homelab/config/custom-domains-apps.txt' '/homelab/config/custom-domains-extra.txt' | sort --version-sort >'/homelab/config/custom-domains-all.txt' && \

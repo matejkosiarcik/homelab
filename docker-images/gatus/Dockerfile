@@ -49,13 +49,13 @@ FROM yq AS monitoring_entries
 USER root
 WORKDIR /homelab
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/gatus/extra-entries.yml ./docker-images/gatus/parse-app-entry.sh ./docker-images/gatus/parse-server-entry.sh /homelab/
-RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
+RUN --mount=type=bind,source=./sites/home/servers/,target=/homelab/sites/home/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     printf 'servers:\n' >'/homelab/server-entries.yml' && \
-    find '/homelab/servers' -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-server-entry.sh' % '/homelab/server-entries.yml' && \
+    find '/homelab/sites/home/servers' -mindepth 1 -maxdepth 1 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-server-entry.sh' % '/homelab/server-entries.yml' && \
     yq --in-place --yaml-output '.servers |= sort_by(.name, .domain)' '/homelab/server-entries.yml' && \
     printf 'apps:\n' >'/homelab/app-entries.yml' && \
-    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
+    find '/homelab/sites/home/servers' -path '/homelab/sites/home/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= sort_by(.app, .short_name, .full_name, .domain)' '/homelab/app-entries.yml' && \
     cat '/homelab/extra-entries.yml' '/homelab/server-entries.yml' '/homelab/app-entries.yml' >'/homelab/all-entries.yml' && \
     yq '.' '/homelab/all-entries.yml' >'/homelab/apps.json'

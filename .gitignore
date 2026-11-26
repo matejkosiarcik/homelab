@@ -17,7 +17,8 @@ test-report/
 tmp/
 
 # For deployment
-/servers/.current
+/sites/.current
+/sites/*/servers/.current
 /.deployment/
 /worktree-*
 

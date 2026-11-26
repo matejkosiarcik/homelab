@@ -22,7 +22,7 @@ app_entries_filepath="${tmpdir}/app-entries.txt"
 table_filepath="${tmpdir}/table.md"
 updated_readme_filepath="${tmpdir}/README.md"
 
-find "${git_root_dir}/servers" -path "${git_root_dir}/servers/*/docker-apps/*" -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 |
+find "${git_root_dir}/sites/home/servers" -path "${git_root_dir}/sites/home/servers/*/docker-apps/*" -mindepth 3 -maxdepth 3 -type d -not -name '.*' -exec test -f '{}/config/config.yml' \; -print0 |
     xargs -0 -I% sh "${app_entry_parser_filepath}" % | sort --version-sort >"${app_entries_filepath}"
 
 max_lengths="$(awk '

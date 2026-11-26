@@ -143,16 +143,17 @@ async function loadAllHomelabDomains(): Promise<HomelabDomain[]> {
     const appEntryUtilsPath = path.join(repositoryPath, 'docker-images', '.shared', 'build-utils', 'parse-app-entry-utils.sh');
     const appEntryParallelLimit = Math.max(1, Math.floor(os.cpus().length / 2));
 
-    const servers = await fsx.readdir(path.join(repositoryPath, 'servers'), { withFileTypes: true });
+    const servers = await fsx.readdir(path.join(repositoryPath, 'sites', 'home', 'servers'), { withFileTypes: true });
     const appDirectories = (await pParallel(
         servers
             .filter((server) => server.isDirectory() && !server.name.startsWith('.'))
             .map((server) => async () => {
-                const dockerAppsPath = path.join(repositoryPath, 'servers', server.name, 'docker-apps');
+                const dockerAppsPath = path.join(repositoryPath, 'sites', 'home', 'servers', server.name, 'docker-apps');
                 try {
-                    return (await fsx.readdir(dockerAppsPath, { withFileTypes: true }))
+                    const apps = (await fsx.readdir(dockerAppsPath, { withFileTypes: true }))
                         .filter((app) => app.isDirectory() && !app.name.startsWith('.'))
                         .map((app) => path.join(dockerAppsPath, app.name));
+                    return apps.filter((app) => fs.existsSync(path.join(app, 'config', 'config.yml')));
                 } catch (error) {
                     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
                         return [];
