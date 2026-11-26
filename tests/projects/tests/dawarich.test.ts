@@ -23,6 +23,9 @@ test.describe(app.title, () => {
 
             const validUsers = [
                 {
+                    email: 'matej@matejhome.com',
+                },
+                {
                     email: 'homelab-test@homelab.matejhome.com',
                 },
             ];

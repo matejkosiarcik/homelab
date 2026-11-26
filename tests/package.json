@@ -6,6 +6,7 @@
   },
   "scripts": {
     "postinstall": "tsx postinstall.ts",
+    "secrets": "sh secrets.sh",
     "test": "playwright test"
   },
   "dependencies": {
