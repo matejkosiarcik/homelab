@@ -71,6 +71,7 @@ ENV bootstrap.memory_lock="true" \
     HOMELAB_CONTAINER_NAME="opensearch" \
     HOMELAB_CONTAINER_VARIANT="default" \
     OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx512m" \
+    OPENSEARCH_TMPDIR="/tmp/exec" \
     plugins.security.disabled="true" \
     PATH="/homelab/bin:${PATH}"
 

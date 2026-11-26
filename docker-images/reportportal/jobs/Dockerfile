@@ -63,7 +63,7 @@ ENV DATASTORE_PATH="/data/storage" \
     DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_NAME="reportportal-jobs" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=60 -XX:MaxRAMPercentage=70.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp" \
+    JAVA_OPTS="-Djava.io.tmpdir=/tmp/exec -Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=60 -XX:MaxRAMPercentage=70.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp" \
     RP_AMQP_ANALYZER-VHOST="app-analyzer" \
     PATH="/homelab/bin:${PATH}" \
     RP_AMQP_APIPASS="" \
