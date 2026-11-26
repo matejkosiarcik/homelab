@@ -71,4 +71,4 @@ ENV HOMELAB_CONTAINER_NAME="reportportal-migrations" \
     POSTGRES_USER="postgres" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]
+HEALTHCHECK --interval=10s --start-period=10m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]

@@ -50,7 +50,6 @@ USER homelab
 ENV AMQP_EXCHANGE_NAME="app-analyzer-default" \
     AMQP_URL="" \
     AMQP_VIRTUAL_HOST="app-analyzer" \
-    ANALYZER_BINARYSTORE_TYPE="filesystem" \
     DATASTORE_TYPE="filesystem" \
     ES_HOSTS="http://opensearch:9200" \
     FILESYSTEM_DEFAULT_PATH="/data/storage/analyzer" \

@@ -59,7 +59,8 @@ USER homelab
 # RP_ENVIRONMENT_VARIABLE_CLEAN_EVENTS_RETENTIONPERIOD - Number of days to keep events in the database
 # RP_ENVIRONMENT_VARIABLE_CLEAN_EVENTS_CRON - Cron expression for the clean events job
 # RP_ENVIRONMENT_VARIABLE_CLEAN_STORAGE_CHUNKSIZE - Number of binaries to be removed from binary storage by storageProjectCron within one job execution
-ENV DATASTORE_TYPE="filesystem" \
+ENV DATASTORE_PATH="/data/storage" \
+    DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_NAME="reportportal-jobs" \
     HOMELAB_CONTAINER_VARIANT="default" \
     JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=60 -XX:MaxRAMPercentage=70.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp" \

@@ -45,10 +45,12 @@ USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-RUN chown -R 'homelab:homelab' /var/cache/nginx
+RUN chown -R 'homelab:homelab' /var/cache/nginx && \
+    ln -s /tmp/reportportal-ui-config.json /usr/share/nginx/html/config.json
 USER homelab
 
-ENV HOMELAB_CONTAINER_NAME="reportportal-ui" \
+ENV AUTH_URL="../api" \
+    HOMELAB_CONTAINER_NAME="reportportal-ui" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:${PATH}" \
     RP_SERVER_PORT="8080" \

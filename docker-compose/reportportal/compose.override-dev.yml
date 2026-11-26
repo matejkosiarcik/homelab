@@ -7,16 +7,10 @@ services:
     <<: *common-service-options
     restart: on-failure
 
-  app-index:
-    <<: *common-service-options
-
   app-ui:
     <<: *common-service-options
 
   app-api:
-    <<: *common-service-options
-
-  app-uat:
     <<: *common-service-options
 
   app-jobs:
