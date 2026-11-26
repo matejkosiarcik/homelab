@@ -308,7 +308,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
         {
             title: 'empty password',
             auth: {
-                username: 'proxy-status',
+                username: 'status',
                 password: '',
             },
             status: 401,
@@ -316,7 +316,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
         {
             title: 'wrong password',
             auth: {
-                username: 'proxy-status',
+                username: 'status',
                 password: faker.string.alphanumeric(10),
             },
             status: 401,
@@ -330,9 +330,17 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
             status: 401,
         },
         {
-            title: 'successful',
+            title: 'old username',
             auth: {
                 username: 'proxy-status',
+                password: getEnv(url, 'PROXY_STATUS_PASSWORD'),
+            },
+            status: 401,
+        },
+        {
+            title: 'successful',
+            auth: {
+                username: 'status',
                 password: getEnv(url, 'PROXY_STATUS_PASSWORD'),
             },
             status: 200,
@@ -356,7 +364,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
         {
             title: 'empty password',
             auth: {
-                username: 'proxy-prometheus',
+                username: 'prometheus',
                 password: '',
             },
             status: 401,
@@ -364,7 +372,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
         {
             title: 'wrong password',
             auth: {
-                username: 'proxy-prometheus',
+                username: 'prometheus',
                 password: faker.string.alphanumeric(10),
             },
             status: 401,
@@ -378,9 +386,17 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
             status: 401,
         },
         {
-            title: 'successful',
+            title: 'old username',
             auth: {
                 username: 'proxy-prometheus',
+                password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
+            },
+            status: 401,
+        },
+        {
+            title: 'successful',
+            auth: {
+                username: 'prometheus',
                 password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
             },
             status: 200,
@@ -400,7 +416,7 @@ export function createProxyTests(url: string, _options?: { redirect?: boolean | 
             const response = await test.step('Request server', async () => {
                 const response = await axios.get(`${url}/.apache/metrics`, {
                     auth: {
-                        username: 'proxy-prometheus',
+                        username: 'prometheus',
                         password: getEnv(url, 'PROXY_PROMETHEUS_PASSWORD'),
                     },
                 });

@@ -71,5 +71,5 @@ ENV HOMELAB_CONTAINER_NAME="vikunja" \
     VIKUNJA_SERVICE_SECRET=""
 WORKDIR /app/vikunja
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "./vikunja", "user", "list" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "./vikunja", "user", "list" ]
 ENTRYPOINT [ "/app/vikunja/vikunja" ]

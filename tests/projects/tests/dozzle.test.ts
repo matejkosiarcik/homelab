@@ -101,7 +101,7 @@ test.describe(agentApp.title, () => {
                 path: '/docker-sockguard/metrics',
                 token: getEnv(url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
             });
-            createDockerSockguardTests(url, [{ username: 'proxy-status', passwordEnv: 'PROXY_STATUS_PASSWORD' }]);
+            createDockerSockguardTests(url, [{ username: 'status', passwordEnv: 'PROXY_STATUS_PASSWORD' }]);
         });
     }
 });

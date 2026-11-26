@@ -184,5 +184,5 @@ ENV DOCKER_HOST="tcp://docker-sockguard:2375" \
     RUNWISP_VIEWER_PASSWORD="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/homelab/bin/runwisp", "status" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "/homelab/bin/runwisp", "status" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

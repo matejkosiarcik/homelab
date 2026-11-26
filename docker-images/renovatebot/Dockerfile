@@ -172,16 +172,16 @@ COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/src/app/ /usr/src/app/
 COPY --from=prefinal --chown=homelab:homelab /fsroot/etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=prefinal --chown=homelab:homelab /fsroot/usr/bin/ /usr/bin/
-ENV GITHUB_COM_TOKEN="" \
-    HOMELAB_CONTAINER_NAME="renovatebot" \
+ENV HOMELAB_CONTAINER_NAME="renovatebot" \
     HOMELAB_CONTAINER_VARIANT="default" \
     HOMELAB_CRON_TIMEOUT="30m" \
     HOMELAB_CRON_SKIP_INITIAL="1" \
     HOMELAB_HEALTHCHECK_URL="" \
     PATH="/homelab/bin:${PATH}" \
     RENOVATE_BASE_DIR="/tmp/renovate" \
+    RENOVATE_GITHUB_COM_TOKEN="" \
     RENOVATE_TOKEN="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

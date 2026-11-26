@@ -27,7 +27,7 @@ import (
 
 var healthcheckLogFile = "/homelab/logs/healthcheck/healthcheck.log"
 
-const checkTimeout = 2 * time.Second
+const checkTimeout = 5 * time.Second
 
 var urlEnvironmentVariable = regexp.MustCompile(`\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}`)
 

@@ -14,7 +14,7 @@
 5. Generate secrets and save in _vaultwarden_
     - Main _admin_ password
     - Regular user passwords (_matej_, _monika_)
-    - _apache_ proxy-status and proxy-prometheus passwords
+    - _apache_ status and prometheus passwords
     - Service specific passwords or API keys (_gatus_, _homepage_, _ntfy_, _prometheus_, ...)
     - Command: `bw generate -u -l -n --length 32` (note: add `-s` to include special characters)
 6. Integration with other apps

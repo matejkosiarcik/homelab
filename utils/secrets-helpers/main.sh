@@ -174,12 +174,12 @@ write_default_proxy_users() {
     # ${1} - app name
 
     proxy_status_password="$(load_secret ".${1}.apache.status_user" dev=default)"
-    write_http_auth_user proxy-status "${proxy_status_password}" proxy-status
+    write_http_auth_user status "${proxy_status_password}" proxy-status
     printf 'PROXY_STATUS_PASSWORD="%s"\n' "${proxy_status_password}" >>"${initial_output}/apache-prometheus-exporter.env"
     printf 'proxy-status,%s\n' "${proxy_status_password}" >>"${initial_output}/.secrets.csv"
 
     proxy_prometheus_password="$(load_secret ".${1}.apache.prometheus_user" dev=default)"
-    write_http_auth_user proxy-prometheus "${proxy_prometheus_password}" proxy-prometheus
+    write_http_auth_user prometheus "${proxy_prometheus_password}" proxy-prometheus
     printf 'proxy-prometheus,%s\n' "${proxy_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Make sure some common secrets exist for all apps
@@ -1761,7 +1761,7 @@ renovatebot)
     # App #
     write_healthcheck_url "${app_full_name_machine}" app
     printf 'RENOVATE_TOKEN="%s"\n' "${renovate_token}" >>"${initial_output}/app.env"
-    printf 'GITHUB_COM_TOKEN="%s"\n' "${github_token}" >>"${initial_output}/app.env"
+    printf 'RENOVATE_GITHUB_COM_TOKEN="%s"\n' "${github_token}" >>"${initial_output}/app.env"
 
     # RunWisp #
     printf 'RUNWISP_PASSWORD="%s"\n' "${runwisp_admin_password}" >>"${initial_output}/runwisp.env"

@@ -57,6 +57,6 @@ ENV HOMELAB_CONTAINER_NAME="ntfy" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:80/v1/health\",\"bodyJSON\":\".healthy == true\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:80/v1/health\",\"bodyJSON\":\".healthy == true\"}" ]
 ENTRYPOINT [ "ntfy" ]
 CMD [ "serve" ]

@@ -60,6 +60,6 @@ ENV HOMELAB_CONTAINER_NAME="pihole-prometheus-exporter" \
     PIHOLE_PROTOCOL="http" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:9617/metrics\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:9617/metrics\"}" ]
 ENTRYPOINT [ "/homelab/bin/pihole-exporter" ]
 CMD []

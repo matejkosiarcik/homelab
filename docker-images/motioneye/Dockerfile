@@ -59,4 +59,4 @@ ENV HOMELAB_CONTAINER_NAME="motioneye" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8765\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8765\"}" ]

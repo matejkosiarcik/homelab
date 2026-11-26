@@ -342,7 +342,7 @@ endpoints:
   - <<: *default_https_infrequent
     name: HTTPS Proxy /metrics - {{ item.full_name_pretty }}
     group: App - {{ item.full_name_pretty }}
-    url: https://proxy-prometheus:${{ "{" }}{{ item.full_name_env }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
+    url: https://prometheus:${{ "{" }}{{ item.full_name_env }}__PROXY_PROMETHEUS_PASSWORD{{ "}" }}@{{ item.domain }}/.apache/metrics
     {% if item.gatus.insecure | default(false) %}client:
       insecure: true{% else %}{{ "# insecure: false" }}{% endif %}
     {{- is_enabled(item) }}

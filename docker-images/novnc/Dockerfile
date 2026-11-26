@@ -63,5 +63,5 @@ ENV AUTOCONNECT="true" \
     WEB_AUTH_PASSWORD="" \
     WEB_AUTH_USERNAME="matej"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:6080/vnc_lite.html\",\"basicAuthUsernameEnv\":\"WEB_AUTH_USERNAME\",\"basicAuthPasswordEnv\":\"WEB_AUTH_PASSWORD\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:6080/vnc_lite.html\",\"basicAuthUsernameEnv\":\"WEB_AUTH_USERNAME\",\"basicAuthPasswordEnv\":\"WEB_AUTH_PASSWORD\"}" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]

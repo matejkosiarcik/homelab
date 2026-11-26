@@ -122,4 +122,4 @@ ENV HOMELAB_CONTAINER_NAME="homepage" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:${PORT}/api/healthcheck\",\"status\":\"200\",\"bodyRegex\":\"^up\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:${PORT}/api/healthcheck\",\"status\":\"200\",\"bodyRegex\":\"^up\"}" ]
