@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-auto-analyzer:5.15.6@sha256:0eacfd822756deb44367088309ca49b7bf62cd3d190d5a93c24546e5ce6e3fdd AS final
+FROM reportportal/service-auto-analyzer:6.0.0@sha256:40ed7f5cec62bab6d2bdf0ae8d8e4da7b181675c5c494688687e272cd28716dc AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
