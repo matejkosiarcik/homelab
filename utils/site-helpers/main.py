@@ -52,6 +52,14 @@ class LogFormatter(logging.Formatter):
 
 
 @dataclass
+class AsciiChars:
+    down_arrow: str = "↓"
+
+
+ascii_chars = AsciiChars()
+
+
+@dataclass
 class MainConfig:  # pylint: disable=too-many-instance-attributes
     servers: list[str]
     env_mode: str
@@ -157,14 +165,13 @@ def site_action(action: str, main_config: MainConfig, site_dir: Path, log: loggi
     if main_config.skip_apps:
         cli_args.extend(["--skip", main_config.skip_apps])
 
-    log.info("↓ %s on site servers", action.replace("-", " ").capitalize())
+    log.info("%s %s on site %s", ascii_chars.down_arrow, action.replace("-", " ").capitalize(), site_dir.name)
     for server in main_config.servers:
-        log.info("Server: %s", server)
         subprocess.check_call(["task", action, "--", *cli_args], cwd=site_dir / "servers" / server)
         print("\n---\n")
 
     total_elapsed_mins, total_elapsed_secs = divmod(int(time.time() - start_time), 60)
-    log.info("✔ %s on site servers %02d:%02d", action.replace("-", " ").capitalize(), total_elapsed_mins, total_elapsed_secs)
+    log.info("✔ %s on site %s %02d:%02d", action.replace("-", " ").capitalize(), site_dir.name, total_elapsed_mins, total_elapsed_secs)
 
 
 if __name__ == "__main__":
