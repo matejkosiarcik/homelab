@@ -51,7 +51,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM mbentley/omada-controller:6.3.0.111@sha256:d5d688dc39c8c6d17926d2a090d2ce806e221e00a037e3a43ff8cbc2d61f269b AS final
+FROM mbentley/omada-controller:6.3.0.112@sha256:de268d09b258a53a167ec94492c44361df118a766832adb544f5d36d64d9e570 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
