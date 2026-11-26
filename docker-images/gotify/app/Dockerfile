@@ -54,4 +54,4 @@ ENV GOTIFY_DEFAULTUSER_PASS="" \
     TZ="Europe/Bratislava"
 USER homelab
 # hadolint ignore=DL3025
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:${GOTIFY_SERVER_PORT}/health\",\"status\":\"200\",\"bodyJSON\":\".health == \\\"green\\\" and .database == \\\"green\\\"\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:${GOTIFY_SERVER_PORT}/health\",\"status\":\"200\",\"bodyJSON\":\".health == \\\"green\\\" and .database == \\\"green\\\"\"}" ]

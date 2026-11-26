@@ -75,6 +75,6 @@ ENV HOMELAB_CONTAINER_NAME="wayvnc" \
     XDG_RUNTIME_DIR="/run/user/${UID}"
 WORKDIR /homelab
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "wayvncctl", "output-list" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "wayvncctl", "output-list" ]
 ENTRYPOINT [ "/bin/sh", "/homelab/entrypoint.sh" ]
 CMD []

@@ -73,5 +73,5 @@ ENV HOMELAB_CONTAINER_NAME="openwebui" \
     TZ="Europe/Bratislava" \
     WEBUI_SECRET_KEY=""
 USER homelab
-HEALTHCHECK --interval=10s --start-period=5m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/health\"}" ]
+HEALTHCHECK --interval=10s --start-period=5m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/health\"}" ]
 # TODO: Add validation for response 'input.status = "true"'

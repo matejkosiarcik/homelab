@@ -56,6 +56,6 @@ ENV HOMELAB_CONTAINER_NAME="postgres" \
 # otherwise there are permissions problems in Docker Desktop
 
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "/bin/sh", "-c", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "/bin/sh", "-c", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1" ]
 # ENTRYPOINT stays original
 CMD [ "postgres", "-c", "config_file=/homelab/postgresql.conf", "-c", "hba_file=/homelab/pg_hba.conf" ]

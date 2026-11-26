@@ -125,5 +125,5 @@ ENV GOTIFY_DEFAULTUSER_NAME="matej" \
     USER_HOMELAB_VIEWER_PASSWORD="" \
     USER_MATEJ_PASSWORD=""
 USER homelab
-HEALTHCHECK --interval=10s --start-period=2m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"file:///homelab/tmpfs/status.txt\",\"body\":\"started\\n\"}" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

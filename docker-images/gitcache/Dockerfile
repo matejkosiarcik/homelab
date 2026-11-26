@@ -92,5 +92,5 @@ ENV HOMELAB_CONTAINER_NAME="gitcache" \
     REDIS_PASSWORD="" \
     TZ="Europe/Bratislava"
 USER homelab
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/.health\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/.health\"}" ]
 ENTRYPOINT [ "/nodejs/bin/node", "/homelab/dist/main.js" ]

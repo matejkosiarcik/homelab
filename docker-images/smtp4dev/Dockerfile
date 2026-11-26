@@ -72,4 +72,4 @@ ENV HOMELAB_CONTAINER_NAME="smtp4dev" \
 
 USER homelab
 
-HEALTHCHECK --interval=10s --start-period=30s --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:5000\",\"basicAuthUsernameEnv\":\"ServerOptions__Users__1__Username\",\"basicAuthPasswordEnv\":\"ServerOptions__Users__1__Password\"}" ]
+HEALTHCHECK --interval=10s --start-period=30s --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:5000\",\"basicAuthUsernameEnv\":\"ServerOptions__Users__1__Username\",\"basicAuthPasswordEnv\":\"ServerOptions__Users__1__Password\"}" ]
