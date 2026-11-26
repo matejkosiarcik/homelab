@@ -27,7 +27,7 @@ scrape_configs:
 {%- if endpoint.path.startswith("/.apache/") %}
   {%- set endpoint_secret_prefix = "proxy_" %}
 {%- elif endpoint.path.startswith("/docker-sockguard/") or endpoint.path.startswith("/runwisp/") %}
-  {%- set endpoint_name_suffix = endpoint.path.split("/")[1] | replace("-", "_") | replace(" ", "_") ~ "_" %}
+  {%- set endpoint_secret_prefix = endpoint.path.split("/")[1] | replace("-", "_") | replace(" ", "_") ~ "_" %}
 {%- else %}
   {%- set endpoint_secret_prefix = "app_" %}
 {%- endif %}
