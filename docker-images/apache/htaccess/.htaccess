@@ -255,6 +255,9 @@ RewriteRule ^ /ui/ [L,R=307]
     <ElseIf "%{REQUEST_URI} =~ m#^/metrics$#">
         # Prometheus endpoint is handled elsewhere
     </ElseIf>
+    <ElseIf "%{REQUEST_URI} =~ m#^/docker\-sockguard/metrics$#">
+        # Docker SockGuard endpoint is handled elsewhere
+    </ElseIf>
     <Else>
         AuthType Basic
         AuthName Protected
