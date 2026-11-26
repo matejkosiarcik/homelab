@@ -21,6 +21,25 @@ test.describe(app.title, () => {
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
 
+            const apiKeyVariants = [
+                { title: 'valid API key', key: () => getEnv(instance.url, 'MATEJ_API_KEY'), status: 200 },
+                { title: 'invalid API key', key: () => faker.string.alphanumeric(32), status: 401 },
+                { title: 'missing API key', key: () => undefined, status: 401 },
+            ];
+            for (const variant of apiKeyVariants) {
+                test(`API: List points (${variant.title})`, async () => {
+                    const key = variant.key();
+                    const response = await axios.get(`${instance.url}/api/v1/points`, {
+                        headers: key ? { Authorization: `Bearer ${key}` } : {},
+                        params: { start_at: '1970-01-01', end_at: '1970-01-02', per_page: 1 },
+                    });
+                    expect(response.status, 'Response status').toBe(variant.status);
+                    if (variant.status === 200) {
+                        expect(Array.isArray(response.data), 'Response body is an array of points').toBe(true);
+                    }
+                });
+            }
+
             const validUsers = [
                 {
                     email: 'matej@matejhome.com',
