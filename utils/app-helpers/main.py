@@ -133,6 +133,7 @@ class AsciiChars:
     checkmark: str = "✔"
     cross: str = "✘"
     skip: str = "⏭"
+    down_arrow: str = "↓"
 
     def __post_init__(self):
         def tty_supports_color():
@@ -357,7 +358,7 @@ def run_with_spinner(
         spinner_index = 0
 
         if print_output:
-            print(f"↓ {description_progress} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} 00:00")
+            print(f"{ascii_chars.down_arrow} {description_progress} {os.environ.get('DOCKER_COMPOSE_APP_SHORTNAME')} 00:00")
 
         while not done.is_set():
             elapsed = time.time() - start_time

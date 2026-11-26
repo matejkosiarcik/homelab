@@ -96,6 +96,7 @@ log.addHandler(log_file_handler)
 class AsciiChars:
     checkmark: str = "✔"
     cross: str = "✘"
+    down_arrow: str = "↓"
 
     def __post_init__(self):
         def tty_supports_color():
@@ -225,7 +226,7 @@ def server_action(action: str, config: MainConfig):
     action_log = action.replace("-", " ").capitalize()
     if action == "secrets":
         action_log += " for"
-    log.info("%s %s docker apps", "↓", action_log)
+    log.info("%s %s server %s", ascii_chars.down_arrow, action_log, server_name)
     print("\n---\n")
 
     cli_args = ["--mode", config.env_mode]
@@ -244,11 +245,11 @@ def server_action(action: str, config: MainConfig):
 
     total_elapsed = time.time() - start_time
     total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
-    log.info("%s %s docker apps %02d:%02d", ascii_chars.checkmark, action_log, total_elapsed_mins, total_elapsed_secs)
+    log.info("%s %s server %s %02d:%02d", ascii_chars.checkmark, action_log, server_name, total_elapsed_mins, total_elapsed_secs)
 
 
 def server_install():
-    log.info("%s Installing global server config", "↓")
+    log.info("%s Installing global server config for %s", ascii_chars.down_arrow, server_name)
     subprocess.check_call(["sh", git_dir / "utils" / "server-helpers" / "install.sh"])
     total_elapsed = time.time() - start_time
     total_elapsed_mins, total_elapsed_secs = divmod(int(total_elapsed), 60)
