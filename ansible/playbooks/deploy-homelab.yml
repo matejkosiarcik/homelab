@@ -25,7 +25,7 @@
       changed_when: "'CHANGED' in install.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
-        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/sites/.current/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
@@ -58,7 +58,7 @@
       changed_when: "'CHANGED' in deploy.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
-        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/sites/.current/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"

@@ -203,10 +203,10 @@ ARG HOMELAB_APP_TYPE
 ARG HOMELAB_ENV=dev
 COPY ./docker-images/.shared/build-utils/parse-app-entry-utils.sh ./docker-images/favicons/parse-app-entry.sh /homelab/
 # hadolint ignore=SC2016
-RUN --mount=type=bind,source=./servers/,target=/homelab/servers,readonly \
+RUN --mount=type=bind,source=./sites/home/servers/,target=/homelab/sites/home/servers,readonly \
     --mount=type=bind,source=./docker-compose/,target=/homelab/docker-compose,readonly \
     printf 'apps:\n' >'/homelab/app-entries.yml' && \
-    find '/homelab/servers' -path '/homelab/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
+    find '/homelab/sites/home/servers' -path '/homelab/sites/home/servers/*/docker-apps/*' -mindepth 3 -maxdepth 3 -type d -not -name '.*' -print0 | xargs -0 -I% sh '/homelab/parse-app-entry.sh' % '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output '.apps |= (sort_by(.app_type) | unique_by(.app_type))' '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output --arg homelab_app_type "${HOMELAB_APP_TYPE}" '.apps |= map(select(.app_type == $homelab_app_type))' '/homelab/app-entries.yml' && \
     yq --in-place --yaml-output --arg homelab_env "${HOMELAB_ENV}" '.apps |= map(if (.proxy_urls | type) == "array" then .proxy_urls |= map(select(.env == null or .env == $homelab_env) | del(.env)) else . end)' '/homelab/app-entries.yml' && \

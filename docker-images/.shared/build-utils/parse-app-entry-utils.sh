@@ -29,7 +29,7 @@ get_app_short_name_machine() {
 
 get_app_type() {
     # Arg 1 - App directory path
-    root_path="$(dirname "$(dirname "$(dirname "$(dirname "${1}")")")")"
+    root_path="$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "${1}")")")")")")"
 
     app_type="$(yq --raw-output '.app.type' "${1}/config/config.yml")"
     if [ "${app_type}" = '' ] || [ "${app_type}" = 'null' ] || [ "${app_type}" = 'undefined' ]; then
@@ -69,7 +69,7 @@ get_server_name_env() {
 
 get_app_full_name_pretty() {
     # Arg 1 - App directory path
-    root_path="$(dirname "$(dirname "$(dirname "$(dirname "${1}")")")")"
+    root_path="$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "${1}")")")")")")"
 
     app_template_prettyname="$(yq --raw-output '.app.name' "${root_path}/docker-compose/$(get_app_type "${1}")/config.yml")"
     if [ "${app_template_prettyname}" = '' ] || [ "${app_template_prettyname}" = 'null' ] || [ "${app_template_prettyname}" = 'undefined' ]; then

@@ -40,17 +40,17 @@ jobs:
             PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
           command: |
             set -euf
-            cd './servers/<< parameters.server >>'
+            cd './sites/home/servers/<< parameters.server >>'
             task secrets -- --mode dev
       - run:
           name: Build apps on << parameters.server >>
           command: |
             set -euf
-            cd './servers/<< parameters.server >>'
+            cd './sites/home/servers/<< parameters.server >>'
             task build -- --mode dev --dry-run
       - run:
           name: Run dry-run deployment on << parameters.server >>
           command: |
             set -euf
-            cd './servers/<< parameters.server >>'
+            cd './sites/home/servers/<< parameters.server >>'
             task start -- --mode dev --dry-run

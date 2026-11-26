@@ -1,5 +1,9 @@
 - name: Setup OS
   hosts: servers
+
+  vars:
+    site: home
+
   tasks:
     - name: Ping
       ansible.builtin.ping:
@@ -617,29 +621,47 @@
           printf 'CHANGED\n'
         fi
 
-    - name: Setup current server symlink
-      register: git_current_symlink
-      changed_when: "'CHANGED' in git_current_symlink.stdout"
+    - name: Setup current site symlink
+      register: git_current_site_symlink
+      changed_when: "'CHANGED' in git_current_site_symlink.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
 
-        # Make sure current server directory exists
-        if [ ! -d "${HOME}/git/homelab/servers/$(uname -n)" ]; then
+        # Make sure intended site directory exists
+        if [ ! -d "${HOME}/git/homelab/sites/{{ site }}" ]; then
+          exit 1
+        fi
+
+        # Create site symlink
+        if [ ! -e "${HOME}/git/homelab/sites/.current" ]; then
+          ln -sf {{ site | quote }} "${HOME}/git/homelab/sites/.current"
+          printf 'CHANGED\n'
+        fi
+
+    - name: Setup current server symlink
+      register: git_current_server_symlink
+      changed_when: "'CHANGED' in git_current_server_symlink.stdout"
+      args:
+        executable: "{{ bash_path.stdout }}"
+      ansible.builtin.shell: |
+        set -eufo pipefail
+        source "${HOME}/.profile"
+
+        # Make sure intended server directory exists
+        if [ ! -d "${HOME}/git/homelab/sites/.current/servers/$(uname -n)" ]; then
           exit 1
         fi
 
         # Create symlink
-        if [ -e "${HOME}/git/homelab/servers/.current" ]; then
-          exit 0
+        if [ ! -e "${HOME}/git/homelab/sites/.current/servers/.current" ]; then
+          ln -sf "$(uname -n)" "${HOME}/git/homelab/sites/.current/servers/.current"
+          printf 'CHANGED\n'
         fi
 
-        ln -s "$(uname -n)" "${HOME}/git/homelab/servers/.current"
-        printf 'CHANGED\n'
-
-        if [ ! -e "${HOME}/git/homelab/servers/.current/Taskfile.yml" ]; then
+        if [ ! -e "${HOME}/git/homelab/sites/.current/servers/.current/Taskfile.yml" ]; then
           exit 1
         fi
 
@@ -677,7 +699,7 @@
       changed_when: "'CHANGED' in server_install.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
-        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/sites/.current/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"
@@ -709,11 +731,11 @@
 
     - name: Update secrets
       register: update_secrets
-      when: git_clone_homelab.changed or git_current_symlink.changed or update_git_homelab.changed or sync_secrets.changed
+      when: git_clone_homelab.changed or git_current_site_symlink.changed or git_current_server_symlink.changed or update_git_homelab.changed or sync_secrets.changed
       changed_when: "'CHANGED' in update_secrets.stdout"
       args:
         executable: "{{ bash_path.stdout }}"
-        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/servers/.current"
+        chdir: "{{ ansible_facts['env']['HOME'] }}/git/homelab/sites/.current/servers/.current"
       ansible.builtin.shell: |
         set -eufo pipefail
         source "${HOME}/.profile"

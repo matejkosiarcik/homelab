@@ -1,6 +1,0 @@
-version: "3"
-silent: true
-includes:
-  shared:
-    taskfile: ../../utils/server-helpers/Taskfile.yml
-    flatten: true
