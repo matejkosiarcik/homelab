@@ -30,6 +30,58 @@ export const sharedMetrics = {
     ] as const,
 };
 
+export function createDockerSockguardTests(url: string, invalidUsers: { username: string, passwordEnv: string }[]) {
+    for (const user of invalidUsers) {
+        test(`API: Docker Sockguard metrics reject user ${user.username}`, async () => {
+            const response = await axios.get(`${url}/docker-sockguard/metrics`, {
+                auth: {
+                    username: user.username,
+                    password: getEnv(url, user.passwordEnv),
+                },
+            });
+            expect(response.status, 'Response Status').toStrictEqual(401);
+        });
+    }
+
+    test(`API: Docker Sockguard metrics reject random user`, async () => {
+        const response = await axios.get(`${url}/docker-sockguard/metrics`, {
+            auth: {
+                username: faker.string.alpha(10),
+                password: faker.string.alpha(10),
+            },
+        });
+        expect(response.status, 'Response Status').toStrictEqual(401);
+    });
+
+    test('API: Docker Sockguard metrics reject unauthenticated requests', async () => {
+        const response = await axios.get(`${url}/docker-sockguard/metrics`);
+        expect(response.status, 'Response Status').toStrictEqual(401);
+    });
+
+    test('API: Docker Sockguard Prometheus metrics content', async () => {
+        const response = await test.step('Request server', async () => {
+            const response = await axios.get(`${url}/docker-sockguard/metrics`, {
+                auth: {
+                    username: 'prometheus',
+                    password: getEnv(url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
+                },
+                timeout: 15_000,
+            });
+            expect(response.status, 'Response Status').toStrictEqual(200);
+            return response;
+        });
+
+        await test.step('Validate response', async () => {
+            const content = response.data as string;
+            await test.info().attach('docker-sockguard-metrics.txt', { contentType: 'text/plain', body: content });
+            const lines = content.split('\n');
+            for (const metric of sharedMetrics.dockerSockguard) {
+                expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
+            }
+        });
+    });
+}
+
 export function createTcpTests(url: string, _ports: number | number[], _options?: { title?: string | undefined } | undefined) {
     const options = {
         title: _options?.title ?? '',

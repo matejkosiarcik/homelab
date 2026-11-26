@@ -48,7 +48,7 @@ test.describe(app.title, () => {
 
                     await test.step('Validate application opened successfully', async () => {
                         await page.waitForURL(`${instance.url}/`);
-                        await expect(page.locator('h1:has-text("Node Exporter")')).toBeVisible();
+                        await expect(page.locator('h1:has-text("node_exporter")')).toBeVisible();
                         await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).toBeVisible();
                     });
                 });
@@ -90,7 +90,7 @@ test.describe(app.title, () => {
 
                     await test.step('Validate access is denied', async () => {
                         await page.waitForURL(`${instance.url}/`);
-                        await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                        await expect(page.locator('h1:has-text("node_exporter")')).not.toBeVisible();
                         await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
                     });
                 });
@@ -103,7 +103,7 @@ test.describe(app.title, () => {
 
                     await test.step('Validate access is denied', async () => {
                         await page.waitForURL(`${instance.url}/`);
-                        await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                        await expect(page.locator('h1:has-text("node_exporter")')).not.toBeVisible();
                         await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
                     });
                 });
@@ -145,7 +145,7 @@ test.describe(app.title, () => {
                 });
 
                 await test.step('Validate access is denied', async () => {
-                    await expect(page.locator('h1:has-text("Node Exporter")')).not.toBeVisible();
+                    await expect(page.locator('h1:has-text("node_exporter")')).not.toBeVisible();
                     await expect(page.locator('h2:has-text("Prometheus Node Exporter")')).not.toBeVisible();
                 });
             });

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
+import { createApiRootTest, createDockerSockguardTests, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests } from '#/utils/tests.ts';
 import { dnsLookupWithRetry, getAllHomelabDomains, getEnv, validators } from '#/utils/utils.ts';
 
 const app = apps.pihole;
@@ -26,6 +26,7 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
+            createDockerSockguardTests(instance.url, [{ username: 'proxy-status', passwordEnv: 'PROXY_STATUS_PASSWORD' }]);
             createHttpsRootRedirectTest(instance.url, '/admin');
 
             test('DNS: example.com lookup', async () => {
@@ -169,29 +170,6 @@ test.describe(app.title, () => {
                         'pihole_unique_domains',
                     ];
                     for (const metric of metrics) {
-                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
-                    }
-                });
-            });
-
-            test('API: Docker Sockguard Prometheus metrics content', async () => {
-                const response = await test.step('Request server', async () => {
-                    const response = await axios.get(`${instance.url}/docker-sockguard/metrics`, {
-                        auth: {
-                            username: 'prometheus',
-                            password: getEnv(instance.url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
-                        },
-                        timeout: 15_000,
-                    });
-                    expect(response.status, 'Response Status').toStrictEqual(200);
-                    return response;
-                });
-
-                await test.step('Validate response', async () => {
-                    const content = response.data as string;
-                    await test.info().attach('metrics.txt', { contentType: 'text/plain', body: content });
-                    const lines = content.split('\n');
-                    for (const metric of sharedMetrics.dockerSockguard) {
                         expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
                     }
                 });

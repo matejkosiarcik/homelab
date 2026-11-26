@@ -382,11 +382,11 @@ certbot)
 
     write_http_auth_user homelab-viewer "${certbot_homelab_viewer_password}" proxy-prometheus
     write_http_auth_user homelab-viewer "${certbot_homelab_viewer_password}" users-viewers
-    printf 'homelab-viewer,%s\n' "${certbot_homelab_viewer_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-viewer,%s\n' "${certbot_homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
 
     write_http_auth_user homelab-test "${certbot_homelab_test_password}" proxy-prometheus
     write_http_auth_user homelab-test "${certbot_homelab_test_password}" users-viewers
-    printf 'homelab-test,%s\n' "${certbot_homelab_test_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-test,%s\n' "${certbot_homelab_test_password}" >>"${initial_output}/.secrets.csv"
 
     printf 'CERTBOT_PUBLIC_EMAIL="%s"\n' "${certbot_public_email}" >>"${initial_output}/app.env"
     printf 'public-email,%s\n' "${certbot_public_email}" >>"${initial_output}/.secrets.csv"
@@ -512,12 +512,12 @@ dockerstats)
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" prometheus
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" proxy-prometheus
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-viewers
-    printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
 
     write_http_auth_user homelab-test "${homelab_test_password}" prometheus
     write_http_auth_user homelab-test "${homelab_test_password}" proxy-prometheus
     write_http_auth_user homelab-test "${homelab_test_password}" users-viewers
-    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
 
     write_http_auth_user prometheus "${app_prometheus_password}" prometheus
     printf 'app-prometheus,%s\n' "${app_prometheus_password}" >>"${initial_output}/.secrets.csv"
@@ -565,7 +565,7 @@ dozzle)
 
     # App #
     printf 'matej,%s\n' "${matej_password}" >>"${initial_output}/.secrets.csv"
-    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
 
     printf 'users:\n' >>"${initial_output}/dozzle-users.yml"
     printf '    matej:\n' >>"${initial_output}/dozzle-users.yml"
@@ -647,12 +647,12 @@ gatus)
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" prometheus
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" proxy-prometheus
     write_http_auth_user homelab-viewer "${homelab_viewer_password}" users-viewers
-    printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-viewer,%s\n' "${homelab_viewer_password}" >>"${initial_output}/.secrets.csv"
 
     write_http_auth_user homelab-test "${homelab_test_password}" prometheus
     write_http_auth_user homelab-test "${homelab_test_password}" proxy-prometheus
     write_http_auth_user homelab-test "${homelab_test_password}" users-viewers
-    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/all-credentials.csv"
+    printf 'homelab-test,%s\n' "${homelab_test_password}" >>"${initial_output}/.secrets.csv"
 
     # Main credentials
     printf 'CERTBOT__HOMELAB_VIEWER_PASSWORD="%s"\n' "$(load_secret '.certbot.app.homelab_viewer_user' dev=real)" >>"${initial_output}/app.env"

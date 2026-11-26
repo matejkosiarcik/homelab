@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect, test } from '#/playwright/test.ts';
 import { apps } from '#/utils/apps.ts';
 import { axios } from '#/utils/axios.ts';
-import { createApiRootTest, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
+import { createApiRootTest, createDockerSockguardTests, createFaviconTests, createHttpToHttpsRedirectTests, createHttpsRootRedirectTest, createPrometheusTests, createProxyTests, createTcpTests, sharedMetrics } from '#/utils/tests.ts';
 import { getEnv } from '#/utils/utils.ts';
 import { createRunWispSession } from '../../utils/app-helpers/runwisp';
 
@@ -23,6 +23,7 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [80, 443]);
             createFaviconTests(instance.url);
+            createDockerSockguardTests(instance.url, [{ username: 'viewer', passwordEnv: 'RUNWISP_VIEWER_PASSWORD' }]);
             createHttpsRootRedirectTest(instance.url, '/runwisp');
             createPrometheusTests(instance.url, { path: '/runwisp/metrics', token: getEnv(instance.url, 'RUNWISP_PROMETHEUS_PASSWORD') });
 
@@ -35,28 +36,6 @@ test.describe(app.title, () => {
             test('API: Reject missing file-server path', async () => {
                 const response = await axios.get(`${instance.url}/${faker.string.alphanumeric(10)}`);
                 expect(response.status, 'Response status').toStrictEqual(404);
-            });
-
-            test('API: Docker Sockguard Prometheus metrics content', async () => {
-                const response = await test.step('Request metrics', async () => {
-                    const response = await axios.get(`${instance.url}/docker-sockguard/metrics`, {
-                        auth: {
-                            username: 'prometheus',
-                            password: getEnv(instance.url, 'DOCKER_SOCKGUARD_PROMETHEUS_PASSWORD'),
-                        },
-                    });
-                    expect(response.status, 'Response status').toStrictEqual(200);
-                    return response;
-                });
-
-                await test.step('Validate response', async () => {
-                    const content = response.data as string;
-                    await test.info().attach('docker-sockguard-metrics.txt', { contentType: 'text/plain', body: content });
-                    const lines = content.split('\n');
-                    for (const metric of sharedMetrics.dockerSockguard) {
-                        expect.soft(lines.find((line) => new RegExp(`^${metric}(?:[{ ]|$)`).test(line)), `Metric ${metric} should be present`).toBeDefined();
-                    }
-                });
             });
 
             test.describe('RunWisp', () => {
