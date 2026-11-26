@@ -161,7 +161,7 @@ COPY ./docker-images/renovatebot/config.js ./docker-images/renovatebot/test-conf
 
 ### Final ###
 
-FROM renovate/renovate:44.261.2-full@sha256:4d1912b8bbf4fcf3fcd19b1616d17971dcd03b246bd7c91856fb74782d9529b5 AS final
+FROM renovate/renovate:44.263.5-full@sha256:ad5c80f4ca3a2d3c7260764b20d0d09ae57ddd071081816ff915745abe27020a AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
