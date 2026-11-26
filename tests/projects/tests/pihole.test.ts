@@ -26,7 +26,7 @@ test.describe(app.title, () => {
             createApiRootTest(instance.url);
             createTcpTests(instance.url, [53, 80, 443]);
             createFaviconTests(instance.url);
-            createDockerSockguardTests(instance.url, [{ username: 'proxy-status', passwordEnv: 'PROXY_STATUS_PASSWORD' }]);
+            createDockerSockguardTests(instance.url, [{ username: 'status', passwordEnv: 'PROXY_STATUS_PASSWORD' }]);
             createHttpsRootRedirectTest(instance.url, '/admin');
 
             test('DNS: example.com lookup', async () => {

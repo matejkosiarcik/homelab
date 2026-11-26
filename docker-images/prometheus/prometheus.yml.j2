@@ -23,8 +23,8 @@ scrape_configs:
 {%- endif %}
 
 {%- if endpoint.path.startswith("/.apache/") %}
-  {%- set endpoint_auth_default_user = "proxy-prometheus" %}
-  {%- set endpoint_secret_prefix = "" %}
+  {%- set endpoint_auth_default_user = "prometheus" %}
+  {%- set endpoint_secret_prefix = "proxy_" %}
 {%- elif endpoint.path.startswith("/docker-sockguard/") %}
   {%- set endpoint_auth_default_user = "prometheus" %}
   {%- set endpoint_secret_prefix = "docker_sockguard_" %}

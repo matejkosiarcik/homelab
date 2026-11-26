@@ -174,12 +174,12 @@ write_default_proxy_users() {
     # ${1} - app name
 
     proxy_status_password="$(load_secret ".${1}.apache.status_user" dev=default)"
-    write_http_auth_user proxy-status "${proxy_status_password}" proxy-status
+    write_http_auth_user status "${proxy_status_password}" proxy-status
     printf 'PROXY_STATUS_PASSWORD="%s"\n' "${proxy_status_password}" >>"${initial_output}/apache-prometheus-exporter.env"
     printf 'proxy-status,%s\n' "${proxy_status_password}" >>"${initial_output}/.secrets.csv"
 
     proxy_prometheus_password="$(load_secret ".${1}.apache.prometheus_user" dev=default)"
-    write_http_auth_user proxy-prometheus "${proxy_prometheus_password}" proxy-prometheus
+    write_http_auth_user prometheus "${proxy_prometheus_password}" proxy-prometheus
     printf 'proxy-prometheus,%s\n' "${proxy_prometheus_password}" >>"${initial_output}/.secrets.csv"
 
     # Make sure some common secrets exist for all apps
