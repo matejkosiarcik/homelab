@@ -2,7 +2,7 @@
 
 ### App ###
 
-FROM reportportal/migrations:5.15.6@sha256:0b0d2195b9464f595f2e38156e001a28d7a83ea8bc341c14564dead48e1a0481 AS entrypoint
+FROM reportportal/migrations:6.0.0@sha256:d21404ffefac0260fff86ededcf8fd81c73e4262b89ffd9c8964c3a82e76ba2a AS entrypoint
 USER nonroot
 WORKDIR /homelab
 COPY ./docker-images/reportportal/migrations/entrypoint-extra-end.sh ./docker-images/reportportal/migrations/entrypoint-extra-start.sh /homelab/
@@ -50,7 +50,7 @@ COPY --from=entrypoint /homelab/entrypoint-final.sh /fsroot/entrypoint/entrypoin
 
 ### Final ###
 
-FROM reportportal/migrations:5.15.6@sha256:0b0d2195b9464f595f2e38156e001a28d7a83ea8bc341c14564dead48e1a0481 AS final
+FROM reportportal/migrations:6.0.0@sha256:d21404ffefac0260fff86ededcf8fd81c73e4262b89ffd9c8964c3a82e76ba2a AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
