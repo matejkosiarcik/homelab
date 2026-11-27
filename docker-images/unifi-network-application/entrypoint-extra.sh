@@ -1,5 +1,8 @@
 # shellcheck shell=sh
 
+saved_shell_options="${-}" # Preserve the calling entrypoint's shell options.
+set -euf
+
 # Copy files to real "default"
 mkdir -p '/defaults'
 cp -R '/homelab/original/defaults/.' '/defaults'
@@ -30,3 +33,9 @@ if [ ! -e '/config/data/custom-certificates' ]; then
     cp './keystore' '../keystore'
     cd "${original_dir}" || exit 1
 fi
+
+# Restore the calling entrypoint's shell options.
+case "${saved_shell_options}" in *e*) ;; *) set +e ;; esac
+case "${saved_shell_options}" in *u*) ;; *) set +u ;; esac
+case "${saved_shell_options}" in *f*) ;; *) set +f ;; esac
+unset saved_shell_options
