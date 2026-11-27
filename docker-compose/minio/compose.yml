@@ -30,8 +30,8 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-setup.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:latest
     tmpfs:
-      - /home/homelab/.mc:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /homelab/tmpfs:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /home/homelab/.mc:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-setup/healthcheck:/homelab/logs/healthcheck:rw
 

@@ -1,5 +1,8 @@
 # shellcheck disable=SC2148
 
+saved_shell_options="${-}" # Preserve the calling entrypoint's shell options.
+set -euf
+
 # Define portable datetime format
 date_supports_milliseconds="$(date +'%3N')"
 case "${date_supports_milliseconds}" in
@@ -38,3 +41,9 @@ envsubst -no-digit -no-unset -no-empty -i "${config_file}" -o "${config_file_tmp
 
 mv "${config_file_tmp}" "${config_file}"
 rm -rf "${tmpdir}"
+
+# Restore the calling entrypoint's shell options.
+case "${saved_shell_options}" in *e*) ;; *) set +e ;; esac
+case "${saved_shell_options}" in *u*) ;; *) set +u ;; esac
+case "${saved_shell_options}" in *f*) ;; *) set +f ;; esac
+unset saved_shell_options
