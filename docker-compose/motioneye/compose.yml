@@ -11,8 +11,8 @@ services:
     build:
       dockerfile: ./docker-images/motioneye/Dockerfile
     tmpfs:
-      - /run:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1777 # TODO: Restrict the mode further
-      - /var/log/motioneye:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1777 # TODO: Restrict the mode further
+      - /run:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1777,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID} # TODO: Restrict the mode further
+      - /var/log/motioneye:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1777,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID} # TODO: Restrict the mode further
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/etc:/etc/motioneye:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/lib:/var/lib/motioneye:rw

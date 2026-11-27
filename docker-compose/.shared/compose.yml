@@ -36,7 +36,7 @@ services:
     security_opt:
       - no-new-privileges:true
     tmpfs:
-      - /tmp:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1777 # TODO: Restrict the mode further
+      - /tmp:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1777,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID} # TODO: Restrict the mode further
 
   # General purpose service template
   template:
@@ -74,7 +74,7 @@ services:
       - external-network
       - internal-network
     tmpfs:
-      - /homelab/tmpfs:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/certificator/cron:/homelab/logs/cron:rw
@@ -95,9 +95,9 @@ services:
       - external-network # TODO: Connect to external world via socat instead
       - internal-network
     tmpfs:
-      - /var/lock:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /var/log/apache2:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /var/run/apache2:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/lock:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/apache2:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/run/apache2:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/certs:/homelab/certs:ro
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/apache/default:/homelab/logs/apache:rw
@@ -146,7 +146,7 @@ services:
       - "${DOCKER_COMPOSE_DOCKER_GID}"
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-docker-socket-proxy:latest
     tmpfs:
-      - /run:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /run:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-socket-proxy/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/mtls/docker-socket-proxy/server/server.crt:/homelab/tls-certs/server/server.crt:ro
@@ -166,7 +166,7 @@ services:
       HOMELAB_SETUP_TARGET_CONTAINER: ${DOCKER_COMPOSE_APP_SHORTNAME}-app
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:latest
     tmpfs:
-      - /homelab/tmpfs:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/docker-app-setup/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -205,7 +205,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-setup:latest
     tmpfs:
-      - /homelab/tmpfs:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/script-app-setup/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -220,7 +220,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/redis.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-redis:latest
     tmpfs:
-      - /homelab/tmpfs:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/data:/data:rw
@@ -238,7 +238,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgres:latest
     shm_size: 1G
     tmpfs:
-      - /var/run:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/run:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgres/data:/var/lib/postgresql/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/postgres/healthcheck:/homelab/logs/healthcheck:rw
@@ -257,7 +257,7 @@ services:
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-postgis:latest
     shm_size: 1G
     tmpfs:
-      - /var/run:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/run:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/postgis/data:/var/lib/postgresql/data:rw
       # - ${DOCKER_COMPOSE_APP_PATH}/app-data/dawarich/shared:/var/shared:rw # TODO: Determine if necessary
