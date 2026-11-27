@@ -18,7 +18,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-migrations.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-migrations:latest
     tmpfs:
-      - /homelab/tmpfs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /homelab/tmpfs:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-migrations/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -32,8 +32,8 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-ui:latest
     tmpfs:
-      - /etc/nginx/conf.d:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /var/cache/nginx:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /etc/nginx/conf.d:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/cache/nginx:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-ui/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -58,7 +58,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-api.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:latest
     tmpfs:
-      - /tmp/exec:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /tmp/exec:rw,async,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/default:/var/log/reportportal:rw
@@ -83,7 +83,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-jobs.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:latest
     tmpfs:
-      - /tmp/exec:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /tmp/exec:rw,async,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-jobs/healthcheck:/homelab/logs/healthcheck:rw
@@ -125,10 +125,10 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rabbitmq.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-rabbitmq:latest
     tmpfs:
-      - /opt/bitnami/rabbitmq/.rabbitmq:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /opt/bitnami/rabbitmq/.rabbitmq/mnesia:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /opt/bitnami/rabbitmq/.rabbitmq:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /opt/bitnami/rabbitmq/.rabbitmq/mnesia:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /opt/bitnami/rabbitmq/etc/rabbitmq:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /opt/bitnami/rabbitmq/var/lib/rabbitmq:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/rabbitmq/healthcheck:/homelab/logs/healthcheck:rw
 
@@ -142,8 +142,8 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch:latest
     tmpfs:
-      - /tmp/exec:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
-      - /usr/share/opensearch/config:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /tmp/exec:rw,async,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /usr/share/opensearch/config:rw,async,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     ulimits:
       memlock:
         soft: -1
