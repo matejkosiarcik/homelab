@@ -16,9 +16,9 @@ services:
     environment:
       MODE: app
     tmpfs:
-      - /home/homelab/.cache:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/db:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/tmp:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /home/homelab/.cache:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/app/db:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/app/tmp:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/public:/var/app/public:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/storage:/var/app/storage:rw
@@ -47,9 +47,8 @@ services:
       timeout: 5s
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-sidekiq:latest
     tmpfs:
-      # - /root/.cache/gem:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/db:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/app/tmp:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/app/db:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /var/app/tmp:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/public:/var/app/public:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/storage:/var/app/storage:rw

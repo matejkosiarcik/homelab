@@ -16,7 +16,7 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app.env
     tmpfs:
-      - /app/.tmp:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /app/.tmp:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/app/data:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/app/logs:rw

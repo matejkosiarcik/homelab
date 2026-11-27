@@ -18,7 +18,7 @@ services:
     security_opt:
       - no-new-privileges:false # Necessary to bind to low port in host network mode
     tmpfs:
-      - /run:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/sock:/homelab/sock:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw

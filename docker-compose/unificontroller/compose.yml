@@ -23,9 +23,8 @@ services:
       - internal-network
     stop_grace_period: 30s
     tmpfs:
-      - /defaults:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      # - /run:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /run:rw,exec,nosuid,nodev,noatime,nodiratime,uid=0,gid=0 # Needs to mount as root to start the container
+      - /defaults:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=1700
+      - /run:rw,exec,nosuid,nodev,noatime,nodiratime,uid=0,gid=0,mode=0755 # Needs to mount as root to start the container
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw
