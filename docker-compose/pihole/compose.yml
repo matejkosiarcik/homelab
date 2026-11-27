@@ -31,11 +31,11 @@ services:
       - internal-network
     stop_grace_period: 30s
     tmpfs:
-      - /etc/pihole/listsCache:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /run:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/log/pihole:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/spool:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /var/spool/cron/crontabs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /etc/pihole/listsCache:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /run:rw,async,noatime,nodiratime,nodev,exec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/log/pihole:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/spool:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /var/spool/cron/crontabs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/etc/pihole:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw

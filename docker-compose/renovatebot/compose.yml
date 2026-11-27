@@ -16,8 +16,8 @@ services:
       - external-network
       - internal-network
     tmpfs:
-      - /homelab/tmpfs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /tmp/renovate:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /tmp/renovate:rw,async,noatime,nodiratime,nodev,exec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/cron:/homelab/logs/cron:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default:rw
@@ -35,7 +35,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/runwisp.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-runwisp:latest
     tmpfs:
-      - /homelab/tmpfs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/runwisp/data:/data:rw
 

@@ -34,7 +34,7 @@ services:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/wayvnc.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-wayvnc:latest
     tmpfs:
-      - /homelab/tmpfs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-wayvnc/healthcheck:/homelab/logs/healthcheck:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/rsa_key.pem.pub:/homelab/rsa_key.pem.pub:ro

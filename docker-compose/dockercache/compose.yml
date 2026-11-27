@@ -20,7 +20,7 @@ services:
       - internal-network
     stop_grace_period: 30s
     tmpfs:
-      - /homelab/tmpfs:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /homelab/tmpfs:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/var/lib/registry:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/redis/certs:/homelab/redis-certs:ro

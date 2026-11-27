@@ -19,8 +19,8 @@ services:
       - external-network
       - internal-network
     tmpfs:
-      - /app/.next/server/pages:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /app/config:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /app/.next/server/pages:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /app/config:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/homelab/logs/default/logs:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/healthcheck:/homelab/logs/healthcheck:rw

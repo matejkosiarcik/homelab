@@ -21,7 +21,7 @@ services:
       - internal-network
     stop_grace_period: 60s
     tmpfs:
-      - /opt/tplink/EAPController/properties:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /opt/tplink/EAPController/properties:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     ulimits:
       nofile:
         soft: 4096

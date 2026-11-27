@@ -20,8 +20,8 @@ services:
       - external-network
       - internal-network
     tmpfs:
-      - /cache:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
-      - /tmp/jellyfin:rw,noexec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},size=4G
+      - /cache:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
+      - /tmp/jellyfin:rw,async,noatime,nodiratime,nodev,noexec,nosuid,mode=1700,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},size=4G
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/config:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app/default:/logs:rw
