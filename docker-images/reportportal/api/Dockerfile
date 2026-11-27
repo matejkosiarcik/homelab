@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-api:5.15.7@sha256:0f1c5652a584b32154b69dfdec1bdf6efe46c879717702741affa8b8cc15a280 AS final
+FROM reportportal/service-api:6.0.0@sha256:a4bac737bbd5034221c23c914ffbb9b75633bb8b96d881142e57bf0ee794978d AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
@@ -51,10 +51,11 @@ ENV AUDIT_LOGGER="OFF" \
     COM_TA_REPORTPORTAL_JOB_CLEAN_OUTDATED_PLUGINS_CRON="PT10S" \
     COM_TA_REPORTPORTAL_JOB_INTERRUPT_BROKEN_LAUNCHES_CRON="PT1H" \
     COM_TA_REPORTPORTAL_JOB_LOAD_PLUGINS_CRON="PT10S" \
+    DATASTORE_PATH="/data/storage" \
     DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_NAME="reportportal-api" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    JAVA_OPTS="-Xmx1g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp -Dcom.sun.management.jmxremote.rmi.port=12349 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0" \
+    JAVA_OPTS="-Djava.io.tmpdir=/tmp/exec -Xmx1g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp -Dcom.sun.management.jmxremote.rmi.port=12349 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0" \
     LOGGING_LEVEL_ORG_HIBERNATE_SQL="info" \
     MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED="false" \
     PATH="/homelab/bin:${PATH}" \
@@ -78,8 +79,11 @@ ENV AUDIT_LOGGER="OFF" \
     RP_ENVIRONMENT_VARIABLE_PATTERN-ANALYSIS_BATCH-SIZE="100" \
     RP_ENVIRONMENT_VARIABLE_PATTERN-ANALYSIS_CONSUMERS-COUNT="1" \
     RP_ENVIRONMENT_VARIABLE_PATTERN-ANALYSIS_PREFETCH-COUNT="1" \
+    RP_INITIAL_ADMIN_PASSWORD="" \
     RP_JOBS_BASEURL="http://app-jobs:8686" \
     RP_REQUESTLOGGING="false" \
+    RP_SAML_SESSION-LIVE="4320" \
+    RP_SESSION_LIVE="86400" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8585/health\"}" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8585/health\"}" ]

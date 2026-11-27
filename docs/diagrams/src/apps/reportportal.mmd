@@ -21,39 +21,32 @@ flowchart LR
         postgres("<div class='custom-node'><img src='../../../../icons/postgres.png' /><p>Postgres</p></div>")
         rabbitmq("<div class='custom-node'><img src='../../../../icons/rabbitmq.png' /><p>RabbitMQ</p></div>")
         opensearch("<div class='custom-node'><img src='../../../../icons/opensearch.png' /><p>Opensearch</p></div>")
-        app_index("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>Index</p></div>")
-        class app_index strong_border;
         app_ui("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>UI</p></div>")
         class app_ui strong_border;
         app_api("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>API</p></div>")
         class app_api strong_border;
-        app_uat("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>UAT(Authorization)</p></div>")
-        class app_uat strong_border;
         app_jobs("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>Jobs</p></div>")
         class app_jobs strong_border;
         app_analyzer("<div class='custom-node'><img src='../../../../icons/reportportal.png' /><p>ReportPortal<br/>Analyzer</p></div>")
         class app_analyzer strong_border;
         app_migrations("<div class='custom-node'><img src='../../../../icons/reportportal-migrations.png' /><p>ReportPortal<br/>Migrations</p></div>")
         class app_migrations strong_border;
-
-        %% app_index ~~~ app_ui & app_api & app_uat ~~~ app_jobs & app_analyzer & app_migrations
+        placeholder_fs(" ")
 
         postgres & rabbitmq & opensearch ~~~ app_analyzer & app_migrations
 
         inbound_interface -->|:80,443| apache_proxy
-        apache_proxy -->|/*| app_index
-        apache_proxy -->|/ui| app_ui
-        apache_proxy -->|/api| app_api
-        apache_proxy -->|/uat| app_uat
-        apache_proxy -->|/jobs| app_jobs
+        apache_proxy -->|/*;/ui/*| app_ui
+        apache_proxy -->|/api/*| app_api
+        apache_proxy -->|/jobs/*| app_jobs
         app_migrations -->|use| postgres
         app_api -->|use| postgres & rabbitmq
-        app_uat -->|use| postgres & rabbitmq
         app_jobs -->|use| postgres & rabbitmq
         app_analyzer -->|use| opensearch & rabbitmq
+        placeholder_fs -.-|fs|  app_api & app_jobs & app_analyzer
         apache_proxy -.-|fs| certificator
         apache_prometheus_exporter -.->|/.apache/status| apache_proxy -->|/.apache/metrics| apache_prometheus_exporter
-        apache_prometheus_exporter & app_index & app_ui & app_api & favicons ~~~ certificator
+        apache_prometheus_exporter & app_ui & app_api & favicons ~~~ certificator
         apache_proxy -->|"/favicon.{ico,png}"| favicons -.->|use| app_ui
     end
 

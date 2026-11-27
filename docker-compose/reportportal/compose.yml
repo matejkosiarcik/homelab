@@ -22,18 +22,6 @@ services:
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-migrations/healthcheck:/homelab/logs/healthcheck:rw
 
-  app-index:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    # Override:
-    build:
-      dockerfile: ./docker-images/reportportal/index/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-index:latest
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-index/healthcheck:/homelab/logs/healthcheck:rw
-
   app-ui:
     extends:
       file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
@@ -60,6 +48,8 @@ services:
     depends_on:
       app-jobs:
         condition: service_healthy
+      app-migrations:
+        condition: service_healthy
       postgres:
         condition: service_healthy
       rabbitmq:
@@ -67,28 +57,12 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-api.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-api:latest
+    tmpfs:
+      - /tmp/exec:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=0700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/default:/var/log/reportportal:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-api/healthcheck:/homelab/logs/healthcheck:rw
-
-  app-uat:
-    extends:
-      file: ${DOCKER_COMPOSE_REPOROOT_PATH}/docker-compose/.shared/compose.yml
-      service: template
-    # Override:
-    build:
-      dockerfile: ./docker-images/reportportal/uat/Dockerfile
-    container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat
-    depends_on:
-      postgres:
-        condition: service_healthy
-    env_file:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-uat.env
-    image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-uat:latest
-    volumes:
-      - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
-      - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-uat/healthcheck:/homelab/logs/healthcheck:rw
 
   app-jobs:
     extends:
@@ -99,6 +73,8 @@ services:
       dockerfile: ./docker-images/reportportal/jobs/Dockerfile
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs
     depends_on:
+      app-migrations:
+        condition: service_healthy
       postgres:
         condition: service_healthy
       rabbitmq:
@@ -106,6 +82,8 @@ services:
     env_file:
       - ${DOCKER_COMPOSE_APP_PATH}/app-secrets/app-jobs.env
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-app-jobs:latest
+    tmpfs:
+      - /tmp/exec:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=0700
     volumes:
       - ${DOCKER_COMPOSE_APP_PATH}/app-data/app/data:/data/storage:rw
       - ${DOCKER_COMPOSE_APP_PATH}/app-logs/app-jobs/healthcheck:/homelab/logs/healthcheck:rw
@@ -164,6 +142,7 @@ services:
     container_name: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch
     image: ${DOCKER_COMPOSE_APP_SHORTNAME}-opensearch:latest
     tmpfs:
+      - /tmp/exec:rw,exec,nosuid,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID},mode=0700
       - /usr/share/opensearch/config:rw,noexec,nodev,noatime,nodiratime,uid=${DOCKER_COMPOSE_UID},gid=${DOCKER_COMPOSE_GID}
     ulimits:
       memlock:

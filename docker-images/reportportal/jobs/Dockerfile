@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-jobs:5.15.4@sha256:561efa65681a028dbbc6fa7f745c61e79906d1084c9ab5756667861377b5019f AS final
+FROM reportportal/service-jobs:6.0.0@sha256:0a5c1f83e23305db4d117118d7db3e4f5509842629af6e553d07d92c1e6d25bc AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
@@ -59,10 +59,11 @@ USER homelab
 # RP_ENVIRONMENT_VARIABLE_CLEAN_EVENTS_RETENTIONPERIOD - Number of days to keep events in the database
 # RP_ENVIRONMENT_VARIABLE_CLEAN_EVENTS_CRON - Cron expression for the clean events job
 # RP_ENVIRONMENT_VARIABLE_CLEAN_STORAGE_CHUNKSIZE - Number of binaries to be removed from binary storage by storageProjectCron within one job execution
-ENV DATASTORE_TYPE="filesystem" \
+ENV DATASTORE_PATH="/data/storage" \
+    DATASTORE_TYPE="filesystem" \
     HOMELAB_CONTAINER_NAME="reportportal-jobs" \
     HOMELAB_CONTAINER_VARIANT="default" \
-    JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=60 -XX:MaxRAMPercentage=70.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp" \
+    JAVA_OPTS="-Djava.io.tmpdir=/tmp/exec -Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=60 -XX:MaxRAMPercentage=70.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp" \
     RP_AMQP_ANALYZER-VHOST="app-analyzer" \
     PATH="/homelab/bin:${PATH}" \
     RP_AMQP_APIPASS="" \
@@ -94,4 +95,4 @@ ENV DATASTORE_TYPE="filesystem" \
     RP_PROCESSING_LOG_MAXBATCHTIMEOUT="6000" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8686/health\"}" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8686/health\"}" ]

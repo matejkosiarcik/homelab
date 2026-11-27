@@ -38,20 +38,22 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-ui:5.15.7@sha256:0076c489235dda61bb2f922086ef1472f58dc9b67e7f053976c755554e3fe8f6 AS final
+FROM reportportal/service-ui:6.0.0@sha256:d7d042c4f025f613b77abf55d0443595955233f01c57e2d035f937d280ec4761 AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
 COPY --from=prefinal /etc/group /etc/passwd /etc/shadow /etc/
 COPY --from=prefinal --chown=homelab:homelab /home/homelab /home/homelab
 COPY --from=prefinal --chown=homelab:homelab /homelab /homelab
-RUN chown -R 'homelab:homelab' /var/cache/nginx
+RUN chown -R 'homelab:homelab' /var/cache/nginx && \
+    ln -s /tmp/reportportal-ui-config.json /usr/share/nginx/html/config.json
 USER homelab
 
-ENV HOMELAB_CONTAINER_NAME="reportportal-ui" \
+ENV AUTH_URL="../api" \
+    HOMELAB_CONTAINER_NAME="reportportal-ui" \
     HOMELAB_CONTAINER_VARIANT="default" \
     PATH="/homelab/bin:${PATH}" \
     RP_SERVER_PORT="8080" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/health\"}" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:8080/health\"}" ]

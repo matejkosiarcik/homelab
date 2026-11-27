@@ -38,7 +38,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM reportportal/service-auto-analyzer:5.15.6@sha256:0eacfd822756deb44367088309ca49b7bf62cd3d190d5a93c24546e5ce6e3fdd AS final
+FROM reportportal/service-auto-analyzer:6.0.0@sha256:40ed7f5cec62bab6d2bdf0ae8d8e4da7b181675c5c494688687e272cd28716dc AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
@@ -50,7 +50,6 @@ USER homelab
 ENV AMQP_EXCHANGE_NAME="app-analyzer-default" \
     AMQP_URL="" \
     AMQP_VIRTUAL_HOST="app-analyzer" \
-    ANALYZER_BINARYSTORE_TYPE="filesystem" \
     DATASTORE_TYPE="filesystem" \
     ES_HOSTS="http://opensearch:9200" \
     FILESYSTEM_DEFAULT_PATH="/data/storage/analyzer" \
@@ -60,4 +59,4 @@ ENV AMQP_EXCHANGE_NAME="app-analyzer-default" \
     PATH="/homelab/bin:${PATH}" \
     TZ="Europe/Bratislava"
 
-HEALTHCHECK --interval=10s --start-period=1m --timeout=2s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:5001\"}" ]
+HEALTHCHECK --interval=10s --start-period=2m --timeout=5s --retries=1 CMD [ "healthcheck", "--endpoint", "{\"url\":\"http://localhost:5001\"}" ]
