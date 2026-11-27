@@ -54,7 +54,7 @@ COPY --from=homelab_dir /homelab /homelab
 
 ### Final ###
 
-FROM redis:8.12.0@sha256:3c4881844c6421f29fb9f9e8ca4f573d9fbdfb35967d65834504b6994cf6cd3b AS final
+FROM redis:8.12.0@sha256:56a1737794e36c3ebe8a4544a8ab421af3ab1a6488fb2238aec228c404933fed AS final
 LABEL build.user="matejkosiarcik" \
     dev.dozzle.icon="none"
 USER root
