@@ -51,7 +51,7 @@ RUN --mount=type=bind,source=./sites/home/servers/,target=/homelab/sites/home/se
     sed -E 's~\.matejhome\.com~~;s~^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+) ~\4.\3.\2.\1.in-addr.arpa ~' <'/homelab/config/custom-domains-type-a.txt' >'/homelab/config/custom-domains-type-ptr.txt' && \
     printf '%s\n' "[ \"local-ttl=600\", \"ptr-record=1.0.0.127,localhost\", $(sed -E 's~^(.*) (.*)$~"ptr-record=\1,\2"~' <'/homelab/config/custom-domains-type-ptr.txt' | tr '\n' ',' | sed -E 's~,$~~;s~","~", "~g') ]" >'/homelab/config/FTL/misc.dnsmasq_lines.txt'
 
-FROM python:3.15.2-slim@sha256:63bb298d2b7b88f176f51b5189f54ce6535c997682ea70885d2132f5d473a8a5 AS pihole_config_devices
+FROM python:3.15.2-slim@sha256:08a4c22c92b79ec821a7ad49768480039ee5b7accac3955228e75366e30abc8e AS pihole_config_devices
 USER root
 WORKDIR /homelab
 COPY ./docker-images/pihole/app/clients-groups.csv /homelab/
